@@ -10,8 +10,8 @@
 #define MCU_HPP_
 
 
-#define OFF 0
-#define ON	1
+#define LOW		0
+#define HIGH	1
 
 #define IN	0
 #define OUT	1
@@ -48,7 +48,7 @@ void Setting::initPort (int port, bool isOutput)
 		if (port == i)
 		{
 			// INPUT or OUTPUT
-			if (isOutput == true)
+			if (isOutput == OUT)
 			{
 				ddrValue = 0xFF;
 				portValue = 0x00;
@@ -119,9 +119,7 @@ void Setting::beginExtended (int extendedIndex)
 	{
 		if (extendedIndex == i)
 		{
-			int value = 0x01;
-			
-			value = value << i;
+			int value = 1 << i;
 			
 			EIMSK += value;
 		}
@@ -224,82 +222,187 @@ private:
 	unsigned int m_Disable;
 
 public:
-	void initPortLCD (int portLCD);
-	void setInstruction (int instructionInfo);
-	void setData (int dataInfo);
-	void sendString (char *stringInfo);
-	void changeLine (bool isFirstLine, int fileIndex);
-	void clearLCD (int clearValue);
+	// PORT
+	void beginLCD (int portLCD);
+	void attachBit (bool isHigh, int bitValue);
+	void attachPortLCD (int portValue);
+	void initPortLCD (void);
+
+	// INFO
+	void setInstruction (int instructionValue);
+	void setData (int dataValue);
+	void writeString (char *stringValue);
+	void writeLine (int lineIndex, int fileIndex);
+	void clearLCD (int clearMode);
 	void initLCD (void);
 
 };
 
 
 /*----------------------------------------//
-		  	Initialize LCD Port
+		  		Begin LCD
 //----------------------------------------*/
 
-void LCD::initPortLCD (int portLCD)
+void LCD::beginLCD (int portLCD)
 {
-	
-	#define BIT_HIGH (PORTx, y)	PORTx |= (1 << y);
-	#define BIT_LOW (PORTx, y)	PORTx &= ~(1 << y);
-	
-	int portValue;
-	int portResult;
-
 	for (int i=2; i<=7; i++)
 	{
 		if (portLCD == i)
 		{
-			// PORTA
-			if (i == A)
-			{
-				PORTA = portValue;
-			}
-			
-			// PORTB
-			else if (i == B)
-			{
-				PORTB = portValue;
-			}
-			
-			// PORTC
-			else if (i == C)
-			{
-				PORTC = portValue;
-			}
-			
-			// PORTD
-			else if (i == D)
-			{
-				PORTD = portValue;
-			}
-			
-			// PORTE
-			else if (i == E)
-			{
-				PORTE = portValue;
-			}
-			
-			// PORTF
-			else if (i == F)
-			{
-				PORTF = portValue;
-			}
-
-			m_ResisterSelectHigh	= BIT_HIGH (portValue, 5);
-			m_ResisterSelectLow		= BIT_LOW (portValue, 5);
-			m_ReadWriteHigh			= BIT_HIGH (portValue, 6);
-			m_ReadWriteLow			= BIT_LOW (portValue, 6);
-			m_Enable				= BIT_HIGH (portValue, 7);
-			m_Disable				= BIT_LOW (portValue, 7);
-			
-			portValue = m_PortLCD;
-
+			m_PortLCD = i;
 		}
 	}
-	
+}
+
+
+/*----------------------------------------//
+		  		Attach Bit
+//----------------------------------------*/
+
+void LCD::attachBit (bool isHigh, int bitValue)
+{
+	// PORTA
+	if (m_PortLCD == A)
+	{
+		if (isHigh == HIGH)
+		{
+			PORTA |= (1 << bitValue)
+		}
+
+		else
+		{
+			PORTA &= ~(1 << bitValue)
+		}
+	}
+
+	// PORTB
+	else if (m_PortLCD == B)
+	{
+		if (isHigh == HIGH)
+		{
+			PORTB |= (1 << bitValue)
+		}
+
+		else
+		{
+			PORTB &= ~(1 << bitValue)
+		}
+	}
+
+	// PORTC
+	else if (m_PortLCD == C)
+	{
+		if (isHigh == HIGH)
+		{
+			PORTC |= (1 << bitValue)
+		}
+
+		else
+		{
+			PORTC &= ~(1 << bitValue)
+		}
+	}
+
+	// PORTD
+	else if (m_PortLCD == D)
+	{
+		if (isHigh == HIGH)
+		{
+			PORTD |= (1 << bitValue)
+		}
+
+		else
+		{
+			PORTD &= ~(1 << bitValue)
+		}
+	}
+
+	// PORTE
+	else if (m_PortLCD == E)
+	{
+		if (isHigh == HIGH)
+		{
+			PORTE |= (1 << bitValue)
+		}
+
+		else
+		{
+			PORTE &= ~(1 << bitValue)
+		}
+	}
+
+	// PORTF
+	else if (m_PortLCD == F)
+	{
+		if (isHigh == HIGH)
+		{
+			PORTF |= (1 << bitValue)
+		}
+
+		else
+		{
+			PORTF &= ~(1 << bitValue)
+		}
+	}
+}
+
+
+/*----------------------------------------//
+		  	  Attach LCD Port
+//----------------------------------------*/
+
+void LCD::attachPortLCD (int portValue)
+{
+	// PORTA
+	if (m_PortLCD == A)
+	{
+		PORTA = portValue;
+	}
+
+	// PORTB
+	else if (m_PortLCD == B)
+	{
+		PORTB = portValue;
+	}
+
+	// PORTC
+	else if (m_PortLCD == C)
+	{
+		PORTC = portValue;
+	}
+
+	// PORTD
+	else if (m_PortLCD == D)
+	{
+		PORTD = portValue;
+	}
+
+	// PORTE
+	else if (m_PortLCD == E)
+	{
+		PORTE = portValue;
+	}
+
+	// PORTF
+	else if (m_PortLCD == F)
+	{
+		PORTF = portValue;
+	}
+}
+
+
+/*----------------------------------------//
+		  	Initialize LCD Port
+//----------------------------------------*/
+
+void LCD::initPortLCD (void)
+{
+	m_ResisterSelectHigh	= attachBit(HIGH, 5);
+	m_ResisterSelectLow		= attachBit(LOW, 5);
+	m_ReadWriteHigh			= attachBit(HIGH, 6);
+	m_ReadWriteLow			= attachBit(LOW, 6);
+	m_Enable				= attachBit(HIGH, 7);
+	m_Disable				= attachBit(LOW, 7);
 }
 
 
@@ -307,12 +410,12 @@ void LCD::initPortLCD (int portLCD)
 		  	  Set Instruction
 //----------------------------------------*/
 
-void LCD::setInstruction (int instructionInfo)
+void LCD::setInstruction (int instructionValue)
 {
 	_delay_ms(2);
 	
 	
-	m_PortLCD = ((instructionInfo >> 4) & 0x0F);
+	attachPortLCD((instructionValue >> 4) & 0x0F);
 
 	m_ResisterSelectLow;
 	m_ReadWriteLow;
@@ -322,8 +425,8 @@ void LCD::setInstruction (int instructionInfo)
 	m_Disable;
 	_delay_us(1);
 	
-	
-	m_PortLCD = (instructionInfo & 0x0F);
+
+	attachPortLCD(instructionValue & 0x0F);
 	
 	m_ResisterSelectLow;
 	m_ReadWriteLow;
@@ -339,12 +442,12 @@ void LCD::setInstruction (int instructionInfo)
 				 Set Data
 //----------------------------------------*/
 
-void LCD::setData (int dataInfo)
+void LCD::setData (int dataValue)
 {
 	_delay_ms(2);
 	
 	
-	m_PortLCD = ((dataInfo >> 4) & 0x0F);
+	attachPortLCD((dataValue >> 4) & 0x0F);
 
 	m_ResisterSelectHigh;
 	m_ReadWriteLow;
@@ -355,7 +458,7 @@ void LCD::setData (int dataInfo)
 	_delay_us(1);
 	
 	
-	m_PortLCD = (dataInfo & 0x0F);
+	attachPortLCD(dataValue & 0x0F);
 	
 	m_ResisterSelectHigh;
 	m_ReadWriteLow;
@@ -368,38 +471,38 @@ void LCD::setData (int dataInfo)
 
 
 /*----------------------------------------//
-		  		Send String
+		  		Write String
 //----------------------------------------*/
 
-void LCD::sendString (char *stringInfo)
+void LCD::writeString (char *stringValue)
 {
 
-	while (*stringInfo != '\0')
+	while (*stringValue != '\0')
 	{
-		setData(*stringInfo)
-		*stringInfo ++;
+		setData(*stringValue)
+		*stringValue ++;
 	}
 
 }
 
 
 /*----------------------------------------//
-		  		change Line
+		  		Write Line
 //----------------------------------------*/
 
-void LCD::changeLine (bool isFirstLine, int fileIndex)
+void LCD::writeLine (int lineIndex, int fileIndex)
 {
 
 	for (int i=0; i<16; i++)
 	{
-		if (isFirstLine == true && fileIndex (i + 1))
+		if (lineIndex == 1 && fileIndex (i + 1))
 		{
 			int value = 0x80 + i;
 
 			setInstruction(value);
 		}
 
-		else if (isFirstLine == false && fileIndex (i + 1))
+		else if (lineIndex == 2 && fileIndex (i + 1))
 		{
 			int value = 0xC0 + i;
 
@@ -407,6 +510,50 @@ void LCD::changeLine (bool isFirstLine, int fileIndex)
 		}
 	}
 
+}
+
+
+/*----------------------------------------//
+		  		Clear LCD
+//----------------------------------------*/
+
+void LCD::clearLCD (int clearMode)
+{
+
+	if (clearMode == 0)
+	{
+		writeLine(1, 1);
+		writeString("                ");
+
+		writeLine(2, 1);
+		writeString("                ");
+	}
+
+	else if (clearMode == 1)
+	{
+		writeLine(1, 1);
+		writeString("                ");
+	}
+
+	else if (clearMode == 2)
+	{
+		writeLine(2, 1);
+		writeString("                ");
+	}
+
+}
+
+
+/*----------------------------------------//
+			  Initialize LCD
+//----------------------------------------*/
+
+void LCD::initLCD (void)
+{
+	setInstruction(0x06);			// SET ENTRY		[ I/D = Right						S = Shift L	]
+	setInstruction(0x0c);			// CONTROL DISPLAY	[ D = Display H		C = Cursor L	B = Blink L ]
+	setInstruction(0x28);			// SET FUNCTION		[ DL = 4 Bit		N = 2 LINE		F = 5 x 7	]
+	setInstruction(0x01);			// CLEAR DISPLAY ALL
 }
 
 
