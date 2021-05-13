@@ -10,13 +10,12 @@
 
 
 
-int main (void)
+int main(void)
 {
-	
-	while (1)
-	{
-	}
-	
+    /* Replace with your application code */
+    while (1) 
+    {
+    }
 }
 
 
