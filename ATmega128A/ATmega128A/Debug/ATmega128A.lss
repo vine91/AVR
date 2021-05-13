@@ -3,27 +3,29 @@ ATmega128A.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  000000f8  2**0
+  0 .data         00000000  00800100  00800100  000003d4  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000000a4  00000000  00000000  00000054  2**1
+  1 .text         00000380  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  000000f8  2**0
+  2 .comment      00000030  00000000  00000000  000003d4  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000128  2**2
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000404  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000020  00000000  00000000  00000168  2**0
+  4 .debug_aranges 00000088  00000000  00000000  00000444  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   000007fc  00000000  00000000  00000188  2**0
+  5 .debug_info   00001713  00000000  00000000  000004cc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 0000075f  00000000  00000000  00000984  2**0
+  6 .debug_abbrev 000009b4  00000000  00000000  00001bdf  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000001a5  00000000  00000000  000010e3  2**0
+  7 .debug_line   000006c6  00000000  00000000  00002593  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000024  00000000  00000000  00001288  2**2
+  8 .debug_frame  00000180  00000000  00000000  00002c5c  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    000003e2  00000000  00000000  000012ac  2**0
+  9 .debug_str    00000731  00000000  00000000  00002ddc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_ranges 00000010  00000000  00000000  0000168e  2**0
+ 10 .debug_loc    0000099f  00000000  00000000  0000350d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000078  00000000  00000000  00003eac  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -31,73 +33,73 @@ Disassembly of section .text:
 00000000 <__vectors>:
    0:	45 c0       	rjmp	.+138    	; 0x8c <__ctors_end>
    2:	00 00       	nop
-   4:	4b c0       	rjmp	.+150    	; 0x9c <__bad_interrupt>
+   4:	58 c0       	rjmp	.+176    	; 0xb6 <__bad_interrupt>
    6:	00 00       	nop
-   8:	49 c0       	rjmp	.+146    	; 0x9c <__bad_interrupt>
+   8:	56 c0       	rjmp	.+172    	; 0xb6 <__bad_interrupt>
    a:	00 00       	nop
-   c:	47 c0       	rjmp	.+142    	; 0x9c <__bad_interrupt>
+   c:	54 c0       	rjmp	.+168    	; 0xb6 <__bad_interrupt>
    e:	00 00       	nop
-  10:	45 c0       	rjmp	.+138    	; 0x9c <__bad_interrupt>
+  10:	52 c0       	rjmp	.+164    	; 0xb6 <__bad_interrupt>
   12:	00 00       	nop
-  14:	43 c0       	rjmp	.+134    	; 0x9c <__bad_interrupt>
+  14:	50 c0       	rjmp	.+160    	; 0xb6 <__bad_interrupt>
   16:	00 00       	nop
-  18:	41 c0       	rjmp	.+130    	; 0x9c <__bad_interrupt>
+  18:	4e c0       	rjmp	.+156    	; 0xb6 <__bad_interrupt>
   1a:	00 00       	nop
-  1c:	3f c0       	rjmp	.+126    	; 0x9c <__bad_interrupt>
+  1c:	4c c0       	rjmp	.+152    	; 0xb6 <__bad_interrupt>
   1e:	00 00       	nop
-  20:	3d c0       	rjmp	.+122    	; 0x9c <__bad_interrupt>
+  20:	4a c0       	rjmp	.+148    	; 0xb6 <__bad_interrupt>
   22:	00 00       	nop
-  24:	3b c0       	rjmp	.+118    	; 0x9c <__bad_interrupt>
+  24:	48 c0       	rjmp	.+144    	; 0xb6 <__bad_interrupt>
   26:	00 00       	nop
-  28:	39 c0       	rjmp	.+114    	; 0x9c <__bad_interrupt>
+  28:	46 c0       	rjmp	.+140    	; 0xb6 <__bad_interrupt>
   2a:	00 00       	nop
-  2c:	37 c0       	rjmp	.+110    	; 0x9c <__bad_interrupt>
+  2c:	44 c0       	rjmp	.+136    	; 0xb6 <__bad_interrupt>
   2e:	00 00       	nop
-  30:	35 c0       	rjmp	.+106    	; 0x9c <__bad_interrupt>
+  30:	42 c0       	rjmp	.+132    	; 0xb6 <__bad_interrupt>
   32:	00 00       	nop
-  34:	33 c0       	rjmp	.+102    	; 0x9c <__bad_interrupt>
+  34:	40 c0       	rjmp	.+128    	; 0xb6 <__bad_interrupt>
   36:	00 00       	nop
-  38:	31 c0       	rjmp	.+98     	; 0x9c <__bad_interrupt>
+  38:	3e c0       	rjmp	.+124    	; 0xb6 <__bad_interrupt>
   3a:	00 00       	nop
-  3c:	2f c0       	rjmp	.+94     	; 0x9c <__bad_interrupt>
+  3c:	3c c0       	rjmp	.+120    	; 0xb6 <__bad_interrupt>
   3e:	00 00       	nop
-  40:	2d c0       	rjmp	.+90     	; 0x9c <__bad_interrupt>
+  40:	3a c0       	rjmp	.+116    	; 0xb6 <__bad_interrupt>
   42:	00 00       	nop
-  44:	2b c0       	rjmp	.+86     	; 0x9c <__bad_interrupt>
+  44:	38 c0       	rjmp	.+112    	; 0xb6 <__bad_interrupt>
   46:	00 00       	nop
-  48:	29 c0       	rjmp	.+82     	; 0x9c <__bad_interrupt>
+  48:	36 c0       	rjmp	.+108    	; 0xb6 <__bad_interrupt>
   4a:	00 00       	nop
-  4c:	27 c0       	rjmp	.+78     	; 0x9c <__bad_interrupt>
+  4c:	34 c0       	rjmp	.+104    	; 0xb6 <__bad_interrupt>
   4e:	00 00       	nop
-  50:	25 c0       	rjmp	.+74     	; 0x9c <__bad_interrupt>
+  50:	32 c0       	rjmp	.+100    	; 0xb6 <__bad_interrupt>
   52:	00 00       	nop
-  54:	23 c0       	rjmp	.+70     	; 0x9c <__bad_interrupt>
+  54:	30 c0       	rjmp	.+96     	; 0xb6 <__bad_interrupt>
   56:	00 00       	nop
-  58:	21 c0       	rjmp	.+66     	; 0x9c <__bad_interrupt>
+  58:	2e c0       	rjmp	.+92     	; 0xb6 <__bad_interrupt>
   5a:	00 00       	nop
-  5c:	1f c0       	rjmp	.+62     	; 0x9c <__bad_interrupt>
+  5c:	2c c0       	rjmp	.+88     	; 0xb6 <__bad_interrupt>
   5e:	00 00       	nop
-  60:	1d c0       	rjmp	.+58     	; 0x9c <__bad_interrupt>
+  60:	2a c0       	rjmp	.+84     	; 0xb6 <__bad_interrupt>
   62:	00 00       	nop
-  64:	1b c0       	rjmp	.+54     	; 0x9c <__bad_interrupt>
+  64:	28 c0       	rjmp	.+80     	; 0xb6 <__bad_interrupt>
   66:	00 00       	nop
-  68:	19 c0       	rjmp	.+50     	; 0x9c <__bad_interrupt>
+  68:	26 c0       	rjmp	.+76     	; 0xb6 <__bad_interrupt>
   6a:	00 00       	nop
-  6c:	17 c0       	rjmp	.+46     	; 0x9c <__bad_interrupt>
+  6c:	24 c0       	rjmp	.+72     	; 0xb6 <__bad_interrupt>
   6e:	00 00       	nop
-  70:	15 c0       	rjmp	.+42     	; 0x9c <__bad_interrupt>
+  70:	22 c0       	rjmp	.+68     	; 0xb6 <__bad_interrupt>
   72:	00 00       	nop
-  74:	13 c0       	rjmp	.+38     	; 0x9c <__bad_interrupt>
+  74:	20 c0       	rjmp	.+64     	; 0xb6 <__bad_interrupt>
   76:	00 00       	nop
-  78:	11 c0       	rjmp	.+34     	; 0x9c <__bad_interrupt>
+  78:	1e c0       	rjmp	.+60     	; 0xb6 <__bad_interrupt>
   7a:	00 00       	nop
-  7c:	0f c0       	rjmp	.+30     	; 0x9c <__bad_interrupt>
+  7c:	1c c0       	rjmp	.+56     	; 0xb6 <__bad_interrupt>
   7e:	00 00       	nop
-  80:	0d c0       	rjmp	.+26     	; 0x9c <__bad_interrupt>
+  80:	1a c0       	rjmp	.+52     	; 0xb6 <__bad_interrupt>
   82:	00 00       	nop
-  84:	0b c0       	rjmp	.+22     	; 0x9c <__bad_interrupt>
+  84:	18 c0       	rjmp	.+48     	; 0xb6 <__bad_interrupt>
   86:	00 00       	nop
-  88:	09 c0       	rjmp	.+18     	; 0x9c <__bad_interrupt>
+  88:	16 c0       	rjmp	.+44     	; 0xb6 <__bad_interrupt>
 	...
 
 0000008c <__ctors_end>:
@@ -107,23 +109,430 @@ Disassembly of section .text:
   92:	d0 e1       	ldi	r29, 0x10	; 16
   94:	de bf       	out	0x3e, r29	; 62
   96:	cd bf       	out	0x3d, r28	; 61
-  98:	02 d0       	rcall	.+4      	; 0x9e <main>
-  9a:	02 c0       	rjmp	.+4      	; 0xa0 <_exit>
 
-0000009c <__bad_interrupt>:
-  9c:	b1 cf       	rjmp	.-158    	; 0x0 <__vectors>
+00000098 <__do_copy_data>:
+  98:	11 e0       	ldi	r17, 0x01	; 1
+  9a:	a0 e0       	ldi	r26, 0x00	; 0
+  9c:	b1 e0       	ldi	r27, 0x01	; 1
+  9e:	e0 e8       	ldi	r30, 0x80	; 128
+  a0:	f3 e0       	ldi	r31, 0x03	; 3
+  a2:	00 e0       	ldi	r16, 0x00	; 0
+  a4:	0b bf       	out	0x3b, r16	; 59
+  a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
+  a8:	07 90       	elpm	r0, Z+
+  aa:	0d 92       	st	X+, r0
+  ac:	a0 30       	cpi	r26, 0x00	; 0
+  ae:	b1 07       	cpc	r27, r17
+  b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
+  b2:	3e d1       	rcall	.+636    	; 0x330 <main>
+  b4:	63 c1       	rjmp	.+710    	; 0x37c <_exit>
 
-0000009e <main>:
+000000b6 <__bad_interrupt>:
+  b6:	a4 cf       	rjmp	.-184    	; 0x0 <__vectors>
 
-#include <avr/io.h>
+000000b8 <_ZN7Setting8initPortEib>:
+	{
+		writeLine(2, 1);
+		writeString("                ");
+	}
+
+}
+  b8:	22 e0       	ldi	r18, 0x02	; 2
+  ba:	30 e0       	ldi	r19, 0x00	; 0
+  bc:	28 30       	cpi	r18, 0x08	; 8
+  be:	31 05       	cpc	r19, r1
+  c0:	84 f5       	brge	.+96     	; 0x122 <_ZN7Setting8initPortEib+0x6a>
+  c2:	28 17       	cp	r18, r24
+  c4:	39 07       	cpc	r19, r25
+  c6:	51 f5       	brne	.+84     	; 0x11c <_ZN7Setting8initPortEib+0x64>
+  c8:	66 23       	and	r22, r22
+  ca:	11 f0       	breq	.+4      	; 0xd0 <_ZN7Setting8initPortEib+0x18>
+  cc:	4f ef       	ldi	r20, 0xFF	; 255
+  ce:	01 c0       	rjmp	.+2      	; 0xd2 <_ZN7Setting8initPortEib+0x1a>
+  d0:	40 e0       	ldi	r20, 0x00	; 0
+  d2:	22 30       	cpi	r18, 0x02	; 2
+  d4:	31 05       	cpc	r19, r1
+  d6:	19 f4       	brne	.+6      	; 0xde <_ZN7Setting8initPortEib+0x26>
+  d8:	4a bb       	out	0x1a, r20	; 26
+  da:	1b ba       	out	0x1b, r1	; 27
+  dc:	1f c0       	rjmp	.+62     	; 0x11c <_ZN7Setting8initPortEib+0x64>
+  de:	23 30       	cpi	r18, 0x03	; 3
+  e0:	31 05       	cpc	r19, r1
+  e2:	19 f4       	brne	.+6      	; 0xea <_ZN7Setting8initPortEib+0x32>
+  e4:	47 bb       	out	0x17, r20	; 23
+  e6:	18 ba       	out	0x18, r1	; 24
+  e8:	19 c0       	rjmp	.+50     	; 0x11c <_ZN7Setting8initPortEib+0x64>
+  ea:	24 30       	cpi	r18, 0x04	; 4
+  ec:	31 05       	cpc	r19, r1
+  ee:	19 f4       	brne	.+6      	; 0xf6 <_ZN7Setting8initPortEib+0x3e>
+  f0:	44 bb       	out	0x14, r20	; 20
+  f2:	15 ba       	out	0x15, r1	; 21
+  f4:	13 c0       	rjmp	.+38     	; 0x11c <_ZN7Setting8initPortEib+0x64>
+  f6:	25 30       	cpi	r18, 0x05	; 5
+  f8:	31 05       	cpc	r19, r1
+  fa:	19 f4       	brne	.+6      	; 0x102 <_ZN7Setting8initPortEib+0x4a>
+  fc:	41 bb       	out	0x11, r20	; 17
+  fe:	12 ba       	out	0x12, r1	; 18
+ 100:	0d c0       	rjmp	.+26     	; 0x11c <_ZN7Setting8initPortEib+0x64>
+ 102:	26 30       	cpi	r18, 0x06	; 6
+ 104:	31 05       	cpc	r19, r1
+ 106:	19 f4       	brne	.+6      	; 0x10e <_ZN7Setting8initPortEib+0x56>
+ 108:	42 b9       	out	0x02, r20	; 2
+ 10a:	13 b8       	out	0x03, r1	; 3
+ 10c:	07 c0       	rjmp	.+14     	; 0x11c <_ZN7Setting8initPortEib+0x64>
+ 10e:	27 30       	cpi	r18, 0x07	; 7
+ 110:	31 05       	cpc	r19, r1
+ 112:	21 f4       	brne	.+8      	; 0x11c <_ZN7Setting8initPortEib+0x64>
+ 114:	40 93 61 00 	sts	0x0061, r20	; 0x800061 <__TEXT_REGION_LENGTH__+0x7e0061>
+ 118:	10 92 62 00 	sts	0x0062, r1	; 0x800062 <__TEXT_REGION_LENGTH__+0x7e0062>
+ 11c:	2f 5f       	subi	r18, 0xFF	; 255
+ 11e:	3f 4f       	sbci	r19, 0xFF	; 255
+ 120:	cd cf       	rjmp	.-102    	; 0xbc <_ZN7Setting8initPortEib+0x4>
+ 122:	08 95       	ret
+
+00000124 <_ZN3LCD8beginLCDEi>:
+ 124:	22 e0       	ldi	r18, 0x02	; 2
+ 126:	30 e0       	ldi	r19, 0x00	; 0
+ 128:	28 30       	cpi	r18, 0x08	; 8
+ 12a:	31 05       	cpc	r19, r1
+ 12c:	4c f4       	brge	.+18     	; 0x140 <_ZN3LCD8beginLCDEi+0x1c>
+ 12e:	26 17       	cp	r18, r22
+ 130:	37 07       	cpc	r19, r23
+ 132:	19 f4       	brne	.+6      	; 0x13a <_ZN3LCD8beginLCDEi+0x16>
+ 134:	fc 01       	movw	r30, r24
+ 136:	31 83       	std	Z+1, r19	; 0x01
+ 138:	20 83       	st	Z, r18
+ 13a:	2f 5f       	subi	r18, 0xFF	; 255
+ 13c:	3f 4f       	sbci	r19, 0xFF	; 255
+ 13e:	f4 cf       	rjmp	.-24     	; 0x128 <_ZN3LCD8beginLCDEi+0x4>
+ 140:	08 95       	ret
+
+00000142 <_ZN3LCD13attachPortLCDEi>:
+ 142:	fc 01       	movw	r30, r24
+ 144:	80 81       	ld	r24, Z
+ 146:	91 81       	ldd	r25, Z+1	; 0x01
+ 148:	82 30       	cpi	r24, 0x02	; 2
+ 14a:	91 05       	cpc	r25, r1
+ 14c:	11 f4       	brne	.+4      	; 0x152 <_ZN3LCD13attachPortLCDEi+0x10>
+ 14e:	6b bb       	out	0x1b, r22	; 27
+ 150:	08 95       	ret
+ 152:	83 30       	cpi	r24, 0x03	; 3
+ 154:	91 05       	cpc	r25, r1
+ 156:	11 f4       	brne	.+4      	; 0x15c <_ZN3LCD13attachPortLCDEi+0x1a>
+ 158:	68 bb       	out	0x18, r22	; 24
+ 15a:	08 95       	ret
+ 15c:	84 30       	cpi	r24, 0x04	; 4
+ 15e:	91 05       	cpc	r25, r1
+ 160:	11 f4       	brne	.+4      	; 0x166 <_ZN3LCD13attachPortLCDEi+0x24>
+ 162:	65 bb       	out	0x15, r22	; 21
+ 164:	08 95       	ret
+ 166:	85 30       	cpi	r24, 0x05	; 5
+ 168:	91 05       	cpc	r25, r1
+ 16a:	11 f4       	brne	.+4      	; 0x170 <_ZN3LCD13attachPortLCDEi+0x2e>
+ 16c:	62 bb       	out	0x12, r22	; 18
+ 16e:	08 95       	ret
+ 170:	86 30       	cpi	r24, 0x06	; 6
+ 172:	91 05       	cpc	r25, r1
+ 174:	11 f4       	brne	.+4      	; 0x17a <_ZN3LCD13attachPortLCDEi+0x38>
+ 176:	63 b9       	out	0x03, r22	; 3
+ 178:	08 95       	ret
+ 17a:	07 97       	sbiw	r24, 0x07	; 7
+ 17c:	11 f4       	brne	.+4      	; 0x182 <_ZN3LCD13attachPortLCDEi+0x40>
+ 17e:	60 93 62 00 	sts	0x0062, r22	; 0x800062 <__TEXT_REGION_LENGTH__+0x7e0062>
+ 182:	08 95       	ret
+
+00000184 <_ZN3LCD9attachBitEbi>:
+ 184:	21 e0       	ldi	r18, 0x01	; 1
+ 186:	30 e0       	ldi	r19, 0x00	; 0
+ 188:	02 c0       	rjmp	.+4      	; 0x18e <_ZN3LCD9attachBitEbi+0xa>
+ 18a:	22 0f       	add	r18, r18
+ 18c:	33 1f       	adc	r19, r19
+ 18e:	4a 95       	dec	r20
+ 190:	e2 f7       	brpl	.-8      	; 0x18a <_ZN3LCD9attachBitEbi+0x6>
+ 192:	a9 01       	movw	r20, r18
+ 194:	41 60       	ori	r20, 0x01	; 1
+ 196:	20 95       	com	r18
+ 198:	30 95       	com	r19
+ 19a:	21 70       	andi	r18, 0x01	; 1
+ 19c:	33 27       	eor	r19, r19
+ 19e:	66 23       	and	r22, r22
+ 1a0:	19 f0       	breq	.+6      	; 0x1a8 <_ZN3LCD9attachBitEbi+0x24>
+ 1a2:	ba 01       	movw	r22, r20
+ 1a4:	ce cf       	rjmp	.-100    	; 0x142 <_ZN3LCD13attachPortLCDEi>
+ 1a6:	08 95       	ret
+ 1a8:	b9 01       	movw	r22, r18
+ 1aa:	cb cf       	rjmp	.-106    	; 0x142 <_ZN3LCD13attachPortLCDEi>
+ 1ac:	08 95       	ret
+
+000001ae <_ZN3LCD14setInstructionEi>:
+ 1ae:	0f 93       	push	r16
+ 1b0:	1f 93       	push	r17
+ 1b2:	cf 93       	push	r28
+ 1b4:	df 93       	push	r29
+ 1b6:	ec 01       	movw	r28, r24
+ 1b8:	8b 01       	movw	r16, r22
+ 1ba:	8c ec       	ldi	r24, 0xCC	; 204
+ 1bc:	9c e1       	ldi	r25, 0x1C	; 28
+ 1be:	01 97       	sbiw	r24, 0x01	; 1
+ 1c0:	f1 f7       	brne	.-4      	; 0x1be <_ZN3LCD14setInstructionEi+0x10>
+ 1c2:	00 c0       	rjmp	.+0      	; 0x1c4 <_ZN3LCD14setInstructionEi+0x16>
+ 1c4:	00 00       	nop
+ 1c6:	75 95       	asr	r23
+ 1c8:	67 95       	ror	r22
+ 1ca:	75 95       	asr	r23
+ 1cc:	67 95       	ror	r22
+ 1ce:	75 95       	asr	r23
+ 1d0:	67 95       	ror	r22
+ 1d2:	75 95       	asr	r23
+ 1d4:	67 95       	ror	r22
+ 1d6:	6f 70       	andi	r22, 0x0F	; 15
+ 1d8:	77 27       	eor	r23, r23
+ 1da:	ce 01       	movw	r24, r28
+ 1dc:	b2 df       	rcall	.-156    	; 0x142 <_ZN3LCD13attachPortLCDEi>
+ 1de:	45 e0       	ldi	r20, 0x05	; 5
+ 1e0:	50 e0       	ldi	r21, 0x00	; 0
+ 1e2:	60 e0       	ldi	r22, 0x00	; 0
+ 1e4:	ce 01       	movw	r24, r28
+ 1e6:	ce df       	rcall	.-100    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 1e8:	46 e0       	ldi	r20, 0x06	; 6
+ 1ea:	50 e0       	ldi	r21, 0x00	; 0
+ 1ec:	60 e0       	ldi	r22, 0x00	; 0
+ 1ee:	ce 01       	movw	r24, r28
+ 1f0:	c9 df       	rcall	.-110    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 1f2:	47 e0       	ldi	r20, 0x07	; 7
+ 1f4:	50 e0       	ldi	r21, 0x00	; 0
+ 1f6:	61 e0       	ldi	r22, 0x01	; 1
+ 1f8:	ce 01       	movw	r24, r28
+ 1fa:	c4 df       	rcall	.-120    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 1fc:	95 e0       	ldi	r25, 0x05	; 5
+ 1fe:	9a 95       	dec	r25
+ 200:	f1 f7       	brne	.-4      	; 0x1fe <_ZN3LCD14setInstructionEi+0x50>
+ 202:	47 e0       	ldi	r20, 0x07	; 7
+ 204:	50 e0       	ldi	r21, 0x00	; 0
+ 206:	60 e0       	ldi	r22, 0x00	; 0
+ 208:	ce 01       	movw	r24, r28
+ 20a:	bc df       	rcall	.-136    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 20c:	85 e0       	ldi	r24, 0x05	; 5
+ 20e:	8a 95       	dec	r24
+ 210:	f1 f7       	brne	.-4      	; 0x20e <_ZN3LCD14setInstructionEi+0x60>
+ 212:	b8 01       	movw	r22, r16
+ 214:	6f 70       	andi	r22, 0x0F	; 15
+ 216:	77 27       	eor	r23, r23
+ 218:	ce 01       	movw	r24, r28
+ 21a:	93 df       	rcall	.-218    	; 0x142 <_ZN3LCD13attachPortLCDEi>
+ 21c:	45 e0       	ldi	r20, 0x05	; 5
+ 21e:	50 e0       	ldi	r21, 0x00	; 0
+ 220:	60 e0       	ldi	r22, 0x00	; 0
+ 222:	ce 01       	movw	r24, r28
+ 224:	af df       	rcall	.-162    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 226:	46 e0       	ldi	r20, 0x06	; 6
+ 228:	50 e0       	ldi	r21, 0x00	; 0
+ 22a:	60 e0       	ldi	r22, 0x00	; 0
+ 22c:	ce 01       	movw	r24, r28
+ 22e:	aa df       	rcall	.-172    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 230:	47 e0       	ldi	r20, 0x07	; 7
+ 232:	50 e0       	ldi	r21, 0x00	; 0
+ 234:	61 e0       	ldi	r22, 0x01	; 1
+ 236:	ce 01       	movw	r24, r28
+ 238:	a5 df       	rcall	.-182    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 23a:	95 e0       	ldi	r25, 0x05	; 5
+ 23c:	9a 95       	dec	r25
+ 23e:	f1 f7       	brne	.-4      	; 0x23c <_ZN3LCD14setInstructionEi+0x8e>
+ 240:	47 e0       	ldi	r20, 0x07	; 7
+ 242:	50 e0       	ldi	r21, 0x00	; 0
+ 244:	60 e0       	ldi	r22, 0x00	; 0
+ 246:	ce 01       	movw	r24, r28
+ 248:	9d df       	rcall	.-198    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 24a:	85 e0       	ldi	r24, 0x05	; 5
+ 24c:	8a 95       	dec	r24
+ 24e:	f1 f7       	brne	.-4      	; 0x24c <_ZN3LCD14setInstructionEi+0x9e>
+ 250:	df 91       	pop	r29
+ 252:	cf 91       	pop	r28
+ 254:	1f 91       	pop	r17
+ 256:	0f 91       	pop	r16
+ 258:	08 95       	ret
+
+0000025a <_ZN3LCD7setDataEi>:
+ 25a:	0f 93       	push	r16
+ 25c:	1f 93       	push	r17
+ 25e:	cf 93       	push	r28
+ 260:	df 93       	push	r29
+ 262:	ec 01       	movw	r28, r24
+ 264:	8b 01       	movw	r16, r22
+ 266:	8c ec       	ldi	r24, 0xCC	; 204
+ 268:	9c e1       	ldi	r25, 0x1C	; 28
+ 26a:	01 97       	sbiw	r24, 0x01	; 1
+ 26c:	f1 f7       	brne	.-4      	; 0x26a <_ZN3LCD7setDataEi+0x10>
+ 26e:	00 c0       	rjmp	.+0      	; 0x270 <_ZN3LCD7setDataEi+0x16>
+ 270:	00 00       	nop
+ 272:	75 95       	asr	r23
+ 274:	67 95       	ror	r22
+ 276:	75 95       	asr	r23
+ 278:	67 95       	ror	r22
+ 27a:	75 95       	asr	r23
+ 27c:	67 95       	ror	r22
+ 27e:	75 95       	asr	r23
+ 280:	67 95       	ror	r22
+ 282:	6f 70       	andi	r22, 0x0F	; 15
+ 284:	77 27       	eor	r23, r23
+ 286:	ce 01       	movw	r24, r28
+ 288:	5c df       	rcall	.-328    	; 0x142 <_ZN3LCD13attachPortLCDEi>
+ 28a:	45 e0       	ldi	r20, 0x05	; 5
+ 28c:	50 e0       	ldi	r21, 0x00	; 0
+ 28e:	61 e0       	ldi	r22, 0x01	; 1
+ 290:	ce 01       	movw	r24, r28
+ 292:	78 df       	rcall	.-272    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 294:	46 e0       	ldi	r20, 0x06	; 6
+ 296:	50 e0       	ldi	r21, 0x00	; 0
+ 298:	60 e0       	ldi	r22, 0x00	; 0
+ 29a:	ce 01       	movw	r24, r28
+ 29c:	73 df       	rcall	.-282    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 29e:	47 e0       	ldi	r20, 0x07	; 7
+ 2a0:	50 e0       	ldi	r21, 0x00	; 0
+ 2a2:	61 e0       	ldi	r22, 0x01	; 1
+ 2a4:	ce 01       	movw	r24, r28
+ 2a6:	6e df       	rcall	.-292    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 2a8:	95 e0       	ldi	r25, 0x05	; 5
+ 2aa:	9a 95       	dec	r25
+ 2ac:	f1 f7       	brne	.-4      	; 0x2aa <_ZN3LCD7setDataEi+0x50>
+ 2ae:	47 e0       	ldi	r20, 0x07	; 7
+ 2b0:	50 e0       	ldi	r21, 0x00	; 0
+ 2b2:	60 e0       	ldi	r22, 0x00	; 0
+ 2b4:	ce 01       	movw	r24, r28
+ 2b6:	66 df       	rcall	.-308    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 2b8:	85 e0       	ldi	r24, 0x05	; 5
+ 2ba:	8a 95       	dec	r24
+ 2bc:	f1 f7       	brne	.-4      	; 0x2ba <_ZN3LCD7setDataEi+0x60>
+ 2be:	b8 01       	movw	r22, r16
+ 2c0:	6f 70       	andi	r22, 0x0F	; 15
+ 2c2:	77 27       	eor	r23, r23
+ 2c4:	ce 01       	movw	r24, r28
+ 2c6:	3d df       	rcall	.-390    	; 0x142 <_ZN3LCD13attachPortLCDEi>
+ 2c8:	45 e0       	ldi	r20, 0x05	; 5
+ 2ca:	50 e0       	ldi	r21, 0x00	; 0
+ 2cc:	61 e0       	ldi	r22, 0x01	; 1
+ 2ce:	ce 01       	movw	r24, r28
+ 2d0:	59 df       	rcall	.-334    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 2d2:	46 e0       	ldi	r20, 0x06	; 6
+ 2d4:	50 e0       	ldi	r21, 0x00	; 0
+ 2d6:	60 e0       	ldi	r22, 0x00	; 0
+ 2d8:	ce 01       	movw	r24, r28
+ 2da:	54 df       	rcall	.-344    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 2dc:	47 e0       	ldi	r20, 0x07	; 7
+ 2de:	50 e0       	ldi	r21, 0x00	; 0
+ 2e0:	61 e0       	ldi	r22, 0x01	; 1
+ 2e2:	ce 01       	movw	r24, r28
+ 2e4:	4f df       	rcall	.-354    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 2e6:	95 e0       	ldi	r25, 0x05	; 5
+ 2e8:	9a 95       	dec	r25
+ 2ea:	f1 f7       	brne	.-4      	; 0x2e8 <_ZN3LCD7setDataEi+0x8e>
+ 2ec:	47 e0       	ldi	r20, 0x07	; 7
+ 2ee:	50 e0       	ldi	r21, 0x00	; 0
+ 2f0:	60 e0       	ldi	r22, 0x00	; 0
+ 2f2:	ce 01       	movw	r24, r28
+ 2f4:	47 df       	rcall	.-370    	; 0x184 <_ZN3LCD9attachBitEbi>
+ 2f6:	85 e0       	ldi	r24, 0x05	; 5
+ 2f8:	8a 95       	dec	r24
+ 2fa:	f1 f7       	brne	.-4      	; 0x2f8 <_ZN3LCD7setDataEi+0x9e>
+ 2fc:	df 91       	pop	r29
+ 2fe:	cf 91       	pop	r28
+ 300:	1f 91       	pop	r17
+ 302:	0f 91       	pop	r16
+ 304:	08 95       	ret
+
+00000306 <_ZN3LCD7initLCDEv>:
+/*----------------------------------------//
+			  Initialize LCD
+//----------------------------------------*/
+
+void LCD::initLCD (void)
+{
+ 306:	cf 93       	push	r28
+ 308:	df 93       	push	r29
+ 30a:	ec 01       	movw	r28, r24
+	setInstruction(0x06);			// SET ENTRY		[ I/D = Right						S = Shift L	]
+ 30c:	66 e0       	ldi	r22, 0x06	; 6
+ 30e:	70 e0       	ldi	r23, 0x00	; 0
+ 310:	4e df       	rcall	.-356    	; 0x1ae <_ZN3LCD14setInstructionEi>
+	setInstruction(0x0c);			// CONTROL DISPLAY	[ D = Display H		C = Cursor L	B = Blink L ]
+ 312:	6c e0       	ldi	r22, 0x0C	; 12
+ 314:	70 e0       	ldi	r23, 0x00	; 0
+ 316:	ce 01       	movw	r24, r28
+ 318:	4a df       	rcall	.-364    	; 0x1ae <_ZN3LCD14setInstructionEi>
+	setInstruction(0x28);			// SET FUNCTION		[ DL = 4 Bit		N = 2 LINE		F = 5 x 7	]
+ 31a:	68 e2       	ldi	r22, 0x28	; 40
+ 31c:	70 e0       	ldi	r23, 0x00	; 0
+ 31e:	ce 01       	movw	r24, r28
+ 320:	46 df       	rcall	.-372    	; 0x1ae <_ZN3LCD14setInstructionEi>
+	setInstruction(0x01);			// CLEAR DISPLAY ALL
+ 322:	61 e0       	ldi	r22, 0x01	; 1
+ 324:	70 e0       	ldi	r23, 0x00	; 0
+ 326:	ce 01       	movw	r24, r28
+ 328:	42 df       	rcall	.-380    	; 0x1ae <_ZN3LCD14setInstructionEi>
+}
+ 32a:	df 91       	pop	r29
+ 32c:	cf 91       	pop	r28
+ 32e:	08 95       	ret
+
+00000330 <main>:
+
+#include "MCU.HPP"
 
 
 int main (void)
 {
-  9e:	ff cf       	rjmp	.-2      	; 0x9e <main>
+ 330:	cf 93       	push	r28
+ 332:	df 93       	push	r29
+ 334:	cd b7       	in	r28, 0x3d	; 61
+ 336:	de b7       	in	r29, 0x3e	; 62
+ 338:	2e 97       	sbiw	r28, 0x0e	; 14
+ 33a:	0f b6       	in	r0, 0x3f	; 63
+ 33c:	f8 94       	cli
+ 33e:	de bf       	out	0x3e, r29	; 62
+ 340:	0f be       	out	0x3f, r0	; 63
+ 342:	cd bf       	out	0x3d, r28	; 61
+	
+    Setting::initPort(F, OUT);
+ 344:	61 e0       	ldi	r22, 0x01	; 1
+ 346:	87 e0       	ldi	r24, 0x07	; 7
+ 348:	90 e0       	ldi	r25, 0x00	; 0
+ 34a:	b6 de       	rcall	.-660    	; 0xb8 <_ZN7Setting8initPortEib>
+    LCD LCD1;
+	LCD1.beginLCD(F);
+ 34c:	67 e0       	ldi	r22, 0x07	; 7
+ 34e:	70 e0       	ldi	r23, 0x00	; 0
+ 350:	ce 01       	movw	r24, r28
+ 352:	01 96       	adiw	r24, 0x01	; 1
+ 354:	e7 de       	rcall	.-562    	; 0x124 <_ZN3LCD8beginLCDEi>
+	LCD1.initLCD();
+ 356:	ce 01       	movw	r24, r28
+ 358:	01 96       	adiw	r24, 0x01	; 1
+ 35a:	d5 df       	rcall	.-86     	; 0x306 <_ZN3LCD7initLCDEv>
+    
+    while (1)
+    {
+		LCD1.setInstruction(0x80);
+ 35c:	60 e8       	ldi	r22, 0x80	; 128
+ 35e:	70 e0       	ldi	r23, 0x00	; 0
+ 360:	ce 01       	movw	r24, r28
+ 362:	01 96       	adiw	r24, 0x01	; 1
+ 364:	24 df       	rcall	.-440    	; 0x1ae <_ZN3LCD14setInstructionEi>
+		LCD1.setData(0x31);
+ 366:	61 e3       	ldi	r22, 0x31	; 49
+ 368:	70 e0       	ldi	r23, 0x00	; 0
+ 36a:	ce 01       	movw	r24, r28
+ 36c:	01 96       	adiw	r24, 0x01	; 1
+ 36e:	75 df       	rcall	.-278    	; 0x25a <_ZN3LCD7setDataEi>
+		LCD1.setData(0x32);
+ 370:	62 e3       	ldi	r22, 0x32	; 50
+ 372:	70 e0       	ldi	r23, 0x00	; 0
+ 374:	ce 01       	movw	r24, r28
+ 376:	01 96       	adiw	r24, 0x01	; 1
+ 378:	70 df       	rcall	.-288    	; 0x25a <_ZN3LCD7setDataEi>
+ 37a:	f0 cf       	rjmp	.-32     	; 0x35c <main+0x2c>
 
-000000a0 <_exit>:
-  a0:	f8 94       	cli
+0000037c <_exit>:
+ 37c:	f8 94       	cli
 
-000000a2 <__stop_program>:
-  a2:	ff cf       	rjmp	.-2      	; 0xa2 <__stop_program>
+0000037e <__stop_program>:
+ 37e:	ff cf       	rjmp	.-2      	; 0x37e <__stop_program>

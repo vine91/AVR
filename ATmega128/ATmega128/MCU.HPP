@@ -23,6 +23,7 @@
 #define F	7
 
 
+
 namespace Setting
 {
 	void initPort (int port, bool isOutput);
@@ -208,7 +209,6 @@ void Setting::initSwitch (int portSwitch)
 */
 
 
-
 class LCD
 {
 
@@ -224,9 +224,9 @@ private:
 public:
 	// PORT
 	void beginLCD (int portLCD);
+	int attachBit (bool isHigh, int bitValue);
 	void attachPortLCD (int portValue);
-	void attachBit (bool isHigh, int bitValue);
-	// void initPortLCD (void);
+	void initPortLCD (void);
 
 	// INFO
 	void setInstruction (int instructionValue);
@@ -252,6 +252,28 @@ void LCD::beginLCD (int portLCD)
 			m_PortLCD = i;
 		}
 	}
+}
+
+
+/*----------------------------------------//
+		  		Attach Bit
+//----------------------------------------*/
+
+int LCD::attachBit (bool isHigh, int bitValue)
+{
+	
+	int portValue = 0x00;
+	
+	if (isHigh == HIGH)
+	{
+		return portValue |= (1 << bitValue);
+	}
+
+	else
+	{
+		return portValue &= ~(1 << bitValue);
+	}
+	
 }
 
 
@@ -296,64 +318,23 @@ void LCD::attachPortLCD (int portValue)
 	{
 		PORTF = portValue;
 	}
-	
-}
-
-
-/*----------------------------------------//
-		  		Attach Bit
-//----------------------------------------*/
-
-void LCD::attachBit (bool isHigh, int bitValue)
-{
-	
-	int highValue;
-	int lowValue;
-	
-	highValue |= (1 << bitValue);
-	lowValue &= ~(1 << bitValue);
-	
-	if (isHigh == HIGH)
-	{
-		attachPortLCD(highValue);
-	}
-	
-	else
-	{
-		attachPortLCD(lowValue);
-	}
-	
 }
 
 
 /*----------------------------------------//
 		  	Initialize LCD Port
-//----------------------------------------
+//----------------------------------------*/
 
 void LCD::initPortLCD (void)
 {
-	#define BIT_HIGH(PORTx, y)	PORTx |= (1 << y)
-	#define BIT_LOW(PORTx, y)	PORTx &= ~(1 << y)
-	
-	
-	#define RS_H		BIT_HIGH(PORTF, 5)			// RESISTER SELECTION
-	#define RS_L		BIT_LOW(PORTF, 5)
-	#define RW_H		BIT_HIGH(PORTF, 6)			// READ AND WRITE
-	#define RW_L		BIT_LOW(PORTF, 6)
-	#define E_H			BIT_HIGH(PORTF, 7)			// ENABLE
-	#define E_L			BIT_LOW(PORTF, 7)
-	
-	
-	
-	#define RS_H		attachBit(HIGH, 5)
-	#define RS_L		attachBit(LOW, 5)
-	#define RW_H		attachBit(HIGH, 6)
-	#define RW_L		attachBit(LOW, 6)
-	#define E_H			attachBit(HIGH, 7)
-	#define E_L			attachBit(LOW, 7)
-	
+	m_ResisterSelectHigh	= attachBit(HIGH, 5);
+	m_ResisterSelectLow		= attachBit(LOW, 5);
+	m_ReadWriteHigh			= attachBit(HIGH, 6);
+	m_ReadWriteLow			= attachBit(LOW, 6);
+	m_Enable				= attachBit(HIGH, 7);
+	m_Disable				= attachBit(LOW, 7);
 }
-*/
+
 
 /*----------------------------------------//
 		  	  Set Instruction
@@ -366,21 +347,23 @@ void LCD::setInstruction (int instructionValue)
 	
 	attachPortLCD((instructionValue >> 4) & 0x0F);
 
-	attachBit(LOW, 5);
-	attachBit(LOW, 6);
-	attachBit(HIGH, 7);
+	attachPortLCD(m_ResisterSelectLow);
+	attachPortLCD(m_ReadWriteLow);
+
+	attachPortLCD(m_Enable);
 	_delay_us(1);
-	attachBit(LOW, 7);
+	attachPortLCD(m_Disable);
 	_delay_us(1);
 	
 
 	attachPortLCD(instructionValue & 0x0F);
 	
-	attachBit(LOW, 5);
-	attachBit(LOW, 6);
-	attachBit(HIGH, 7);
+	attachPortLCD(m_ResisterSelectLow);
+	attachPortLCD(m_ReadWriteLow);
+
+	attachPortLCD(m_Enable);
 	_delay_us(1);
-	attachBit(LOW, 7);
+	attachPortLCD(m_Disable);
 	_delay_us(1);
 }
 
@@ -396,22 +379,23 @@ void LCD::setData (int dataValue)
 	
 	attachPortLCD((dataValue >> 4) & 0x0F);
 
-	attachBit(HIGH, 5);
-	attachBit(LOW, 6);
-	attachBit(HIGH, 7);
+	attachPortLCD(m_ResisterSelectHigh);
+	attachPortLCD(m_ReadWriteLow);
+
+	attachPortLCD(m_Enable);
 	_delay_us(1);
-	attachBit(LOW, 7);
-	_delay_us(1);
+	attachPortLCD(m_Disable);
 	
 	
 	attachPortLCD(dataValue & 0x0F);
 	
-	attachBit(HIGH, 5);
-	attachBit(LOW, 6);
-	attachBit(HIGH, 7);
+	attachPortLCD(m_ResisterSelectHigh);
+	attachPortLCD(m_ReadWriteLow);
+
+	attachPortLCD(m_Enable);
 	_delay_us(1);
-	attachBit(LOW, 7);
-	_delay_us(1);
+	attachPortLCD(m_Disable);
+	
 }
 
 

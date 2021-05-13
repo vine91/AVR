@@ -128,7 +128,7 @@
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>DEBUG</Value>
-            <Value>F_CPU=16000000</Value>
+            <Value>F_CPU=14745600</Value>
           </ListValues>
         </avrgcccpp.compiler.symbols.DefSymbols>
         <avrgcccpp.compiler.directories.IncludePaths>
@@ -156,16 +156,10 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="LCD4.H">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="main.cpp">
+    <Compile Include="0513.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MCU.HPP">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Reset.H">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
