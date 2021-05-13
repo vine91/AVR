@@ -13,17 +13,11 @@ Discarded input sections
  .data          0x00000000        0x0 0513.o
  .bss           0x00000000        0x0 0513.o
  .text._ZN7Setting13beginExtendedEi
-                0x00000000       0x32 0513.o
+                0x00000000       0x3a 0513.o
  .text._ZN7Setting10beginTimerEii
                 0x00000000        0x2 0513.o
  .text._ZN7Setting10initSwitchEi
                 0x00000000        0x2 0513.o
- .text._ZN3LCD11writeStringEPKc
-                0x00000000       0x28 0513.o
- .text._ZN3LCD9writeLineEii
-                0x00000000       0x70 0513.o
- .rodata.str1.1
-                0x00000000       0x11 0513.o
  .text._ZN3LCD8clearLCDEi
                 0x00000000       0x7c 0513.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
@@ -187,7 +181,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x380
+.text           0x00000000      0x43a
  *(.vectors)
  .vectors       0x00000000       0x8c C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128a/avr51/crtatmega128a.o
                 0x00000000                __vector_default
@@ -284,31 +278,37 @@ END GROUP
  .text._ZN7Setting8initPortEib
                 0x000000b8       0x6c 0513.o
                 0x000000b8                _ZN7Setting8initPortEib
- .text._ZN3LCD8beginLCDEi
-                0x00000124       0x1e 0513.o
-                0x00000124                _ZN3LCD8beginLCDEi
- .text._ZN3LCD13attachPortLCDEi
-                0x00000142       0x42 0513.o
-                0x00000142                _ZN3LCD13attachPortLCDEi
+ .text._ZN3LCD8beginLCDEib
+                0x00000124       0x38 0513.o
+                0x00000124                _ZN3LCD8beginLCDEib
+ .text._ZN3LCD10attachPortEi
+                0x0000015c       0x42 0513.o
+                0x0000015c                _ZN3LCD10attachPortEi
  .text._ZN3LCD9attachBitEbi
-                0x00000184       0x2a 0513.o
-                0x00000184                _ZN3LCD9attachBitEbi
+                0x0000019e       0x1a 0513.o
+                0x0000019e                _ZN3LCD9attachBitEbi
  .text._ZN3LCD14setInstructionEi
-                0x000001ae       0xac 0513.o
-                0x000001ae                _ZN3LCD14setInstructionEi
+                0x000001b8       0xac 0513.o
+                0x000001b8                _ZN3LCD14setInstructionEi
  .text._ZN3LCD7setDataEi
-                0x0000025a       0xac 0513.o
-                0x0000025a                _ZN3LCD7setDataEi
+                0x00000264       0xbe 0513.o
+                0x00000264                _ZN3LCD7setDataEi
+ .text._ZN3LCD11writeStringEPKc
+                0x00000322       0x26 0513.o
+                0x00000322                _ZN3LCD11writeStringEPKc
+ .text._ZN3LCD10changeLineEii
+                0x00000348       0x6c 0513.o
+                0x00000348                _ZN3LCD10changeLineEii
  .text._ZN3LCD7initLCDEv
-                0x00000306       0x2a 0513.o
-                0x00000306                _ZN3LCD7initLCDEv
- .text.main     0x00000330       0x4c 0513.o
-                0x00000330                main
-                0x0000037c                . = ALIGN (0x2)
+                0x000003b4       0x2a 0513.o
+                0x000003b4                _ZN3LCD7initLCDEv
+ .text.main     0x000003de       0x58 0513.o
+                0x000003de                main
+                0x00000436                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000037c        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
-                0x0000037c                _exit
-                0x0000037c                exit
+ .fini9         0x00000436        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
+                0x00000436                _exit
+                0x00000436                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -327,36 +327,38 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000037c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
+ .fini0         0x00000436        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000380                _etext = .
+                0x0000043a                _etext = .
 
-.data           0x00800100        0x0 load address 0x00000380
+.data           0x00800100       0x24 load address 0x0000043a
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
  *(.gnu.linkonce.d*)
  *(.rodata)
  *(.rodata*)
+ .rodata.str1.1
+                0x00800100       0x24 0513.o
  *(.gnu.linkonce.r*)
-                0x00800100                . = ALIGN (0x2)
-                0x00800100                _edata = .
-                0x00800100                PROVIDE (__data_end, .)
+                0x00800124                . = ALIGN (0x2)
+                0x00800124                _edata = .
+                0x00800124                PROVIDE (__data_end, .)
 
-.bss            0x00800100        0x0
+.bss            0x00800124        0x0
                 [!provide]                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  *(COMMON)
                 [!provide]                PROVIDE (__bss_end, .)
-                0x00000380                __data_load_start = LOADADDR (.data)
-                0x00000380                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0000043a                __data_load_start = LOADADDR (.data)
+                0x0000045e                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800100        0x0
+.noinit         0x00800124        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800100                _end = .
+                0x00800124                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -429,34 +431,34 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1713
+.debug_info     0x00000000     0x160d
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x780 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128a/avr51/crtatmega128a.o
- .debug_info    0x00000780      0xf93 0513.o
+ .debug_info    0x00000780      0xe8d 0513.o
 
-.debug_abbrev   0x00000000      0x9b4
+.debug_abbrev   0x00000000      0x9e6
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x718 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128a/avr51/crtatmega128a.o
- .debug_abbrev  0x00000718      0x29c 0513.o
+ .debug_abbrev  0x00000718      0x2ce 0513.o
 
-.debug_line     0x00000000      0x6c6
+.debug_line     0x00000000      0x6b0
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x16a C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128a/avr51/crtatmega128a.o
- .debug_line    0x0000016a      0x55c 0513.o
+ .debug_line    0x0000016a      0x546 0513.o
 
-.debug_frame    0x00000000      0x180
+.debug_frame    0x00000000      0x1c0
  *(.debug_frame)
- .debug_frame   0x00000000      0x180 0513.o
+ .debug_frame   0x00000000      0x1c0 0513.o
 
-.debug_str      0x00000000      0x731
+.debug_str      0x00000000      0x71d
  *(.debug_str)
  .debug_str     0x00000000      0x27d C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128a/avr51/crtatmega128a.o
- .debug_str     0x0000027d      0x4b4 0513.o
-                                0x4ed (size before relaxing)
+ .debug_str     0x0000027d      0x4a0 0513.o
+                                0x4d9 (size before relaxing)
 
-.debug_loc      0x00000000      0x99f
+.debug_loc      0x00000000      0xa38
  *(.debug_loc)
- .debug_loc     0x00000000      0x99f 0513.o
+ .debug_loc     0x00000000      0xa38 0513.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -476,9 +478,9 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0x78
+.debug_ranges   0x00000000       0x90
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x78 0513.o
+ .debug_ranges  0x00000000       0x90 0513.o
 
 .debug_macro
  *(.debug_macro)

@@ -23,7 +23,6 @@
 #define F	7
 
 
-
 namespace Setting
 {
 	void initPort (int port, bool isOutput);
@@ -48,7 +47,7 @@ void Setting::initPort (int port, bool isOutput)
 		if (port == i)
 		{
 			// INPUT or OUTPUT
-			if (isOutput == OUT)
+			if (isOutput == true)
 			{
 				ddrValue = 0xFF;
 				portValue = 0x00;
@@ -114,19 +113,18 @@ void Setting::initPort (int port, bool isOutput)
 
 void Setting::beginExtended (int extendedIndex)
 {
+	int EIMSKValue = 0x00;
 	
 	for (int i=0; i<=7; i++)
 	{
 		if (extendedIndex == i)
 		{
-			int portValue = 1 << i;
-			
-			EIMSK += portValue;
+			EIMSKValue |= (1 << i);
+			EIMSK += EIMSKValue;
 		}
 	}
 	
 	EICRA = 0x00;
-	
 }
 
 
@@ -209,30 +207,25 @@ void Setting::initSwitch (int portSwitch)
 */
 
 
+
 class LCD
 {
 
 private:
 	unsigned int m_PortLCD;
-	unsigned int m_ResisterSelectHigh;					// Resister Select
-	unsigned int m_ResisterSelectLow;
-	unsigned int m_ReadWriteHigh;						// Read and Write
-	unsigned int m_ReadWriteLow;
-	unsigned int m_Enable;								// Enable
-	unsigned int m_Disable;
+	unsigned int m_DataLong;
 
 public:
 	// PORT
-	void beginLCD (int portLCD);
+	void beginLCD (int portLCD, bool isLongBit);
+	void attachPort (int portValue);
 	int attachBit (bool isHigh, int bitValue);
-	void attachPortLCD (int portValue);
-	void initPortLCD (void);
 
 	// INFO
 	void setInstruction (int instructionValue);
 	void setData (int dataValue);
 	void writeString (const char *stringValue);
-	void writeLine (int lineIndex, int fileIndex);
+	void changeLine (int lineIndex, int fileIndex);
 	void clearLCD (int clearMode);
 	void initLCD (void);
 
@@ -243,8 +236,9 @@ public:
 		  		Begin LCD
 //----------------------------------------*/
 
-void LCD::beginLCD (int portLCD)
+void LCD::beginLCD (int portLCD, bool isLongBit)
 {
+	
 	for (int i=2; i<=7; i++)
 	{
 		if (portLCD == i)
@@ -252,26 +246,15 @@ void LCD::beginLCD (int portLCD)
 			m_PortLCD = i;
 		}
 	}
-}
-
-
-/*----------------------------------------//
-		  		Attach Bit
-//----------------------------------------*/
-
-int LCD::attachBit (bool isHigh, int bitValue)
-{
 	
-	int portValue = 0x00;
-	
-	if (isHigh == HIGH)
+	if (isLongBit == true)
 	{
-		return portValue |= (1 << bitValue);
+		m_DataLong = 8;
 	}
-
+	
 	else
 	{
-		return portValue &= ~(1 << bitValue);
+		m_DataLong = 4;
 	}
 	
 }
@@ -281,7 +264,7 @@ int LCD::attachBit (bool isHigh, int bitValue)
 		  	  Attach LCD Port
 //----------------------------------------*/
 
-void LCD::attachPortLCD (int portValue)
+void LCD::attachPort (int portValue)
 {
 	// PORTA
 	if (m_PortLCD == A)
@@ -318,21 +301,30 @@ void LCD::attachPortLCD (int portValue)
 	{
 		PORTF = portValue;
 	}
+	
 }
 
 
 /*----------------------------------------//
-		  	Initialize LCD Port
+		  		Attach Bit
 //----------------------------------------*/
 
-void LCD::initPortLCD (void)
+int LCD::attachBit (bool isHigh, int bitValue)
 {
-	m_ResisterSelectHigh	= attachBit(HIGH, 5);
-	m_ResisterSelectLow		= attachBit(LOW, 5);
-	m_ReadWriteHigh			= attachBit(HIGH, 6);
-	m_ReadWriteLow			= attachBit(LOW, 6);
-	m_Enable				= attachBit(HIGH, 7);
-	m_Disable				= attachBit(LOW, 7);
+	
+	int highValue = 0x00;
+	int lowValue = 0x00;
+	
+	if (isHigh == HIGH)
+	{
+		return highValue |= (1 << bitValue);
+	}
+	
+	else
+	{
+		return lowValue;
+	}
+	
 }
 
 
@@ -342,28 +334,20 @@ void LCD::initPortLCD (void)
 
 void LCD::setInstruction (int instructionValue)
 {
+	int enableBit = attachBit(HIGH, 7);
+	int disableBit = attachBit(LOW, 7);
+	
 	_delay_ms(2);
 	
-	
-	attachPortLCD((instructionValue >> 4) & 0x0F);
-
-	attachPortLCD(m_ResisterSelectLow);
-	attachPortLCD(m_ReadWriteLow);
-
-	attachPortLCD(m_Enable);
+	attachPort(((instructionValue >> 4) & 0x0F) | enableBit);
 	_delay_us(1);
-	attachPortLCD(m_Disable);
+	attachPort(((instructionValue >> 4) & 0x0F) | disableBit);
 	_delay_us(1);
 	
 
-	attachPortLCD(instructionValue & 0x0F);
-	
-	attachPortLCD(m_ResisterSelectLow);
-	attachPortLCD(m_ReadWriteLow);
-
-	attachPortLCD(m_Enable);
+	attachPort((instructionValue & 0x0F) | enableBit);
 	_delay_us(1);
-	attachPortLCD(m_Disable);
+	attachPort((instructionValue & 0x0F) | disableBit);
 	_delay_us(1);
 }
 
@@ -374,28 +358,21 @@ void LCD::setInstruction (int instructionValue)
 
 void LCD::setData (int dataValue)
 {
+	int enableBit = attachBit(HIGH, 7) | attachBit(HIGH, 5);
+	int disableBit = attachBit(LOW, 7) | attachBit(HIGH, 5);
+	
 	_delay_ms(2);
 	
-	
-	attachPortLCD((dataValue >> 4) & 0x0F);
-
-	attachPortLCD(m_ResisterSelectHigh);
-	attachPortLCD(m_ReadWriteLow);
-
-	attachPortLCD(m_Enable);
+	attachPort(((dataValue >> 4) & 0x0F) | enableBit);
 	_delay_us(1);
-	attachPortLCD(m_Disable);
-	
-	
-	attachPortLCD(dataValue & 0x0F);
-	
-	attachPortLCD(m_ResisterSelectHigh);
-	attachPortLCD(m_ReadWriteLow);
-
-	attachPortLCD(m_Enable);
+	attachPort(((dataValue >> 4) & 0x0F) | disableBit);
 	_delay_us(1);
-	attachPortLCD(m_Disable);
 	
+
+	attachPort((dataValue & 0x0F) | enableBit);
+	_delay_us(1);
+	attachPort((dataValue & 0x0F) | disableBit);
+	_delay_us(1);
 }
 
 
@@ -419,23 +396,23 @@ void LCD::writeString (const char *stringValue)
 		  		Write Line
 //----------------------------------------*/
 
-void LCD::writeLine (int lineIndex, int fileIndex)
+void LCD::changeLine (int lineIndex, int fileIndex)
 {
 
 	for (int i=0; i<16; i++)
 	{
 		if (lineIndex == 1 && fileIndex == (i + 1))
 		{
-			int value = 0x80 + i;
+			int sendValue = 0x80 + i;
 
-			setInstruction(value);
+			setInstruction(sendValue);
 		}
 
 		else if (lineIndex == 2 && fileIndex == (i + 1))
 		{
-			int value = 0xC0 + i;
+			int sendValue = 0xC0 + i;
 
-			setInstruction(value);
+			setInstruction(sendValue);
 		}
 	}
 
@@ -451,22 +428,22 @@ void LCD::clearLCD (int clearMode)
 
 	if (clearMode == 0)
 	{
-		writeLine(1, 1);
+		changeLine(1, 1);
 		writeString("                ");
 
-		writeLine(2, 1);
+		changeLine(2, 1);
 		writeString("                ");
 	}
 
 	else if (clearMode == 1)
 	{
-		writeLine(1, 1);
+		changeLine(1, 1);
 		writeString("                ");
 	}
 
 	else if (clearMode == 2)
 	{
-		writeLine(2, 1);
+		changeLine(2, 1);
 		writeString("                ");
 	}
 
