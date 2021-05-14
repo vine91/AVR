@@ -10,25 +10,69 @@
 #define MCU_HPP_
 
 
+#define OFF		0
+#define ON		1
 #define LOW		0
 #define HIGH	1
+#define IN		0
+#define OUT		1
 
-#define IN	0
-#define OUT	1
-#define A	2
-#define B	3
-#define C	4
-#define D	5
-#define E	6
-#define F	7
+#define A	0
+#define B	1
+#define C	2
+#define D	3
+#define E	4
+#define F	5
 
+#define SW_OFF	0x00
+#define SW_0	0x01
+#define SW_1	0x02
+#define SW_2	0x04
+#define SW_3	0x08
+#define SW_4	0x10
+#define SW_5	0x20
+#define SW_6	0x40
+#define SW_7	0x80
+
+
+
+
+/*----------------------------------------//
+				Insert Bit
+//----------------------------------------*/
+
+int insertBit (int bitValue, bool isHigh)
+{
+	
+	int highValue = 0x00;
+	int lowValue = 0x00;
+	
+	if (isHigh == true)
+	{
+		return highValue |= (1 << bitValue);
+	}
+	
+	else
+	{
+		return lowValue;
+	}
+	
+}
+
+
+
+
+/*
+//==========================================
+			NAMESPACE - Setting
+==========================================//
+*/
 
 namespace Setting
 {
-	void initPort (int port, bool isOutput);
+	void beginPort (int port, bool isOutput);
 	void beginExtended (int extendedIndex);
 	void beginTimer (int timerIndex, int timerMode);
-	void initSwitch (int portSwitch);
 }
 
 
@@ -36,72 +80,64 @@ namespace Setting
 			  Initialize Port
 //----------------------------------------*/
 
-void Setting::initPort (int port, bool isOutput)
+void Setting::beginPort (int port, bool isOutput)
 {
 	
 	int ddrValue;
 	int portValue;
 	
-	for (int i=2; i<=7; i++)
+	// INPUT or OUTPUT
+	if (isOutput == true)
 	{
-		if (port == i)
-		{
-			// INPUT or OUTPUT
-			if (isOutput == true)
-			{
-				ddrValue = 0xFF;
-				portValue = 0x00;
-			}
-			
-			else
-			{
-				ddrValue = 0x00;
-			}
-			
-			
-			// PORTA
-			if (i == A)
-			{
-				DDRA = ddrValue;
-				PORTA = portValue;
-			}
-			
-			// PORTB
-			else if (i == B)
-			{
-				DDRB = ddrValue;
-				PORTB = portValue;
-			}
-			
-			// PORTC
-			else if (i == C)
-			{
-				DDRC = ddrValue;
-				PORTC = portValue;
-			}
-			
-			// PORTD
-			else if (i == D)
-			{
-				DDRD = ddrValue;
-				PORTD = portValue;
-			}
-			
-			// PORTE
-			else if (i == E)
-			{
-				DDRE = ddrValue;
-				PORTE = portValue;
-			}
-			
-			// PORTF
-			else if (i == F)
-			{
-				DDRF = ddrValue;
-				PORTF = portValue;
-			}
-
-		}
+		ddrValue = 0xFF;
+		portValue = 0x00;
+	}
+	
+	else
+	{
+		ddrValue = 0x00;
+	}
+	
+	switch (port)
+	{
+		// PORTA
+		case A:
+			DDRA = ddrValue;
+			PORTA = portValue;
+			break;
+		
+		// PORTB
+		case B:
+			DDRB = ddrValue;
+			PORTB = portValue;
+			break;
+		
+		// PORTC
+		case C:
+			DDRC = ddrValue;
+			PORTC = portValue;
+			break;
+		
+		// PORTD
+		case D:
+			DDRD = ddrValue;
+			PORTD = portValue;
+			break;
+		
+		// PORTE
+		case E:
+			DDRE = ddrValue;
+			PORTE = portValue;
+			break;
+		
+		// PORTF
+		case F:
+			DDRF = ddrValue;
+			PORTF = portValue;
+			break;
+		
+		default:
+			break;
 	}
 	
 }
@@ -119,7 +155,8 @@ void Setting::beginExtended (int extendedIndex)
 	{
 		if (extendedIndex == i)
 		{
-			EIMSKValue |= (1 << i);
+			EIMSKValue = insertBit(i, HIGH);
+			
 			EIMSK += EIMSKValue;
 		}
 	}
@@ -138,14 +175,90 @@ void Setting::beginTimer (int timerIndex, int timerMode)
 }
 
 
+
+
+/*
+//==========================================
+			CLASS - SW (Switch)
+==========================================//
+*/
+
+class SW
+{
+
+private:
+	unsigned int m_SwitchPort;
+	bool m_isReversal;
+	volatile unsigned int m_newValue;
+	volatile unsigned int m_oldValue;
+	
+
+public:
+	void beginSW (int switchPort, bool isReversal) { m_SwitchPort = switchPort; m_isReversal = isReversal; }
+	void initSW (void);
+	
+	volatile unsigned int result;
+
+};
+
+
 /*----------------------------------------//
-		  	Initialize Switch
+			  Switch Source
 //----------------------------------------*/
 
-void Setting::initSwitch (int portSwitch)
+void SW::initSW (void)
 {
 	
+	switch (m_SwitchPort)
+	{
+		// PORTA
+		case A:
+			m_newValue = PINA;
+			break;
+		
+		// PORTB
+		case B:
+			m_newValue = PINB;
+			break;
+		
+		// PORTC
+		case C:
+			m_newValue = PINC;
+			break;
+		
+		// PORTD
+		case D:
+			m_newValue = PIND;
+			break;
+		
+		// PORTE
+		case E:
+			m_newValue = PINE;
+			break;
+		
+		// PORTF
+		case F:
+			m_newValue = PINF;
+			break;
+		
+		default:
+			break;
+	}
+	
+	if (m_isReversal == true)
+	{
+		result = m_oldValue & ~m_newValue;
+		m_oldValue = m_newValue;
+	}
+	
+	else
+	{
+		result = m_oldValue & m_newValue;
+		m_oldValue = ~m_newValue;
+	}
+	
 }
+
 
 
 
@@ -207,147 +320,101 @@ void Setting::initSwitch (int portSwitch)
 */
 
 
+/*
+//==========================================
+			CLASS - LCD (Monitor)
+==========================================//
+*/
 
 class LCD
 {
 
 private:
-	unsigned int m_PortLCD;
-	unsigned int m_DataLong;
+	unsigned int m_LCDPort;
+	bool m_isDataLong;
 
 public:
 	// PORT
-	void beginLCD (int portLCD, bool isLongBit);
+	void beginLCD (int LCDPort, bool isDataLong) { m_LCDPort = LCDPort; m_isDataLong = isDataLong; }
 	void attachPort (int portValue);
-	int attachBit (bool isHigh, int bitValue);
-
+	
 	// INFO
 	void setInstruction (int instructionValue);
 	void setData (int dataValue);
 	void writeString (const char *stringValue);
 	void changeLine (int lineIndex, int fileIndex);
-	void clearLCD (int clearMode);
+	void clearLine (int clearMode);
 	void initLCD (void);
 
 };
 
 
 /*----------------------------------------//
-		  		Begin LCD
-//----------------------------------------*/
-
-void LCD::beginLCD (int portLCD, bool isLongBit)
-{
-	
-	for (int i=2; i<=7; i++)
-	{
-		if (portLCD == i)
-		{
-			m_PortLCD = i;
-		}
-	}
-	
-	if (isLongBit == true)
-	{
-		m_DataLong = 8;
-	}
-	
-	else
-	{
-		m_DataLong = 4;
-	}
-	
-}
-
-
-/*----------------------------------------//
-		  	  Attach LCD Port
+			 Attach LCD Port
 //----------------------------------------*/
 
 void LCD::attachPort (int portValue)
 {
-	// PORTA
-	if (m_PortLCD == A)
+	
+	switch (m_LCDPort)
 	{
-		PORTA = portValue;
-	}
-
-	// PORTB
-	else if (m_PortLCD == B)
-	{
-		PORTB = portValue;
-	}
-
-	// PORTC
-	else if (m_PortLCD == C)
-	{
-		PORTC = portValue;
-	}
-
-	// PORTD
-	else if (m_PortLCD == D)
-	{
-		PORTD = portValue;
-	}
-
-	// PORTE
-	else if (m_PortLCD == E)
-	{
-		PORTE = portValue;
-	}
-
-	// PORTF
-	else if (m_PortLCD == F)
-	{
-		PORTF = portValue;
+		// PORTA
+		case A:
+			PORTA = portValue;
+			break;
+		
+		// PORTB
+		case B:
+			PORTB = portValue;
+			break;
+		
+		// PORTC
+		case C:
+			PORTC = portValue;
+			break;
+		
+		// PORTD
+		case D:
+			PORTD = portValue;
+			break;
+		
+		// PORTE
+		case E:
+			PORTE = portValue;
+			break;
+		
+		// PORTF
+		case F:
+			PORTF = portValue;
+			break;
+		
+		default:
+			break;
 	}
 	
 }
 
 
 /*----------------------------------------//
-		  		Attach Bit
-//----------------------------------------*/
-
-int LCD::attachBit (bool isHigh, int bitValue)
-{
-	
-	int highValue = 0x00;
-	int lowValue = 0x00;
-	
-	if (isHigh == HIGH)
-	{
-		return highValue |= (1 << bitValue);
-	}
-	
-	else
-	{
-		return lowValue;
-	}
-	
-}
-
-
-/*----------------------------------------//
-		  	  Set Instruction
+			 Set Instruction
 //----------------------------------------*/
 
 void LCD::setInstruction (int instructionValue)
 {
-	int enableBit = attachBit(HIGH, 7);
-	int disableBit = attachBit(LOW, 7);
+	int enableBit = insertBit(7, HIGH);
+	int disableBit = insertBit(7, LOW);
 	
 	_delay_ms(2);
 	
-	attachPort(((instructionValue >> 4) & 0x0F) | enableBit);
+	attachPort( ((instructionValue >> 4) & 0x0F) | enableBit );
 	_delay_us(1);
-	attachPort(((instructionValue >> 4) & 0x0F) | disableBit);
+	attachPort( ((instructionValue >> 4) & 0x0F) | disableBit );
 	_delay_us(1);
 	
-
-	attachPort((instructionValue & 0x0F) | enableBit);
+	
+	attachPort( (instructionValue & 0x0F) | enableBit );
 	_delay_us(1);
-	attachPort((instructionValue & 0x0F) | disableBit);
+	attachPort( (instructionValue & 0x0F) | disableBit );
 	_delay_us(1);
 }
 
@@ -358,95 +425,95 @@ void LCD::setInstruction (int instructionValue)
 
 void LCD::setData (int dataValue)
 {
-	int enableBit = attachBit(HIGH, 7) | attachBit(HIGH, 5);
-	int disableBit = attachBit(LOW, 7) | attachBit(HIGH, 5);
+	int enableBit = insertBit(7, HIGH) | insertBit(5, HIGH);
+	int disableBit = insertBit(7, LOW) | insertBit(5, HIGH);
 	
 	_delay_ms(2);
 	
-	attachPort(((dataValue >> 4) & 0x0F) | enableBit);
+	attachPort( ((dataValue >> 4) & 0x0F) | enableBit );
 	_delay_us(1);
-	attachPort(((dataValue >> 4) & 0x0F) | disableBit);
+	attachPort( ((dataValue >> 4) & 0x0F) | disableBit );
 	_delay_us(1);
 	
-
-	attachPort((dataValue & 0x0F) | enableBit);
+	
+	attachPort( (dataValue & 0x0F) | enableBit );
 	_delay_us(1);
-	attachPort((dataValue & 0x0F) | disableBit);
+	attachPort( (dataValue & 0x0F) | disableBit );
 	_delay_us(1);
 }
 
 
 /*----------------------------------------//
-		  		Write String
+				Write String
 //----------------------------------------*/
 
 void LCD::writeString (const char *stringValue)
 {
-
+	
 	while (*stringValue != '\0')
 	{
 		setData(*stringValue);
 		stringValue ++;
 	}
-
+	
 }
 
 
 /*----------------------------------------//
-		  		Write Line
+				Change Line
 //----------------------------------------*/
 
 void LCD::changeLine (int lineIndex, int fileIndex)
 {
-
+	
 	for (int i=0; i<16; i++)
 	{
 		if (lineIndex == 1 && fileIndex == (i + 1))
 		{
 			int sendValue = 0x80 + i;
-
+			
 			setInstruction(sendValue);
 		}
-
+		
 		else if (lineIndex == 2 && fileIndex == (i + 1))
 		{
 			int sendValue = 0xC0 + i;
-
+			
 			setInstruction(sendValue);
 		}
 	}
-
+	
 }
 
 
 /*----------------------------------------//
-		  		Clear LCD
+				Clear Line
 //----------------------------------------*/
 
-void LCD::clearLCD (int clearMode)
+void LCD::clearLine (int clearMode)
 {
-
+	
 	if (clearMode == 0)
 	{
 		changeLine(1, 1);
 		writeString("                ");
-
+		
 		changeLine(2, 1);
 		writeString("                ");
 	}
-
+	
 	else if (clearMode == 1)
 	{
 		changeLine(1, 1);
 		writeString("                ");
 	}
-
+	
 	else if (clearMode == 2)
 	{
 		changeLine(2, 1);
 		writeString("                ");
 	}
-
+	
 }
 
 
