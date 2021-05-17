@@ -17,12 +17,16 @@
 #define IN		0
 #define OUT		1
 
-#define A	0
-#define B	1
-#define C	2
-#define D	3
-#define E	4
-#define F	5
+#define A		0
+#define B		1
+#define C		2
+#define D		3
+#define E		4
+#define F		5
+#define COMP	6
+#define OVF		7
+#define CAPT	8
+#define ALL		9
 
 #define SW_OFF	0x00
 #define SW_0	0x01
@@ -57,6 +61,85 @@ int insertBit (int bitValue, bool isHigh)
 		return lowValue;
 	}
 	
+}
+
+
+/*----------------------------------------//
+			  Encode 10 to 16
+//----------------------------------------*/
+
+int EncodeFND(int decimal)
+{
+	int hexadecimal = 0x00;
+	
+	if (decimal >= 0 && decimal <= 9)
+	{
+		hexadecimal = decimal;
+	}
+	
+	if (decimal >= 10 && decimal <= 19)
+	{
+		hexadecimal = decimal + 6;
+	}
+	
+	if (decimal >= 20 && decimal <= 29)
+	{
+		hexadecimal = decimal + 12;
+	}
+	
+	if (decimal >= 30 && decimal <= 39)
+	{
+		hexadecimal = decimal + 18;
+	}
+	
+	if (decimal >= 40 && decimal <= 49)
+	{
+		hexadecimal = decimal + 24;
+	}
+	
+	if (decimal >= 50 && decimal <= 59)
+	{
+		hexadecimal = decimal + 30;
+	}
+	
+	if (decimal >= 60 && decimal <= 69)
+	{
+		hexadecimal = decimal + 36;
+	}
+	
+	if (decimal >= 70 && decimal <= 79)
+	{
+		hexadecimal = decimal + 42;
+	}
+	
+	if (decimal >= 80 && decimal <= 89)
+	{
+		hexadecimal = decimal + 48;
+	}
+	
+	if (decimal >= 90 && decimal <= 99)
+	{
+		hexadecimal = decimal + 54;
+	}
+	
+	return hexadecimal;
+}
+
+
+/*----------------------------------------//
+			Encode 10 to ASKII
+//----------------------------------------*/
+
+int EncodeLCD(int decimal)
+{
+	int ASKII = 0x00;
+	
+	if (decimal >= 0 && decimal <= 9)
+	{
+		ASKII = decimal + 0x30;
+	}
+	
+	return ASKII;
 }
 
 
@@ -149,19 +232,19 @@ void Setting::beginPort (int port, bool isOutput)
 
 void Setting::beginExtended (int extendedIndex)
 {
-	int EIMSKValue = 0x00;
 	
-	for (int i=0; i<=7; i++)
+	EIMSK += insertBit(extendedIndex, HIGH);
+	
+	if (extendedIndex <= 3)
 	{
-		if (extendedIndex == i)
-		{
-			EIMSKValue = insertBit(i, HIGH);
-			
-			EIMSK += EIMSKValue;
-		}
+		EICRA = 0x00;
 	}
 	
-	EICRA = 0x00;
+	else if (extendedIndex >= 4)
+	{
+		EICRB = 0x00;
+	}
+	
 }
 
 
@@ -171,6 +254,104 @@ void Setting::beginExtended (int extendedIndex)
 
 void Setting::beginTimer (int timerIndex, int timerMode)
 {
+	
+	switch (timerIndex)
+	{
+		// TIMER INTERRUPT 0, 2 (8 BIT)
+		case 0:
+			if (timerMode == OVF)
+			{
+				TIMSK += insertBit(0, HIGH);
+				
+				TCCR0 = 0x07;		// 1024, Normal Mode
+				TCNT0 = 0x00;		// Start Counting 0x00
+			}
+			
+			else if (timerMode == COMP)
+			{
+				TIMSK += insertBit(1, HIGH);
+				
+				TCCR0 = 0x0F;		// 1024, CTC Mode
+				TCNT0 = 0x00;		// Start Counting 0x00
+				OCR0 = 0xFF;		// Compare with 0xFF
+			}
+			
+			break;
+		
+		case 2:
+			if (timerMode == OVF)
+			{
+				TIMSK += insertBit(6, HIGH);
+				
+				TCCR2 = 0x05;		// 1024, Normal Mode
+				TCNT2 = 0x00;		// Start Counting 0x00
+			}
+			
+			else if (timerMode == COMP)
+			{
+				TIMSK += insertBit(7, HIGH);
+				
+				TCCR2 = 0x0D;		// 1024, CTC Mode
+				TCNT2 = 0x00;		// Start Counting 0x00
+				OCR2 = 0xFF;		// Compare with 0xFF
+			}
+			
+			break;
+		
+		// TIMER INTERRUPT 1, 3 (16 BIT)
+		case 1:
+			if (timerMode == OVF)
+			{
+				TIMSK += insertBit(2, HIGH);
+				
+				TCCR1A = 0x00;
+				TCCR1B = 0x05;		// 1024, Normal Mode
+				TCNT1H = 0x00;
+				TCNT1L = 0x00;		// Start Counting 0x0000
+			}
+			
+			else if (timerMode == COMP)
+			{
+				TIMSK += insertBit(4, HIGH);
+				
+				TCCR1A = 0x00;
+				TCCR1B = 0x0D;		// 1024, CTC Mode
+				TCNT1H = 0x00;
+				TCNT1L = 0x00;		// Start Counting 0x0000
+				OCR1AH = 0x3D;
+				OCR1AL = 0x09;		// Compare with 0x3D09
+			}
+			
+			break;
+		
+		case 3:
+			if (timerMode == OVF)
+			{
+				ETIMSK += insertBit(2, HIGH);
+				
+				TCCR3A = 0x00;
+				TCCR3B = 0x05;		// 1024, Normal Mode
+				TCNT3H = 0x00;
+				TCNT3L = 0x00;		// Start Counting 0x0000
+			}
+			
+			else if (timerMode == COMP)
+			{
+				ETIMSK += insertBit(4, HIGH);
+				
+				TCCR3A = 0x00;
+				TCCR3B = 0x0D;		// 1024, CTC Mode
+				TCNT3H = 0x00;
+				TCNT3L = 0x00;		// Start Counting 0x0000
+				OCR3AH = 0x3D;
+				OCR3AL = 0x09;		// Compare with 0x3D09
+			}
+			
+			break;
+		
+		default:
+			break;
+	}
 	
 }
 
@@ -191,7 +372,6 @@ private:
 	bool m_isReversal;
 	volatile unsigned int m_newValue;
 	volatile unsigned int m_oldValue;
-	
 
 public:
 	void beginSW (int switchPort, bool isReversal) { m_SwitchPort = switchPort; m_isReversal = isReversal; }
@@ -203,7 +383,7 @@ public:
 
 
 /*----------------------------------------//
-			  Switch Source
+			 Initialize Switch
 //----------------------------------------*/
 
 void SW::initSW (void)
@@ -341,7 +521,7 @@ public:
 	// INFO
 	void setInstruction (int instructionValue);
 	void setData (int dataValue);
-	void writeString (const char *stringValue);
+	void printLCD (const char *stringValue);
 	void changeLine (int lineIndex, int fileIndex);
 	void clearLine (int clearMode);
 	void initLCD (void);
@@ -444,10 +624,10 @@ void LCD::setData (int dataValue)
 
 
 /*----------------------------------------//
-				Write String
+				Print String
 //----------------------------------------*/
 
-void LCD::writeString (const char *stringValue)
+void LCD::printLCD (const char *stringValue)
 {
 	
 	while (*stringValue != '\0')
@@ -493,25 +673,25 @@ void LCD::changeLine (int lineIndex, int fileIndex)
 void LCD::clearLine (int clearMode)
 {
 	
-	if (clearMode == 0)
+	if (clearMode == ALL)
 	{
 		changeLine(1, 1);
-		writeString("                ");
+		printLCD("                ");
 		
 		changeLine(2, 1);
-		writeString("                ");
+		printLCD("                ");
 	}
 	
 	else if (clearMode == 1)
 	{
 		changeLine(1, 1);
-		writeString("                ");
+		printLCD("                ");
 	}
 	
 	else if (clearMode == 2)
 	{
 		changeLine(2, 1);
-		writeString("                ");
+		printLCD("                ");
 	}
 	
 }
