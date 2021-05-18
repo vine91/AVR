@@ -51,7 +51,6 @@ int main (void)
 	
 	sei();
 	
-	
     while (true) 
     {
 		_delay_ms(2);
@@ -135,11 +134,11 @@ ISR(TIMER2_OVF_vect)
 					lcd.printLCD("Set Time");
 					
 					lcd.changeLine(2, 12);
-					lcd.setData(EncodeLCD(i));
-					lcd.setData(EncodeLCD(j));
+					lcd.setData(encodeLCD(i));
+					lcd.setData(encodeLCD(j));
 					lcd.printLCD(":");
-					lcd.setData(EncodeLCD(k));
-					lcd.setData(EncodeLCD(l));
+					lcd.setData(encodeLCD(k));
+					lcd.setData(encodeLCD(l));
 				}
 				
 				break;
@@ -178,11 +177,11 @@ ISR(TIMER2_OVF_vect)
 					}
 					
 					lcd.changeLine(2, 12);
-					lcd.setData(EncodeLCD(i));
-					lcd.setData(EncodeLCD(j));
+					lcd.setData(encodeLCD(i));
+					lcd.setData(encodeLCD(j));
 					lcd.printLCD(":");
-					lcd.setData(EncodeLCD(k));
-					lcd.setData(EncodeLCD(l));
+					lcd.setData(encodeLCD(k));
+					lcd.setData(encodeLCD(l));
 				}
 				
 				break;
@@ -201,11 +200,11 @@ ISR(TIMER2_OVF_vect)
 					}
 					
 					lcd.changeLine(2, 12);
-					lcd.setData(EncodeLCD(i));
-					lcd.setData(EncodeLCD(j));
+					lcd.setData(encodeLCD(i));
+					lcd.setData(encodeLCD(j));
 					lcd.printLCD(":");
-					lcd.setData(EncodeLCD(k));
-					lcd.setData(EncodeLCD(l));
+					lcd.setData(encodeLCD(k));
+					lcd.setData(encodeLCD(l));
 				}
 				
 				break;
@@ -224,11 +223,11 @@ ISR(TIMER2_OVF_vect)
 					}
 					
 					lcd.changeLine(2, 12);
-					lcd.setData(EncodeLCD(i));
-					lcd.setData(EncodeLCD(j));
+					lcd.setData(encodeLCD(i));
+					lcd.setData(encodeLCD(j));
 					lcd.printLCD(":");
-					lcd.setData(EncodeLCD(k));
-					lcd.setData(EncodeLCD(l));
+					lcd.setData(encodeLCD(k));
+					lcd.setData(encodeLCD(l));
 				}
 				
 				break;
@@ -247,11 +246,11 @@ ISR(TIMER2_OVF_vect)
 					}
 					
 					lcd.changeLine(2, 12);
-					lcd.setData(EncodeLCD(i));
-					lcd.setData(EncodeLCD(j));
+					lcd.setData(encodeLCD(i));
+					lcd.setData(encodeLCD(j));
 					lcd.printLCD(":");
-					lcd.setData(EncodeLCD(k));
-					lcd.setData(EncodeLCD(l));
+					lcd.setData(encodeLCD(k));
+					lcd.setData(encodeLCD(l));
 				}
 				
 				break;
@@ -272,11 +271,11 @@ ISR(TIMER1_COMPA_vect)
 			
 			lcd.changeLine(2, 12);
 			
-			lcd.setData(EncodeLCD(i));
-			lcd.setData(EncodeLCD(j));
+			lcd.setData(encodeLCD(i));
+			lcd.setData(encodeLCD(j));
 			lcd.printLCD(":");
-			lcd.setData(EncodeLCD(k));
-			lcd.setData(EncodeLCD(l));
+			lcd.setData(encodeLCD(k));
+			lcd.setData(encodeLCD(l));
 			
 			l--;
 			

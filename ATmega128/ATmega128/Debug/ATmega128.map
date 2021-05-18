@@ -3,21 +3,25 @@ Archive member included to satisfy reference by file (symbol)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
                               C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o (exit)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_copy_data.o)
-                              main.o (__do_copy_data)
+                              Counter_System.o (__do_copy_data)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_clear_bss.o)
-                              main.o (__do_clear_bss)
+                              Counter_System.o (__do_clear_bss)
 
 Discarded input sections
 
  .data          0x00000000        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o
  .bss           0x00000000        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o
- .text          0x00000000        0x0 main.o
- .data          0x00000000        0x0 main.o
- .bss           0x00000000        0x0 main.o
- .text._Z9EncodeFNDi
-                0x00000000       0xb4 main.o
+ .text          0x00000000        0x0 Counter_System.o
+ .data          0x00000000        0x0 Counter_System.o
+ .bss           0x00000000        0x0 Counter_System.o
+ .text._Z9encodeFNDi
+                0x00000000       0xb4 Counter_System.o
  .text._ZN7Setting13beginExtendedEi
-                0x00000000       0x2a main.o
+                0x00000000       0x2a Counter_System.o
+ .text._ZN5Motor10attachPortEi
+                0x00000000       0x40 Counter_System.o
+ .text._ZN5Motor8setStartEb
+                0x00000000       0x5e Counter_System.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
@@ -83,7 +87,7 @@ Linker script and memory map
 
 Address of section .data set to 0x800100
 LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o
-LOAD main.o
+LOAD Counter_System.o
 START GROUP
 LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr51\libm.a
 END GROUP
@@ -290,48 +294,48 @@ END GROUP
                 0x000000c8                . = ALIGN (0x2)
  *(.text.*)
  .text._Z9insertBitib
-                0x000000c8       0x1e main.o
+                0x000000c8       0x1e Counter_System.o
                 0x000000c8                _Z9insertBitib
- .text._Z9EncodeLCDi
-                0x000000e6       0x10 main.o
-                0x000000e6                _Z9EncodeLCDi
+ .text._Z9encodeLCDi
+                0x000000e6       0x10 Counter_System.o
+                0x000000e6                _Z9encodeLCDi
  .text._ZN7Setting9beginPortEib
-                0x000000f6       0x52 main.o
+                0x000000f6       0x52 Counter_System.o
                 0x000000f6                _ZN7Setting9beginPortEib
  .text._ZN7Setting10beginTimerEii
-                0x00000148      0x148 main.o
+                0x00000148      0x148 Counter_System.o
                 0x00000148                _ZN7Setting10beginTimerEii
  .text._ZN2SW6initSWEv
-                0x00000290       0xa2 main.o
+                0x00000290       0xa2 Counter_System.o
                 0x00000290                _ZN2SW6initSWEv
  .text._ZN3LCD10attachPortEi
-                0x00000332       0x40 main.o
+                0x00000332       0x40 Counter_System.o
                 0x00000332                _ZN3LCD10attachPortEi
  .text._ZN3LCD14setInstructionEi
-                0x00000372       0xb2 main.o
+                0x00000372       0xb2 Counter_System.o
                 0x00000372                _ZN3LCD14setInstructionEi
  .text._ZN3LCD7setDataEi
-                0x00000424       0xc2 main.o
+                0x00000424       0xc2 Counter_System.o
                 0x00000424                _ZN3LCD7setDataEi
  .text._ZN3LCD8printLCDEPKc
-                0x000004e6       0x26 main.o
+                0x000004e6       0x26 Counter_System.o
                 0x000004e6                _ZN3LCD8printLCDEPKc
  .text._ZN3LCD10changeLineEii
-                0x0000050c       0x6c main.o
+                0x0000050c       0x6c Counter_System.o
                 0x0000050c                _ZN3LCD10changeLineEii
  .text._ZN3LCD9clearLineEi
-                0x00000578       0x6c main.o
+                0x00000578       0x6c Counter_System.o
                 0x00000578                _ZN3LCD9clearLineEi
  .text._ZN3LCD7initLCDEv
-                0x000005e4       0x2a main.o
+                0x000005e4       0x2a Counter_System.o
                 0x000005e4                _ZN3LCD7initLCDEv
- .text.main     0x0000060e       0xb0 main.o
+ .text.main     0x0000060e       0xb0 Counter_System.o
                 0x0000060e                main
  .text.__vector_10
-                0x000006be      0x540 main.o
+                0x000006be      0x540 Counter_System.o
                 0x000006be                __vector_10
  .text.__vector_12
-                0x00000bfe      0x1c2 main.o
+                0x00000bfe      0x1c2 Counter_System.o
                 0x00000bfe                __vector_12
                 0x00000dc0                . = ALIGN (0x2)
  *(.fini9)
@@ -364,15 +368,15 @@ END GROUP
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
- .data.Pause    0x00800100        0x2 main.o
+ .data.Pause    0x00800100        0x2 Counter_System.o
                 0x00800100                Pause
- .data.Title    0x00800102        0x2 main.o
+ .data.Title    0x00800102        0x2 Counter_System.o
                 0x00800102                Title
  *(.gnu.linkonce.d*)
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x00800104       0x74 main.o
+                0x00800104       0x74 Counter_System.o
  *(.gnu.linkonce.r*)
                 0x00800178                . = ALIGN (0x2)
                 0x00800178                _edata = .
@@ -382,23 +386,23 @@ END GROUP
                 0x00800178                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
- .bss.l         0x00800178        0x2 main.o
+ .bss.l         0x00800178        0x2 Counter_System.o
                 0x00800178                l
- .bss.k         0x0080017a        0x2 main.o
+ .bss.k         0x0080017a        0x2 Counter_System.o
                 0x0080017a                k
- .bss.j         0x0080017c        0x2 main.o
+ .bss.j         0x0080017c        0x2 Counter_System.o
                 0x0080017c                j
- .bss.i         0x0080017e        0x2 main.o
+ .bss.i         0x0080017e        0x2 Counter_System.o
                 0x0080017e                i
- .bss.Setted    0x00800180        0x2 main.o
+ .bss.Setted    0x00800180        0x2 Counter_System.o
                 0x00800180                Setted
- .bss.Set       0x00800182        0x2 main.o
+ .bss.Set       0x00800182        0x2 Counter_System.o
                 0x00800182                Set
- .bss.Start     0x00800184        0x2 main.o
+ .bss.Start     0x00800184        0x2 Counter_System.o
                 0x00800184                Start
- .bss.lcd       0x00800186        0x3 main.o
+ .bss.lcd       0x00800186        0x3 Counter_System.o
                 0x00800186                lcd
- .bss.sw        0x00800189        0x9 main.o
+ .bss.sw        0x00800189        0x9 Counter_System.o
                 0x00800189                sw
  *(COMMON)
                 0x00800192                PROVIDE (__bss_end, .)
@@ -451,7 +455,7 @@ END GROUP
 
 .comment        0x00000000       0x30
  *(.comment)
- .comment       0x00000000       0x30 main.o
+ .comment       0x00000000       0x30 Counter_System.o
                                  0x31 (size before relaxing)
 
 .note.gnu.avr.deviceinfo
@@ -474,42 +478,42 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0xa0
+.debug_aranges  0x00000000       0xb0
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0xa0 main.o
+                0x00000000       0xb0 Counter_System.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x236d
+.debug_info     0x00000000     0x2550
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x780 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o
- .debug_info    0x00000780     0x1bed main.o
+ .debug_info    0x00000780     0x1dd0 Counter_System.o
 
-.debug_abbrev   0x00000000      0xa82
+.debug_abbrev   0x00000000      0xa91
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x718 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o
- .debug_abbrev  0x00000718      0x36a main.o
+ .debug_abbrev  0x00000718      0x379 Counter_System.o
 
-.debug_line     0x00000000      0xbdf
+.debug_line     0x00000000      0xc6b
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x16a C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o
- .debug_line    0x0000016a      0xa75 main.o
+ .debug_line    0x0000016a      0xb01 Counter_System.o
 
-.debug_frame    0x00000000      0x284
+.debug_frame    0x00000000      0x2b8
  *(.debug_frame)
- .debug_frame   0x00000000      0x284 main.o
+ .debug_frame   0x00000000      0x2b8 Counter_System.o
 
-.debug_str      0x00000000      0x7a0
+.debug_str      0x00000000      0x857
  *(.debug_str)
  .debug_str     0x00000000      0x27d C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o
- .debug_str     0x0000027d      0x523 main.o
-                                0x582 (size before relaxing)
+ .debug_str     0x0000027d      0x5da Counter_System.o
+                                0x645 (size before relaxing)
 
-.debug_loc      0x00000000     0x1048
+.debug_loc      0x00000000     0x1129
  *(.debug_loc)
- .debug_loc     0x00000000     0x1048 main.o
+ .debug_loc     0x00000000     0x1129 Counter_System.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -529,9 +533,9 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0x90
+.debug_ranges   0x00000000       0xa0
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x90 main.o
+ .debug_ranges  0x00000000       0xa0 Counter_System.o
 
 .debug_macro
  *(.debug_macro)

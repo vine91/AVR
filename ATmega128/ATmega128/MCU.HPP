@@ -16,6 +16,8 @@
 #define HIGH	1
 #define IN		0
 #define OUT		1
+#define CCW		0
+#define CW		1
 
 #define A		0
 #define B		1
@@ -68,7 +70,7 @@ int insertBit (int bitValue, bool isHigh)
 			  Encode 10 to 16
 //----------------------------------------*/
 
-int EncodeFND(int decimal)
+int encodeFND(int decimal)
 {
 	int hexadecimal = 0x00;
 	
@@ -130,7 +132,7 @@ int EncodeFND(int decimal)
 			Encode 10 to ASKII
 //----------------------------------------*/
 
-int EncodeLCD(int decimal)
+int encodeLCD(int decimal)
 {
 	int ASKII = 0x00;
 	
@@ -708,6 +710,129 @@ void LCD::initLCD (void)
 	setInstruction(0x28);			// SET FUNCTION		[ DL = 4 Bit		N = 2 LINE		F = 5 x 7	]
 	setInstruction(0x01);			// CLEAR DISPLAY ALL
 }
+
+
+
+
+/*
+//==================================================================================================
+								Interface Connector Pin Setting
+====================================================================================================
+	  Pin No.	 |		Symbol		|							 Setting
+   P    S    F   |					|
+----------------------------------------------------------------------------------------------------
+   7    2   11   |		 Vcc		|			Supply voltage terminal for Logic
+   8    6   15   |		 Vs			|			Supply voltage terminal for Motor Driver
+   4    8    5   |		 Vref		|			Supply voltage terminal for Control
+   1    5    1   |		 GND		|			Ground
+   5    9    7   |		 IN1		|			Input 1
+   6    1    9   |		 IN2		|			Input 2
+   2    7    4   |		 OUT1		|			Output 1
+  10    3   13   |		 OUT2		|			Output 2
+--------------------------------------------------------------------------------------------------//
+
+
+//==================================================================================================
+										Mode Setting
+====================================================================================================
+	  Input		 |		Output		|							  Mode
+   IN1	   IN2	 |	 OUT1	 OUT2	|
+----------------------------------------------------------------------------------------------------
+    0	    0	 |	   0	   0	|							  Stop
+    1	    0	 |	   H	   L	|							Clock Wise
+    0	    1	 |	   L	   H	|						Counter Clock Wise
+    1	    1	 |	   L	   L	|							  Break
+--------------------------------------------------------------------------------------------------//
+*/
+
+
+/*
+//==========================================
+			  CLASS - DC Motor
+==========================================//
+*/
+
+class Motor
+{
+
+private:
+	int m_MotorPort;
+
+public:
+	void beginMotor (int motorPort) { m_MotorPort = motorPort; }
+	void attachPort (int portValue);
+	void setStop (void) { attachPort( insertBit(0, HIGH) | insertBit(1, HIGH) ); }
+	void setBreak (void) { attachPort( insertBit(0, LOW) | insertBit(1, LOW) ); }
+	void setStart (bool isClockWise);
+
+};
+
+
+/*----------------------------------------//
+			Attach DC Motor Port
+//----------------------------------------*/
+
+void Motor::attachPort (int portValue)
+{
+	
+	switch (m_MotorPort)
+	{
+		// PORTA
+		case A:
+			PORTA = portValue;
+			break;
+		
+		// PORTB
+		case B:
+			PORTB = portValue;
+			break;
+		
+		// PORTC
+		case C:
+			PORTC = portValue;
+			break;
+		
+		// PORTD
+		case D:
+			PORTD = portValue;
+			break;
+		
+		// PORTE
+		case E:
+			PORTE = portValue;
+			break;
+		
+		// PORTF
+		case F:
+			PORTF = portValue;
+			break;
+		
+		default:
+			break;
+	}
+	
+}
+
+
+/*----------------------------------------//
+			Set Start DC Motor
+//----------------------------------------*/
+
+void Motor::setStart (bool isClockWise)
+{
+	
+	if (isClockWise == true)
+	{
+		attachPort( insertBit(0, HIGH) | insertBit(1, LOW) );
+	}
+	
+	else
+	{
+		attachPort( insertBit(0, LOW) | insertBit(1, HIGH) );
+	}
+	
+}
+
 
 
 

@@ -13,21 +13,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000f00  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000000a0  00000000  00000000  00000f3c  2**0
+  5 .debug_aranges 000000b0  00000000  00000000  00000f3c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000236d  00000000  00000000  00000fdc  2**0
+  6 .debug_info   00002550  00000000  00000000  00000fec  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000a82  00000000  00000000  00003349  2**0
+  7 .debug_abbrev 00000a91  00000000  00000000  0000353c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000bdf  00000000  00000000  00003dcb  2**0
+  8 .debug_line   00000c6b  00000000  00000000  00003fcd  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000284  00000000  00000000  000049ac  2**2
+  9 .debug_frame  000002b8  00000000  00000000  00004c38  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000007a0  00000000  00000000  00004c30  2**0
+ 10 .debug_str    00000857  00000000  00000000  00004ef0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00001048  00000000  00000000  000053d0  2**0
+ 11 .debug_loc    00001129  00000000  00000000  00005747  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000090  00000000  00000000  00006418  2**0
+ 12 .debug_ranges 000000a0  00000000  00000000  00006870  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -147,9 +147,9 @@ Disassembly of section .text:
   c6:	9c cf       	rjmp	.-200    	; 0x0 <__vectors>
 
 000000c8 <_Z9insertBitib>:
-	else if (extendedIndex >= 4)
+	else
 	{
-		EICRB = 0x00;
+		attachPort( insertBit(0, LOW) | insertBit(1, HIGH) );
 	}
 	
 }
@@ -169,10 +169,10 @@ Disassembly of section .text:
   e2:	90 e0       	ldi	r25, 0x00	; 0
   e4:	08 95       	ret
 
-000000e6 <_Z9EncodeLCDi>:
+000000e6 <_Z9encodeLCDi>:
   e6:	8a 30       	cpi	r24, 0x0A	; 10
   e8:	91 05       	cpc	r25, r1
-  ea:	10 f4       	brcc	.+4      	; 0xf0 <_Z9EncodeLCDi+0xa>
+  ea:	10 f4       	brcc	.+4      	; 0xf0 <_Z9encodeLCDi+0xa>
   ec:	c0 96       	adiw	r24, 0x30	; 48
   ee:	08 95       	ret
   f0:	80 e0       	ldi	r24, 0x00	; 0
@@ -221,12 +221,6 @@ Disassembly of section .text:
  146:	08 95       	ret
 
 00000148 <_ZN7Setting10beginTimerEii>:
-//----------------------------------------*/
-
-void Setting::beginTimer (int timerIndex, int timerMode)
-{
-	
-	switch (timerIndex)
  148:	81 30       	cpi	r24, 0x01	; 1
  14a:	91 05       	cpc	r25, r1
  14c:	09 f4       	brne	.+2      	; 0x150 <_ZN7Setting10beginTimerEii+0x8>
@@ -242,15 +236,9 @@ void Setting::beginTimer (int timerIndex, int timerMode)
  160:	09 f4       	brne	.+2      	; 0x164 <_ZN7Setting10beginTimerEii+0x1c>
  162:	64 c0       	rjmp	.+200    	; 0x22c <_ZN7Setting10beginTimerEii+0xe4>
  164:	08 95       	ret
-	{
-		// TIMER INTERRUPT 0, 2 (8 BIT)
-		case 0:
-			if (timerMode == OVF)
  166:	67 30       	cpi	r22, 0x07	; 7
  168:	71 05       	cpc	r23, r1
  16a:	59 f4       	brne	.+22     	; 0x182 <_ZN7Setting10beginTimerEii+0x3a>
-			{
-				TIMSK += insertBit(0, HIGH);
  16c:	61 e0       	ldi	r22, 0x01	; 1
  16e:	80 e0       	ldi	r24, 0x00	; 0
  170:	90 e0       	ldi	r25, 0x00	; 0
@@ -258,22 +246,14 @@ void Setting::beginTimer (int timerIndex, int timerMode)
  174:	97 b7       	in	r25, 0x37	; 55
  176:	89 0f       	add	r24, r25
  178:	87 bf       	out	0x37, r24	; 55
-				
-				TCCR0 = 0x07;		// 1024, Normal Mode
  17a:	87 e0       	ldi	r24, 0x07	; 7
  17c:	83 bf       	out	0x33, r24	; 51
-				TCNT0 = 0x00;		// Start Counting 0x00
  17e:	12 be       	out	0x32, r1	; 50
  180:	08 95       	ret
-			}
-			
-			else if (timerMode == COMP)
  182:	66 30       	cpi	r22, 0x06	; 6
  184:	71 05       	cpc	r23, r1
  186:	09 f0       	breq	.+2      	; 0x18a <_ZN7Setting10beginTimerEii+0x42>
  188:	82 c0       	rjmp	.+260    	; 0x28e <_ZN7Setting10beginTimerEii+0x146>
-			{
-				TIMSK += insertBit(1, HIGH);
  18a:	61 e0       	ldi	r22, 0x01	; 1
  18c:	81 e0       	ldi	r24, 0x01	; 1
  18e:	90 e0       	ldi	r25, 0x00	; 0
@@ -281,27 +261,15 @@ void Setting::beginTimer (int timerIndex, int timerMode)
  192:	97 b7       	in	r25, 0x37	; 55
  194:	89 0f       	add	r24, r25
  196:	87 bf       	out	0x37, r24	; 55
-				
-				TCCR0 = 0x0F;		// 1024, CTC Mode
  198:	8f e0       	ldi	r24, 0x0F	; 15
  19a:	83 bf       	out	0x33, r24	; 51
-				TCNT0 = 0x00;		// Start Counting 0x00
  19c:	12 be       	out	0x32, r1	; 50
-				OCR0 = 0xFF;		// Compare with 0xFF
  19e:	8f ef       	ldi	r24, 0xFF	; 255
  1a0:	81 bf       	out	0x31, r24	; 49
  1a2:	08 95       	ret
-			}
-			
-			break;
-		
-		case 2:
-			if (timerMode == OVF)
  1a4:	67 30       	cpi	r22, 0x07	; 7
  1a6:	71 05       	cpc	r23, r1
  1a8:	59 f4       	brne	.+22     	; 0x1c0 <_ZN7Setting10beginTimerEii+0x78>
-			{
-				TIMSK += insertBit(6, HIGH);
  1aa:	61 e0       	ldi	r22, 0x01	; 1
  1ac:	86 e0       	ldi	r24, 0x06	; 6
  1ae:	90 e0       	ldi	r25, 0x00	; 0
@@ -309,22 +277,14 @@ void Setting::beginTimer (int timerIndex, int timerMode)
  1b2:	97 b7       	in	r25, 0x37	; 55
  1b4:	89 0f       	add	r24, r25
  1b6:	87 bf       	out	0x37, r24	; 55
-				
-				TCCR2 = 0x05;		// 1024, Normal Mode
  1b8:	85 e0       	ldi	r24, 0x05	; 5
  1ba:	85 bd       	out	0x25, r24	; 37
-				TCNT2 = 0x00;		// Start Counting 0x00
  1bc:	14 bc       	out	0x24, r1	; 36
  1be:	08 95       	ret
-			}
-			
-			else if (timerMode == COMP)
  1c0:	66 30       	cpi	r22, 0x06	; 6
  1c2:	71 05       	cpc	r23, r1
  1c4:	09 f0       	breq	.+2      	; 0x1c8 <_ZN7Setting10beginTimerEii+0x80>
  1c6:	63 c0       	rjmp	.+198    	; 0x28e <_ZN7Setting10beginTimerEii+0x146>
-			{
-				TIMSK += insertBit(7, HIGH);
  1c8:	61 e0       	ldi	r22, 0x01	; 1
  1ca:	87 e0       	ldi	r24, 0x07	; 7
  1cc:	90 e0       	ldi	r25, 0x00	; 0
@@ -332,26 +292,14 @@ void Setting::beginTimer (int timerIndex, int timerMode)
  1d0:	97 b7       	in	r25, 0x37	; 55
  1d2:	89 0f       	add	r24, r25
  1d4:	87 bf       	out	0x37, r24	; 55
-				
-				TCCR2 = 0x0D;		// 1024, CTC Mode
  1d6:	8d e0       	ldi	r24, 0x0D	; 13
  1d8:	85 bd       	out	0x25, r24	; 37
-				TCNT2 = 0x00;		// Start Counting 0x00
  1da:	14 bc       	out	0x24, r1	; 36
-				OCR2 = 0xFF;		// Compare with 0xFF
  1dc:	8f ef       	ldi	r24, 0xFF	; 255
  1de:	83 bd       	out	0x23, r24	; 35
  1e0:	08 95       	ret
-			
-			break;
-		
-		// TIMER INTERRUPT 1, 3 (16 BIT)
-		case 1:
-			if (timerMode == OVF)
  1e2:	67 30       	cpi	r22, 0x07	; 7
  1e4:	71 05       	cpc	r23, r1
-			{
-				TIMSK += insertBit(2, HIGH);
  1e6:	69 f4       	brne	.+26     	; 0x202 <_ZN7Setting10beginTimerEii+0xba>
  1e8:	61 e0       	ldi	r22, 0x01	; 1
  1ea:	82 e0       	ldi	r24, 0x02	; 2
@@ -360,25 +308,15 @@ void Setting::beginTimer (int timerIndex, int timerMode)
  1f0:	97 b7       	in	r25, 0x37	; 55
  1f2:	89 0f       	add	r24, r25
  1f4:	87 bf       	out	0x37, r24	; 55
-				
-				TCCR1A = 0x00;
  1f6:	1f bc       	out	0x2f, r1	; 47
-				TCCR1B = 0x05;		// 1024, Normal Mode
  1f8:	85 e0       	ldi	r24, 0x05	; 5
  1fa:	8e bd       	out	0x2e, r24	; 46
-				TCNT1H = 0x00;
  1fc:	1d bc       	out	0x2d, r1	; 45
-				TCNT1L = 0x00;		// Start Counting 0x0000
  1fe:	1c bc       	out	0x2c, r1	; 44
  200:	08 95       	ret
-			}
-			
-			else if (timerMode == COMP)
  202:	66 30       	cpi	r22, 0x06	; 6
  204:	71 05       	cpc	r23, r1
  206:	09 f0       	breq	.+2      	; 0x20a <_ZN7Setting10beginTimerEii+0xc2>
-			{
-				TIMSK += insertBit(4, HIGH);
  208:	42 c0       	rjmp	.+132    	; 0x28e <_ZN7Setting10beginTimerEii+0x146>
  20a:	61 e0       	ldi	r22, 0x01	; 1
  20c:	84 e0       	ldi	r24, 0x04	; 4
@@ -387,33 +325,18 @@ void Setting::beginTimer (int timerIndex, int timerMode)
  212:	97 b7       	in	r25, 0x37	; 55
  214:	89 0f       	add	r24, r25
  216:	87 bf       	out	0x37, r24	; 55
-				
-				TCCR1A = 0x00;
  218:	1f bc       	out	0x2f, r1	; 47
-				TCCR1B = 0x0D;		// 1024, CTC Mode
  21a:	8d e0       	ldi	r24, 0x0D	; 13
  21c:	8e bd       	out	0x2e, r24	; 46
-				TCNT1H = 0x00;
  21e:	1d bc       	out	0x2d, r1	; 45
-				TCNT1L = 0x00;		// Start Counting 0x0000
  220:	1c bc       	out	0x2c, r1	; 44
-				OCR1AH = 0x3D;
  222:	8d e3       	ldi	r24, 0x3D	; 61
  224:	8b bd       	out	0x2b, r24	; 43
-				OCR1AL = 0x09;		// Compare with 0x3D09
  226:	89 e0       	ldi	r24, 0x09	; 9
  228:	8a bd       	out	0x2a, r24	; 42
  22a:	08 95       	ret
-			}
-			
-			break;
-		
-		case 3:
-			if (timerMode == OVF)
  22c:	67 30       	cpi	r22, 0x07	; 7
  22e:	71 05       	cpc	r23, r1
-			{
-				ETIMSK += insertBit(2, HIGH);
  230:	99 f4       	brne	.+38     	; 0x258 <_ZN7Setting10beginTimerEii+0x110>
  232:	61 e0       	ldi	r22, 0x01	; 1
  234:	82 e0       	ldi	r24, 0x02	; 2
@@ -424,24 +347,14 @@ void Setting::beginTimer (int timerIndex, int timerMode)
  23e:	90 81       	ld	r25, Z
  240:	89 0f       	add	r24, r25
  242:	80 83       	st	Z, r24
-				
-				TCCR3A = 0x00;
  244:	10 92 8b 00 	sts	0x008B, r1	; 0x80008b <__TEXT_REGION_LENGTH__+0x7e008b>
-				TCCR3B = 0x05;		// 1024, Normal Mode
  248:	85 e0       	ldi	r24, 0x05	; 5
  24a:	80 93 8a 00 	sts	0x008A, r24	; 0x80008a <__TEXT_REGION_LENGTH__+0x7e008a>
-				TCNT3H = 0x00;
  24e:	10 92 89 00 	sts	0x0089, r1	; 0x800089 <__TEXT_REGION_LENGTH__+0x7e0089>
-				TCNT3L = 0x00;		// Start Counting 0x0000
  252:	10 92 88 00 	sts	0x0088, r1	; 0x800088 <__TEXT_REGION_LENGTH__+0x7e0088>
-			}
-			
-			else if (timerMode == COMP)
  256:	08 95       	ret
  258:	66 30       	cpi	r22, 0x06	; 6
  25a:	71 05       	cpc	r23, r1
-			{
-				ETIMSK += insertBit(4, HIGH);
  25c:	c1 f4       	brne	.+48     	; 0x28e <_ZN7Setting10beginTimerEii+0x146>
  25e:	61 e0       	ldi	r22, 0x01	; 1
  260:	84 e0       	ldi	r24, 0x04	; 4
@@ -452,34 +365,19 @@ void Setting::beginTimer (int timerIndex, int timerMode)
  26a:	90 81       	ld	r25, Z
  26c:	89 0f       	add	r24, r25
  26e:	80 83       	st	Z, r24
-				
-				TCCR3A = 0x00;
  270:	10 92 8b 00 	sts	0x008B, r1	; 0x80008b <__TEXT_REGION_LENGTH__+0x7e008b>
-				TCCR3B = 0x0D;		// 1024, CTC Mode
  274:	8d e0       	ldi	r24, 0x0D	; 13
  276:	80 93 8a 00 	sts	0x008A, r24	; 0x80008a <__TEXT_REGION_LENGTH__+0x7e008a>
-				TCNT3H = 0x00;
  27a:	10 92 89 00 	sts	0x0089, r1	; 0x800089 <__TEXT_REGION_LENGTH__+0x7e0089>
-				TCNT3L = 0x00;		// Start Counting 0x0000
  27e:	10 92 88 00 	sts	0x0088, r1	; 0x800088 <__TEXT_REGION_LENGTH__+0x7e0088>
-				OCR3AH = 0x3D;
  282:	8d e3       	ldi	r24, 0x3D	; 61
  284:	80 93 87 00 	sts	0x0087, r24	; 0x800087 <__TEXT_REGION_LENGTH__+0x7e0087>
-				OCR3AL = 0x09;		// Compare with 0x3D09
  288:	89 e0       	ldi	r24, 0x09	; 9
  28a:	80 93 86 00 	sts	0x0086, r24	; 0x800086 <__TEXT_REGION_LENGTH__+0x7e0086>
  28e:	08 95       	ret
 
 00000290 <_ZN2SW6initSWEv>:
-/*----------------------------------------//
-			 Initialize Switch
-//----------------------------------------*/
-
-void SW::initSW (void)
-{
  290:	fc 01       	movw	r30, r24
-	
-	switch (m_SwitchPort)
  292:	80 81       	ld	r24, Z
  294:	91 81       	ldd	r25, Z+1	; 0x01
  296:	82 30       	cpi	r24, 0x02	; 2
@@ -498,75 +396,38 @@ void SW::initSW (void)
  2b0:	05 97       	sbiw	r24, 0x05	; 5
  2b2:	d1 f0       	breq	.+52     	; 0x2e8 <_ZN2SW6initSWEv+0x58>
  2b4:	1d c0       	rjmp	.+58     	; 0x2f0 <_ZN2SW6initSWEv+0x60>
-	{
-		// PORTA
-		case A:
-			m_newValue = PINA;
  2b6:	89 b3       	in	r24, 0x19	; 25
  2b8:	90 e0       	ldi	r25, 0x00	; 0
  2ba:	94 83       	std	Z+4, r25	; 0x04
  2bc:	83 83       	std	Z+3, r24	; 0x03
-			break;
  2be:	18 c0       	rjmp	.+48     	; 0x2f0 <_ZN2SW6initSWEv+0x60>
-		
-		// PORTB
-		case B:
-			m_newValue = PINB;
  2c0:	86 b3       	in	r24, 0x16	; 22
  2c2:	90 e0       	ldi	r25, 0x00	; 0
  2c4:	94 83       	std	Z+4, r25	; 0x04
  2c6:	83 83       	std	Z+3, r24	; 0x03
-			break;
  2c8:	13 c0       	rjmp	.+38     	; 0x2f0 <_ZN2SW6initSWEv+0x60>
-		
-		// PORTC
-		case C:
-			m_newValue = PINC;
  2ca:	83 b3       	in	r24, 0x13	; 19
  2cc:	90 e0       	ldi	r25, 0x00	; 0
  2ce:	94 83       	std	Z+4, r25	; 0x04
  2d0:	83 83       	std	Z+3, r24	; 0x03
-			break;
  2d2:	0e c0       	rjmp	.+28     	; 0x2f0 <_ZN2SW6initSWEv+0x60>
-		
-		// PORTD
-		case D:
-			m_newValue = PIND;
  2d4:	80 b3       	in	r24, 0x10	; 16
  2d6:	90 e0       	ldi	r25, 0x00	; 0
  2d8:	94 83       	std	Z+4, r25	; 0x04
  2da:	83 83       	std	Z+3, r24	; 0x03
-			break;
  2dc:	09 c0       	rjmp	.+18     	; 0x2f0 <_ZN2SW6initSWEv+0x60>
-		
-		// PORTE
-		case E:
-			m_newValue = PINE;
  2de:	81 b1       	in	r24, 0x01	; 1
  2e0:	90 e0       	ldi	r25, 0x00	; 0
  2e2:	94 83       	std	Z+4, r25	; 0x04
  2e4:	83 83       	std	Z+3, r24	; 0x03
-			break;
  2e6:	04 c0       	rjmp	.+8      	; 0x2f0 <_ZN2SW6initSWEv+0x60>
-		
-		// PORTF
-		case F:
-			m_newValue = PINF;
  2e8:	80 b1       	in	r24, 0x00	; 0
  2ea:	90 e0       	ldi	r25, 0x00	; 0
  2ec:	94 83       	std	Z+4, r25	; 0x04
  2ee:	83 83       	std	Z+3, r24	; 0x03
-		
-		default:
-			break;
-	}
-	
-	if (m_isReversal == true)
  2f0:	82 81       	ldd	r24, Z+2	; 0x02
  2f2:	88 23       	and	r24, r24
  2f4:	79 f0       	breq	.+30     	; 0x314 <_ZN2SW6initSWEv+0x84>
-	{
-		result = m_oldValue & ~m_newValue;
  2f6:	25 81       	ldd	r18, Z+5	; 0x05
  2f8:	36 81       	ldd	r19, Z+6	; 0x06
  2fa:	83 81       	ldd	r24, Z+3	; 0x03
@@ -577,17 +438,11 @@ void SW::initSW (void)
  304:	93 23       	and	r25, r19
  306:	90 87       	std	Z+8, r25	; 0x08
  308:	87 83       	std	Z+7, r24	; 0x07
-		m_oldValue = m_newValue;
  30a:	83 81       	ldd	r24, Z+3	; 0x03
  30c:	94 81       	ldd	r25, Z+4	; 0x04
  30e:	96 83       	std	Z+6, r25	; 0x06
  310:	85 83       	std	Z+5, r24	; 0x05
  312:	08 95       	ret
-	}
-	
-	else
-	{
-		result = m_oldValue & m_newValue;
  314:	25 81       	ldd	r18, Z+5	; 0x05
  316:	36 81       	ldd	r19, Z+6	; 0x06
  318:	83 81       	ldd	r24, Z+3	; 0x03
@@ -596,7 +451,6 @@ void SW::initSW (void)
  31e:	93 23       	and	r25, r19
  320:	90 87       	std	Z+8, r25	; 0x08
  322:	87 83       	std	Z+7, r24	; 0x07
-		m_oldValue = ~m_newValue;
  324:	83 81       	ldd	r24, Z+3	; 0x03
  326:	94 81       	ldd	r25, Z+4	; 0x04
  328:	80 95       	com	r24
@@ -606,12 +460,6 @@ void SW::initSW (void)
  330:	08 95       	ret
 
 00000332 <_ZN3LCD10attachPortEi>:
-//----------------------------------------*/
-
-void LCD::attachPort (int portValue)
-{
-	
-	switch (m_LCDPort)
  332:	fc 01       	movw	r30, r24
  334:	80 81       	ld	r24, Z
  336:	91 81       	ldd	r25, Z+1	; 0x01
@@ -631,55 +479,20 @@ void LCD::attachPort (int portValue)
  352:	05 97       	sbiw	r24, 0x05	; 5
  354:	59 f0       	breq	.+22     	; 0x36c <_ZN3LCD10attachPortEi+0x3a>
  356:	08 95       	ret
-	{
-		// PORTA
-		case A:
-			PORTA = portValue;
  358:	6b bb       	out	0x1b, r22	; 27
-			break;
  35a:	08 95       	ret
-		
-		// PORTB
-		case B:
-			PORTB = portValue;
  35c:	68 bb       	out	0x18, r22	; 24
-			break;
  35e:	08 95       	ret
-		
-		// PORTC
-		case C:
-			PORTC = portValue;
  360:	65 bb       	out	0x15, r22	; 21
-			break;
  362:	08 95       	ret
-		
-		// PORTD
-		case D:
-			PORTD = portValue;
  364:	62 bb       	out	0x12, r22	; 18
-			break;
  366:	08 95       	ret
-		
-		// PORTE
-		case E:
-			PORTE = portValue;
  368:	63 b9       	out	0x03, r22	; 3
-			break;
  36a:	08 95       	ret
-		
-		// PORTF
-		case F:
-			PORTF = portValue;
  36c:	60 93 62 00 	sts	0x0062, r22	; 0x800062 <__TEXT_REGION_LENGTH__+0x7e0062>
  370:	08 95       	ret
 
 00000372 <_ZN3LCD14setInstructionEi>:
-/*----------------------------------------//
-			 Set Instruction
-//----------------------------------------*/
-
-void LCD::setInstruction (int instructionValue)
-{
  372:	af 92       	push	r10
  374:	bf 92       	push	r11
  376:	cf 92       	push	r12
@@ -692,34 +505,22 @@ void LCD::setInstruction (int instructionValue)
  384:	df 93       	push	r29
  386:	8c 01       	movw	r16, r24
  388:	eb 01       	movw	r28, r22
-	int enableBit = insertBit(7, HIGH);
  38a:	61 e0       	ldi	r22, 0x01	; 1
  38c:	87 e0       	ldi	r24, 0x07	; 7
  38e:	90 e0       	ldi	r25, 0x00	; 0
  390:	9b de       	rcall	.-714    	; 0xc8 <_Z9insertBitib>
  392:	7c 01       	movw	r14, r24
-	int disableBit = insertBit(7, LOW);
  394:	60 e0       	ldi	r22, 0x00	; 0
  396:	87 e0       	ldi	r24, 0x07	; 7
  398:	90 e0       	ldi	r25, 0x00	; 0
  39a:	96 de       	rcall	.-724    	; 0xc8 <_Z9insertBitib>
  39c:	6c 01       	movw	r12, r24
-	#else
-		//round up by default
-		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
-	#endif
-
-	__builtin_avr_delay_cycles(__ticks_dc);
  39e:	8f e3       	ldi	r24, 0x3F	; 63
  3a0:	9f e1       	ldi	r25, 0x1F	; 31
  3a2:	01 97       	sbiw	r24, 0x01	; 1
  3a4:	f1 f7       	brne	.-4      	; 0x3a2 <_ZN3LCD14setInstructionEi+0x30>
  3a6:	00 c0       	rjmp	.+0      	; 0x3a8 <_ZN3LCD14setInstructionEi+0x36>
  3a8:	00 00       	nop
-	
-	_delay_ms(2);
-	
-	attachPort( ((instructionValue >> 4) & 0x0F) | enableBit );
  3aa:	5e 01       	movw	r10, r28
  3ac:	b5 94       	asr	r11
  3ae:	a7 94       	ror	r10
@@ -737,18 +538,10 @@ void LCD::setInstruction (int instructionValue)
  3c6:	7b 29       	or	r23, r11
  3c8:	c8 01       	movw	r24, r16
  3ca:	b3 df       	rcall	.-154    	; 0x332 <_ZN3LCD10attachPortEi>
-	#else
-		//round up by default
-		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
-	#endif
-
-	__builtin_avr_delay_cycles(__ticks_dc);
  3cc:	85 e0       	ldi	r24, 0x05	; 5
  3ce:	8a 95       	dec	r24
  3d0:	f1 f7       	brne	.-4      	; 0x3ce <_ZN3LCD14setInstructionEi+0x5c>
  3d2:	00 00       	nop
-	_delay_us(1);
-	attachPort( ((instructionValue >> 4) & 0x0F) | disableBit );
  3d4:	b6 01       	movw	r22, r12
  3d6:	6a 29       	or	r22, r10
  3d8:	7b 29       	or	r23, r11
@@ -758,10 +551,6 @@ void LCD::setInstruction (int instructionValue)
  3e0:	9a 95       	dec	r25
  3e2:	f1 f7       	brne	.-4      	; 0x3e0 <_ZN3LCD14setInstructionEi+0x6e>
  3e4:	00 00       	nop
-	_delay_us(1);
-	
-	
-	attachPort( (instructionValue & 0x0F) | enableBit );
  3e6:	cf 70       	andi	r28, 0x0F	; 15
  3e8:	dd 27       	eor	r29, r29
  3ea:	b7 01       	movw	r22, r14
@@ -772,8 +561,6 @@ void LCD::setInstruction (int instructionValue)
  3f4:	85 e0       	ldi	r24, 0x05	; 5
  3f6:	8a 95       	dec	r24
  3f8:	f1 f7       	brne	.-4      	; 0x3f6 <_ZN3LCD14setInstructionEi+0x84>
-	_delay_us(1);
-	attachPort( (instructionValue & 0x0F) | disableBit );
  3fa:	00 00       	nop
  3fc:	b6 01       	movw	r22, r12
  3fe:	6c 2b       	or	r22, r28
@@ -784,8 +571,6 @@ void LCD::setInstruction (int instructionValue)
  408:	9a 95       	dec	r25
  40a:	f1 f7       	brne	.-4      	; 0x408 <__LOCK_REGION_LENGTH__+0x8>
  40c:	00 00       	nop
-	_delay_us(1);
-}
  40e:	df 91       	pop	r29
  410:	cf 91       	pop	r28
  412:	1f 91       	pop	r17
@@ -799,12 +584,6 @@ void LCD::setInstruction (int instructionValue)
  422:	08 95       	ret
 
 00000424 <_ZN3LCD7setDataEi>:
-/*----------------------------------------//
-				 Set Data
-//----------------------------------------*/
-
-void LCD::setData (int dataValue)
-{
  424:	af 92       	push	r10
  426:	bf 92       	push	r11
  428:	cf 92       	push	r12
@@ -817,7 +596,6 @@ void LCD::setData (int dataValue)
  436:	df 93       	push	r29
  438:	7c 01       	movw	r14, r24
  43a:	eb 01       	movw	r28, r22
-	int enableBit = insertBit(7, HIGH) | insertBit(5, HIGH);
  43c:	61 e0       	ldi	r22, 0x01	; 1
  43e:	87 e0       	ldi	r24, 0x07	; 7
  440:	90 e0       	ldi	r25, 0x00	; 0
@@ -830,29 +608,18 @@ void LCD::setData (int dataValue)
  44e:	6c 01       	movw	r12, r24
  450:	08 2b       	or	r16, r24
  452:	19 2b       	or	r17, r25
-	int disableBit = insertBit(7, LOW) | insertBit(5, HIGH);
  454:	60 e0       	ldi	r22, 0x00	; 0
  456:	87 e0       	ldi	r24, 0x07	; 7
  458:	90 e0       	ldi	r25, 0x00	; 0
  45a:	36 de       	rcall	.-916    	; 0xc8 <_Z9insertBitib>
  45c:	c8 2a       	or	r12, r24
  45e:	d9 2a       	or	r13, r25
-	#else
-		//round up by default
-		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
-	#endif
-
-	__builtin_avr_delay_cycles(__ticks_dc);
  460:	8f e3       	ldi	r24, 0x3F	; 63
  462:	9f e1       	ldi	r25, 0x1F	; 31
  464:	01 97       	sbiw	r24, 0x01	; 1
  466:	f1 f7       	brne	.-4      	; 0x464 <_ZN3LCD7setDataEi+0x40>
  468:	00 c0       	rjmp	.+0      	; 0x46a <_ZN3LCD7setDataEi+0x46>
  46a:	00 00       	nop
-	
-	_delay_ms(2);
-	
-	attachPort( ((dataValue >> 4) & 0x0F) | enableBit );
  46c:	5e 01       	movw	r10, r28
  46e:	b5 94       	asr	r11
  470:	a7 94       	ror	r10
@@ -870,18 +637,10 @@ void LCD::setData (int dataValue)
  488:	7b 29       	or	r23, r11
  48a:	c7 01       	movw	r24, r14
  48c:	52 df       	rcall	.-348    	; 0x332 <_ZN3LCD10attachPortEi>
-	#else
-		//round up by default
-		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
-	#endif
-
-	__builtin_avr_delay_cycles(__ticks_dc);
  48e:	85 e0       	ldi	r24, 0x05	; 5
  490:	8a 95       	dec	r24
  492:	f1 f7       	brne	.-4      	; 0x490 <_ZN3LCD7setDataEi+0x6c>
  494:	00 00       	nop
-	_delay_us(1);
-	attachPort( ((dataValue >> 4) & 0x0F) | disableBit );
  496:	b6 01       	movw	r22, r12
  498:	6a 29       	or	r22, r10
  49a:	7b 29       	or	r23, r11
@@ -891,10 +650,6 @@ void LCD::setData (int dataValue)
  4a2:	9a 95       	dec	r25
  4a4:	f1 f7       	brne	.-4      	; 0x4a2 <_ZN3LCD7setDataEi+0x7e>
  4a6:	00 00       	nop
-	_delay_us(1);
-	
-	
-	attachPort( (dataValue & 0x0F) | enableBit );
  4a8:	cf 70       	andi	r28, 0x0F	; 15
  4aa:	dd 27       	eor	r29, r29
  4ac:	b8 01       	movw	r22, r16
@@ -905,8 +660,6 @@ void LCD::setData (int dataValue)
  4b6:	85 e0       	ldi	r24, 0x05	; 5
  4b8:	8a 95       	dec	r24
  4ba:	f1 f7       	brne	.-4      	; 0x4b8 <_ZN3LCD7setDataEi+0x94>
-	_delay_us(1);
-	attachPort( (dataValue & 0x0F) | disableBit );
  4bc:	00 00       	nop
  4be:	b6 01       	movw	r22, r12
  4c0:	6c 2b       	or	r22, r28
@@ -917,8 +670,6 @@ void LCD::setData (int dataValue)
  4ca:	9a 95       	dec	r25
  4cc:	f1 f7       	brne	.-4      	; 0x4ca <_ZN3LCD7setDataEi+0xa6>
  4ce:	00 00       	nop
-	_delay_us(1);
-}
  4d0:	df 91       	pop	r29
  4d2:	cf 91       	pop	r28
  4d4:	1f 91       	pop	r17
@@ -932,43 +683,20 @@ void LCD::setData (int dataValue)
  4e4:	08 95       	ret
 
 000004e6 <_ZN3LCD8printLCDEPKc>:
-/*----------------------------------------//
-				Print String
-//----------------------------------------*/
-
-void LCD::printLCD (const char *stringValue)
-{
  4e6:	0f 93       	push	r16
  4e8:	1f 93       	push	r17
  4ea:	cf 93       	push	r28
  4ec:	df 93       	push	r29
  4ee:	8c 01       	movw	r16, r24
  4f0:	eb 01       	movw	r28, r22
-	
-	while (*stringValue != '\0')
  4f2:	68 81       	ld	r22, Y
  4f4:	66 23       	and	r22, r22
  4f6:	29 f0       	breq	.+10     	; 0x502 <_ZN3LCD8printLCDEPKc+0x1c>
-	{
-		setData(*stringValue);
  4f8:	70 e0       	ldi	r23, 0x00	; 0
  4fa:	c8 01       	movw	r24, r16
  4fc:	93 df       	rcall	.-218    	; 0x424 <_ZN3LCD7setDataEi>
-		stringValue ++;
  4fe:	21 96       	adiw	r28, 0x01	; 1
-//----------------------------------------*/
-
-void LCD::printLCD (const char *stringValue)
-{
-	
-	while (*stringValue != '\0')
  500:	f8 cf       	rjmp	.-16     	; 0x4f2 <_ZN3LCD8printLCDEPKc+0xc>
-	{
-		setData(*stringValue);
-		stringValue ++;
-	}
-	
-}
  502:	df 91       	pop	r29
  504:	cf 91       	pop	r28
  506:	1f 91       	pop	r17
@@ -976,12 +704,6 @@ void LCD::printLCD (const char *stringValue)
  50a:	08 95       	ret
 
 0000050c <_ZN3LCD10changeLineEii>:
-/*----------------------------------------//
-				Change Line
-//----------------------------------------*/
-
-void LCD::changeLine (int lineIndex, int fileIndex)
-{
  50c:	cf 92       	push	r12
  50e:	df 92       	push	r13
  510:	ef 92       	push	r14
@@ -993,15 +715,11 @@ void LCD::changeLine (int lineIndex, int fileIndex)
  51c:	6c 01       	movw	r12, r24
  51e:	8b 01       	movw	r16, r22
  520:	7a 01       	movw	r14, r20
-	
-	for (int i=0; i<16; i++)
  522:	c0 e0       	ldi	r28, 0x00	; 0
  524:	d0 e0       	ldi	r29, 0x00	; 0
  526:	c0 31       	cpi	r28, 0x10	; 16
  528:	d1 05       	cpc	r29, r1
  52a:	ec f4       	brge	.+58     	; 0x566 <_ZN3LCD10changeLineEii+0x5a>
-	{
-		if (lineIndex == 1 && fileIndex == (i + 1))
  52c:	01 30       	cpi	r16, 0x01	; 1
  52e:	11 05       	cpc	r17, r1
  530:	59 f4       	brne	.+22     	; 0x548 <_ZN3LCD10changeLineEii+0x3c>
@@ -1010,19 +728,12 @@ void LCD::changeLine (int lineIndex, int fileIndex)
  536:	8e 15       	cp	r24, r14
  538:	9f 05       	cpc	r25, r15
  53a:	31 f4       	brne	.+12     	; 0x548 <_ZN3LCD10changeLineEii+0x3c>
-		{
-			int sendValue = 0x80 + i;
  53c:	be 01       	movw	r22, r28
  53e:	60 58       	subi	r22, 0x80	; 128
  540:	7f 4f       	sbci	r23, 0xFF	; 255
-			
-			setInstruction(sendValue);
  542:	c6 01       	movw	r24, r12
  544:	16 df       	rcall	.-468    	; 0x372 <_ZN3LCD14setInstructionEi>
  546:	0d c0       	rjmp	.+26     	; 0x562 <_ZN3LCD10changeLineEii+0x56>
-		}
-		
-		else if (lineIndex == 2 && fileIndex == (i + 1))
  548:	02 30       	cpi	r16, 0x02	; 2
  54a:	11 05       	cpc	r17, r1
  54c:	51 f4       	brne	.+20     	; 0x562 <_ZN3LCD10changeLineEii+0x56>
@@ -1031,29 +742,13 @@ void LCD::changeLine (int lineIndex, int fileIndex)
  552:	e8 16       	cp	r14, r24
  554:	f9 06       	cpc	r15, r25
  556:	29 f4       	brne	.+10     	; 0x562 <_ZN3LCD10changeLineEii+0x56>
-		{
-			int sendValue = 0xC0 + i;
  558:	be 01       	movw	r22, r28
  55a:	60 54       	subi	r22, 0x40	; 64
  55c:	7f 4f       	sbci	r23, 0xFF	; 255
-			
-			setInstruction(sendValue);
  55e:	c6 01       	movw	r24, r12
  560:	08 df       	rcall	.-496    	; 0x372 <_ZN3LCD14setInstructionEi>
-//----------------------------------------*/
-
-void LCD::changeLine (int lineIndex, int fileIndex)
-{
-	
-	for (int i=0; i<16; i++)
  562:	21 96       	adiw	r28, 0x01	; 1
  564:	e0 cf       	rjmp	.-64     	; 0x526 <_ZN3LCD10changeLineEii+0x1a>
-			
-			setInstruction(sendValue);
-		}
-	}
-	
-}
  566:	df 91       	pop	r29
  568:	cf 91       	pop	r28
  56a:	1f 91       	pop	r17
@@ -1065,120 +760,80 @@ void LCD::changeLine (int lineIndex, int fileIndex)
  576:	08 95       	ret
 
 00000578 <_ZN3LCD9clearLineEi>:
-/*----------------------------------------//
-				Clear Line
-//----------------------------------------*/
-
-void LCD::clearLine (int clearMode)
-{
  578:	cf 93       	push	r28
  57a:	df 93       	push	r29
  57c:	ec 01       	movw	r28, r24
-	
-	if (clearMode == ALL)
  57e:	69 30       	cpi	r22, 0x09	; 9
  580:	71 05       	cpc	r23, r1
  582:	a1 f4       	brne	.+40     	; 0x5ac <_ZN3LCD9clearLineEi+0x34>
-	{
-		changeLine(1, 1);
  584:	41 e0       	ldi	r20, 0x01	; 1
  586:	50 e0       	ldi	r21, 0x00	; 0
  588:	61 e0       	ldi	r22, 0x01	; 1
  58a:	70 e0       	ldi	r23, 0x00	; 0
  58c:	bf df       	rcall	.-130    	; 0x50c <_ZN3LCD10changeLineEii>
-		printLCD("                ");
  58e:	64 e0       	ldi	r22, 0x04	; 4
  590:	71 e0       	ldi	r23, 0x01	; 1
  592:	ce 01       	movw	r24, r28
  594:	a8 df       	rcall	.-176    	; 0x4e6 <_ZN3LCD8printLCDEPKc>
-		
-		changeLine(2, 1);
  596:	41 e0       	ldi	r20, 0x01	; 1
  598:	50 e0       	ldi	r21, 0x00	; 0
  59a:	62 e0       	ldi	r22, 0x02	; 2
  59c:	70 e0       	ldi	r23, 0x00	; 0
  59e:	ce 01       	movw	r24, r28
  5a0:	b5 df       	rcall	.-150    	; 0x50c <_ZN3LCD10changeLineEii>
-		printLCD("                ");
  5a2:	64 e0       	ldi	r22, 0x04	; 4
  5a4:	71 e0       	ldi	r23, 0x01	; 1
  5a6:	ce 01       	movw	r24, r28
  5a8:	9e df       	rcall	.-196    	; 0x4e6 <_ZN3LCD8printLCDEPKc>
  5aa:	19 c0       	rjmp	.+50     	; 0x5de <_ZN3LCD9clearLineEi+0x66>
-	}
-	
-	else if (clearMode == 1)
  5ac:	61 30       	cpi	r22, 0x01	; 1
  5ae:	71 05       	cpc	r23, r1
  5b0:	51 f4       	brne	.+20     	; 0x5c6 <_ZN3LCD9clearLineEi+0x4e>
-	{
-		changeLine(1, 1);
  5b2:	41 e0       	ldi	r20, 0x01	; 1
  5b4:	50 e0       	ldi	r21, 0x00	; 0
  5b6:	61 e0       	ldi	r22, 0x01	; 1
  5b8:	70 e0       	ldi	r23, 0x00	; 0
-		printLCD("                ");
  5ba:	a8 df       	rcall	.-176    	; 0x50c <_ZN3LCD10changeLineEii>
  5bc:	64 e0       	ldi	r22, 0x04	; 4
  5be:	71 e0       	ldi	r23, 0x01	; 1
  5c0:	ce 01       	movw	r24, r28
  5c2:	91 df       	rcall	.-222    	; 0x4e6 <_ZN3LCD8printLCDEPKc>
  5c4:	0c c0       	rjmp	.+24     	; 0x5de <_ZN3LCD9clearLineEi+0x66>
-	}
-	
-	else if (clearMode == 2)
  5c6:	62 30       	cpi	r22, 0x02	; 2
  5c8:	71 05       	cpc	r23, r1
-	{
-		changeLine(2, 1);
  5ca:	49 f4       	brne	.+18     	; 0x5de <_ZN3LCD9clearLineEi+0x66>
  5cc:	41 e0       	ldi	r20, 0x01	; 1
  5ce:	50 e0       	ldi	r21, 0x00	; 0
  5d0:	62 e0       	ldi	r22, 0x02	; 2
  5d2:	70 e0       	ldi	r23, 0x00	; 0
-		printLCD("                ");
  5d4:	9b df       	rcall	.-202    	; 0x50c <_ZN3LCD10changeLineEii>
  5d6:	64 e0       	ldi	r22, 0x04	; 4
  5d8:	71 e0       	ldi	r23, 0x01	; 1
  5da:	ce 01       	movw	r24, r28
  5dc:	84 df       	rcall	.-248    	; 0x4e6 <_ZN3LCD8printLCDEPKc>
-	}
-	
-}
  5de:	df 91       	pop	r29
  5e0:	cf 91       	pop	r28
  5e2:	08 95       	ret
 
 000005e4 <_ZN3LCD7initLCDEv>:
-/*----------------------------------------//
-			  Initialize LCD
-//----------------------------------------*/
-
-void LCD::initLCD (void)
-{
  5e4:	cf 93       	push	r28
  5e6:	df 93       	push	r29
  5e8:	ec 01       	movw	r28, r24
-	setInstruction(0x06);			// SET ENTRY		[ I/D = Right						S = Shift L	]
  5ea:	66 e0       	ldi	r22, 0x06	; 6
  5ec:	70 e0       	ldi	r23, 0x00	; 0
  5ee:	c1 de       	rcall	.-638    	; 0x372 <_ZN3LCD14setInstructionEi>
-	setInstruction(0x0c);			// CONTROL DISPLAY	[ D = Display H		C = Cursor L	B = Blink L ]
  5f0:	6c e0       	ldi	r22, 0x0C	; 12
  5f2:	70 e0       	ldi	r23, 0x00	; 0
  5f4:	ce 01       	movw	r24, r28
  5f6:	bd de       	rcall	.-646    	; 0x372 <_ZN3LCD14setInstructionEi>
-	setInstruction(0x28);			// SET FUNCTION		[ DL = 4 Bit		N = 2 LINE		F = 5 x 7	]
  5f8:	68 e2       	ldi	r22, 0x28	; 40
  5fa:	70 e0       	ldi	r23, 0x00	; 0
  5fc:	ce 01       	movw	r24, r28
  5fe:	b9 de       	rcall	.-654    	; 0x372 <_ZN3LCD14setInstructionEi>
-	setInstruction(0x01);			// CLEAR DISPLAY ALL
  600:	61 e0       	ldi	r22, 0x01	; 1
  602:	70 e0       	ldi	r23, 0x00	; 0
  604:	ce 01       	movw	r24, r28
  606:	b5 de       	rcall	.-662    	; 0x372 <_ZN3LCD14setInstructionEi>
-}
  608:	df 91       	pop	r29
  60a:	cf 91       	pop	r28
  60c:	08 95       	ret
@@ -1579,19 +1234,19 @@ ISR(TIMER2_OVF_vect)
  882:	70 e0       	ldi	r23, 0x00	; 0
  884:	86 e8       	ldi	r24, 0x86	; 134
  886:	91 e0       	ldi	r25, 0x01	; 1
-					lcd.setData(EncodeLCD(i));
+					lcd.setData(encodeLCD(i));
  888:	41 de       	rcall	.-894    	; 0x50c <_ZN3LCD10changeLineEii>
  88a:	80 91 7e 01 	lds	r24, 0x017E	; 0x80017e <i>
  88e:	90 91 7f 01 	lds	r25, 0x017F	; 0x80017f <i+0x1>
- 892:	29 dc       	rcall	.-1966   	; 0xe6 <_Z9EncodeLCDi>
+ 892:	29 dc       	rcall	.-1966   	; 0xe6 <_Z9encodeLCDi>
  894:	bc 01       	movw	r22, r24
  896:	86 e8       	ldi	r24, 0x86	; 134
  898:	91 e0       	ldi	r25, 0x01	; 1
-					lcd.setData(EncodeLCD(j));
+					lcd.setData(encodeLCD(j));
  89a:	c4 dd       	rcall	.-1144   	; 0x424 <_ZN3LCD7setDataEi>
  89c:	80 91 7c 01 	lds	r24, 0x017C	; 0x80017c <j>
  8a0:	90 91 7d 01 	lds	r25, 0x017D	; 0x80017d <j+0x1>
- 8a4:	20 dc       	rcall	.-1984   	; 0xe6 <_Z9EncodeLCDi>
+ 8a4:	20 dc       	rcall	.-1984   	; 0xe6 <_Z9encodeLCDi>
  8a6:	bc 01       	movw	r22, r24
  8a8:	86 e8       	ldi	r24, 0x86	; 134
  8aa:	91 e0       	ldi	r25, 0x01	; 1
@@ -1600,20 +1255,20 @@ ISR(TIMER2_OVF_vect)
  8ae:	6e e5       	ldi	r22, 0x5E	; 94
  8b0:	71 e0       	ldi	r23, 0x01	; 1
  8b2:	86 e8       	ldi	r24, 0x86	; 134
-					lcd.setData(EncodeLCD(k));
+					lcd.setData(encodeLCD(k));
  8b4:	91 e0       	ldi	r25, 0x01	; 1
  8b6:	17 de       	rcall	.-978    	; 0x4e6 <_ZN3LCD8printLCDEPKc>
  8b8:	80 91 7a 01 	lds	r24, 0x017A	; 0x80017a <k>
  8bc:	90 91 7b 01 	lds	r25, 0x017B	; 0x80017b <k+0x1>
- 8c0:	12 dc       	rcall	.-2012   	; 0xe6 <_Z9EncodeLCDi>
+ 8c0:	12 dc       	rcall	.-2012   	; 0xe6 <_Z9encodeLCDi>
  8c2:	bc 01       	movw	r22, r24
  8c4:	86 e8       	ldi	r24, 0x86	; 134
  8c6:	91 e0       	ldi	r25, 0x01	; 1
  8c8:	ad dd       	rcall	.-1190   	; 0x424 <_ZN3LCD7setDataEi>
-					lcd.setData(EncodeLCD(l));
+					lcd.setData(encodeLCD(l));
  8ca:	80 91 78 01 	lds	r24, 0x0178	; 0x800178 <__data_end>
  8ce:	90 91 79 01 	lds	r25, 0x0179	; 0x800179 <__data_end+0x1>
- 8d2:	09 dc       	rcall	.-2030   	; 0xe6 <_Z9EncodeLCDi>
+ 8d2:	09 dc       	rcall	.-2030   	; 0xe6 <_Z9encodeLCDi>
  8d4:	bc 01       	movw	r22, r24
  8d6:	86 e8       	ldi	r24, 0x86	; 134
  8d8:	91 e0       	ldi	r25, 0x01	; 1
@@ -1732,21 +1387,21 @@ ISR(TIMER2_OVF_vect)
  996:	50 e0       	ldi	r21, 0x00	; 0
  998:	62 e0       	ldi	r22, 0x02	; 2
  99a:	70 e0       	ldi	r23, 0x00	; 0
-					lcd.setData(EncodeLCD(i));
+					lcd.setData(encodeLCD(i));
  99c:	86 e8       	ldi	r24, 0x86	; 134
  99e:	91 e0       	ldi	r25, 0x01	; 1
  9a0:	b5 dd       	rcall	.-1174   	; 0x50c <_ZN3LCD10changeLineEii>
  9a2:	80 91 7e 01 	lds	r24, 0x017E	; 0x80017e <i>
  9a6:	90 91 7f 01 	lds	r25, 0x017F	; 0x80017f <i+0x1>
- 9aa:	9d db       	rcall	.-2246   	; 0xe6 <_Z9EncodeLCDi>
+ 9aa:	9d db       	rcall	.-2246   	; 0xe6 <_Z9encodeLCDi>
  9ac:	bc 01       	movw	r22, r24
-					lcd.setData(EncodeLCD(j));
+					lcd.setData(encodeLCD(j));
  9ae:	86 e8       	ldi	r24, 0x86	; 134
  9b0:	91 e0       	ldi	r25, 0x01	; 1
  9b2:	38 dd       	rcall	.-1424   	; 0x424 <_ZN3LCD7setDataEi>
  9b4:	80 91 7c 01 	lds	r24, 0x017C	; 0x80017c <j>
  9b8:	90 91 7d 01 	lds	r25, 0x017D	; 0x80017d <j+0x1>
- 9bc:	94 db       	rcall	.-2264   	; 0xe6 <_Z9EncodeLCDi>
+ 9bc:	94 db       	rcall	.-2264   	; 0xe6 <_Z9encodeLCDi>
  9be:	bc 01       	movw	r22, r24
  9c0:	86 e8       	ldi	r24, 0x86	; 134
 					lcd.printLCD(":");
@@ -1756,19 +1411,19 @@ ISR(TIMER2_OVF_vect)
  9c8:	71 e0       	ldi	r23, 0x01	; 1
  9ca:	86 e8       	ldi	r24, 0x86	; 134
  9cc:	91 e0       	ldi	r25, 0x01	; 1
-					lcd.setData(EncodeLCD(k));
+					lcd.setData(encodeLCD(k));
  9ce:	8b dd       	rcall	.-1258   	; 0x4e6 <_ZN3LCD8printLCDEPKc>
  9d0:	80 91 7a 01 	lds	r24, 0x017A	; 0x80017a <k>
  9d4:	90 91 7b 01 	lds	r25, 0x017B	; 0x80017b <k+0x1>
- 9d8:	86 db       	rcall	.-2292   	; 0xe6 <_Z9EncodeLCDi>
+ 9d8:	86 db       	rcall	.-2292   	; 0xe6 <_Z9encodeLCDi>
  9da:	bc 01       	movw	r22, r24
  9dc:	86 e8       	ldi	r24, 0x86	; 134
  9de:	91 e0       	ldi	r25, 0x01	; 1
  9e0:	21 dd       	rcall	.-1470   	; 0x424 <_ZN3LCD7setDataEi>
  9e2:	80 91 78 01 	lds	r24, 0x0178	; 0x800178 <__data_end>
-					lcd.setData(EncodeLCD(l));
+					lcd.setData(encodeLCD(l));
  9e6:	90 91 79 01 	lds	r25, 0x0179	; 0x800179 <__data_end+0x1>
- 9ea:	7d db       	rcall	.-2310   	; 0xe6 <_Z9EncodeLCDi>
+ 9ea:	7d db       	rcall	.-2310   	; 0xe6 <_Z9encodeLCDi>
  9ec:	bc 01       	movw	r22, r24
  9ee:	86 e8       	ldi	r24, 0x86	; 134
  9f0:	91 e0       	ldi	r25, 0x01	; 1
@@ -1815,7 +1470,7 @@ ISR(TIMER2_OVF_vect)
  a30:	10 92 7c 01 	sts	0x017C, r1	; 0x80017c <j>
  a34:	4c e0       	ldi	r20, 0x0C	; 12
  a36:	50 e0       	ldi	r21, 0x00	; 0
-					lcd.setData(EncodeLCD(i));
+					lcd.setData(encodeLCD(i));
  a38:	62 e0       	ldi	r22, 0x02	; 2
  a3a:	70 e0       	ldi	r23, 0x00	; 0
  a3c:	86 e8       	ldi	r24, 0x86	; 134
@@ -1823,15 +1478,15 @@ ISR(TIMER2_OVF_vect)
  a40:	65 dd       	rcall	.-1334   	; 0x50c <_ZN3LCD10changeLineEii>
  a42:	80 91 7e 01 	lds	r24, 0x017E	; 0x80017e <i>
  a46:	90 91 7f 01 	lds	r25, 0x017F	; 0x80017f <i+0x1>
- a4a:	4d db       	rcall	.-2406   	; 0xe6 <_Z9EncodeLCDi>
-					lcd.setData(EncodeLCD(j));
+ a4a:	4d db       	rcall	.-2406   	; 0xe6 <_Z9encodeLCDi>
+					lcd.setData(encodeLCD(j));
  a4c:	bc 01       	movw	r22, r24
  a4e:	86 e8       	ldi	r24, 0x86	; 134
  a50:	91 e0       	ldi	r25, 0x01	; 1
  a52:	e8 dc       	rcall	.-1584   	; 0x424 <_ZN3LCD7setDataEi>
  a54:	80 91 7c 01 	lds	r24, 0x017C	; 0x80017c <j>
  a58:	90 91 7d 01 	lds	r25, 0x017D	; 0x80017d <j+0x1>
- a5c:	44 db       	rcall	.-2424   	; 0xe6 <_Z9EncodeLCDi>
+ a5c:	44 db       	rcall	.-2424   	; 0xe6 <_Z9encodeLCDi>
  a5e:	bc 01       	movw	r22, r24
  a60:	86 e8       	ldi	r24, 0x86	; 134
 					lcd.printLCD(":");
@@ -1841,19 +1496,19 @@ ISR(TIMER2_OVF_vect)
  a68:	71 e0       	ldi	r23, 0x01	; 1
  a6a:	86 e8       	ldi	r24, 0x86	; 134
  a6c:	91 e0       	ldi	r25, 0x01	; 1
-					lcd.setData(EncodeLCD(k));
+					lcd.setData(encodeLCD(k));
  a6e:	3b dd       	rcall	.-1418   	; 0x4e6 <_ZN3LCD8printLCDEPKc>
  a70:	80 91 7a 01 	lds	r24, 0x017A	; 0x80017a <k>
  a74:	90 91 7b 01 	lds	r25, 0x017B	; 0x80017b <k+0x1>
- a78:	36 db       	rcall	.-2452   	; 0xe6 <_Z9EncodeLCDi>
+ a78:	36 db       	rcall	.-2452   	; 0xe6 <_Z9encodeLCDi>
  a7a:	bc 01       	movw	r22, r24
  a7c:	86 e8       	ldi	r24, 0x86	; 134
  a7e:	91 e0       	ldi	r25, 0x01	; 1
  a80:	d1 dc       	rcall	.-1630   	; 0x424 <_ZN3LCD7setDataEi>
  a82:	80 91 78 01 	lds	r24, 0x0178	; 0x800178 <__data_end>
-					lcd.setData(EncodeLCD(l));
+					lcd.setData(encodeLCD(l));
  a86:	90 91 79 01 	lds	r25, 0x0179	; 0x800179 <__data_end+0x1>
- a8a:	2d db       	rcall	.-2470   	; 0xe6 <_Z9EncodeLCDi>
+ a8a:	2d db       	rcall	.-2470   	; 0xe6 <_Z9encodeLCDi>
  a8c:	bc 01       	movw	r22, r24
  a8e:	86 e8       	ldi	r24, 0x86	; 134
  a90:	91 e0       	ldi	r25, 0x01	; 1
@@ -1901,22 +1556,22 @@ ISR(TIMER2_OVF_vect)
  ad4:	4c e0       	ldi	r20, 0x0C	; 12
  ad6:	50 e0       	ldi	r21, 0x00	; 0
  ad8:	62 e0       	ldi	r22, 0x02	; 2
-					lcd.setData(EncodeLCD(i));
+					lcd.setData(encodeLCD(i));
  ada:	70 e0       	ldi	r23, 0x00	; 0
  adc:	86 e8       	ldi	r24, 0x86	; 134
  ade:	91 e0       	ldi	r25, 0x01	; 1
  ae0:	15 dd       	rcall	.-1494   	; 0x50c <_ZN3LCD10changeLineEii>
  ae2:	80 91 7e 01 	lds	r24, 0x017E	; 0x80017e <i>
  ae6:	90 91 7f 01 	lds	r25, 0x017F	; 0x80017f <i+0x1>
- aea:	fd da       	rcall	.-2566   	; 0xe6 <_Z9EncodeLCDi>
+ aea:	fd da       	rcall	.-2566   	; 0xe6 <_Z9encodeLCDi>
  aec:	bc 01       	movw	r22, r24
  aee:	86 e8       	ldi	r24, 0x86	; 134
-					lcd.setData(EncodeLCD(j));
+					lcd.setData(encodeLCD(j));
  af0:	91 e0       	ldi	r25, 0x01	; 1
  af2:	98 dc       	rcall	.-1744   	; 0x424 <_ZN3LCD7setDataEi>
  af4:	80 91 7c 01 	lds	r24, 0x017C	; 0x80017c <j>
  af8:	90 91 7d 01 	lds	r25, 0x017D	; 0x80017d <j+0x1>
- afc:	f4 da       	rcall	.-2584   	; 0xe6 <_Z9EncodeLCDi>
+ afc:	f4 da       	rcall	.-2584   	; 0xe6 <_Z9encodeLCDi>
  afe:	bc 01       	movw	r22, r24
  b00:	86 e8       	ldi	r24, 0x86	; 134
  b02:	91 e0       	ldi	r25, 0x01	; 1
@@ -1928,17 +1583,17 @@ ISR(TIMER2_OVF_vect)
  b0c:	91 e0       	ldi	r25, 0x01	; 1
  b0e:	eb dc       	rcall	.-1578   	; 0x4e6 <_ZN3LCD8printLCDEPKc>
  b10:	80 91 7a 01 	lds	r24, 0x017A	; 0x80017a <k>
-					lcd.setData(EncodeLCD(k));
+					lcd.setData(encodeLCD(k));
  b14:	90 91 7b 01 	lds	r25, 0x017B	; 0x80017b <k+0x1>
- b18:	e6 da       	rcall	.-2612   	; 0xe6 <_Z9EncodeLCDi>
+ b18:	e6 da       	rcall	.-2612   	; 0xe6 <_Z9encodeLCDi>
  b1a:	bc 01       	movw	r22, r24
  b1c:	86 e8       	ldi	r24, 0x86	; 134
  b1e:	91 e0       	ldi	r25, 0x01	; 1
  b20:	81 dc       	rcall	.-1790   	; 0x424 <_ZN3LCD7setDataEi>
  b22:	80 91 78 01 	lds	r24, 0x0178	; 0x800178 <__data_end>
-					lcd.setData(EncodeLCD(l));
+					lcd.setData(encodeLCD(l));
  b26:	90 91 79 01 	lds	r25, 0x0179	; 0x800179 <__data_end+0x1>
- b2a:	dd da       	rcall	.-2630   	; 0xe6 <_Z9EncodeLCDi>
+ b2a:	dd da       	rcall	.-2630   	; 0xe6 <_Z9encodeLCDi>
  b2c:	bc 01       	movw	r22, r24
  b2e:	86 e8       	ldi	r24, 0x86	; 134
  b30:	91 e0       	ldi	r25, 0x01	; 1
@@ -1987,21 +1642,21 @@ ISR(TIMER2_OVF_vect)
  b76:	50 e0       	ldi	r21, 0x00	; 0
  b78:	62 e0       	ldi	r22, 0x02	; 2
  b7a:	70 e0       	ldi	r23, 0x00	; 0
-					lcd.setData(EncodeLCD(i));
+					lcd.setData(encodeLCD(i));
  b7c:	86 e8       	ldi	r24, 0x86	; 134
  b7e:	91 e0       	ldi	r25, 0x01	; 1
  b80:	c5 dc       	rcall	.-1654   	; 0x50c <_ZN3LCD10changeLineEii>
  b82:	80 91 7e 01 	lds	r24, 0x017E	; 0x80017e <i>
  b86:	90 91 7f 01 	lds	r25, 0x017F	; 0x80017f <i+0x1>
- b8a:	ad da       	rcall	.-2726   	; 0xe6 <_Z9EncodeLCDi>
+ b8a:	ad da       	rcall	.-2726   	; 0xe6 <_Z9encodeLCDi>
  b8c:	bc 01       	movw	r22, r24
  b8e:	86 e8       	ldi	r24, 0x86	; 134
  b90:	91 e0       	ldi	r25, 0x01	; 1
-					lcd.setData(EncodeLCD(j));
+					lcd.setData(encodeLCD(j));
  b92:	48 dc       	rcall	.-1904   	; 0x424 <_ZN3LCD7setDataEi>
  b94:	80 91 7c 01 	lds	r24, 0x017C	; 0x80017c <j>
  b98:	90 91 7d 01 	lds	r25, 0x017D	; 0x80017d <j+0x1>
- b9c:	a4 da       	rcall	.-2744   	; 0xe6 <_Z9EncodeLCDi>
+ b9c:	a4 da       	rcall	.-2744   	; 0xe6 <_Z9encodeLCDi>
  b9e:	bc 01       	movw	r22, r24
  ba0:	86 e8       	ldi	r24, 0x86	; 134
  ba2:	91 e0       	ldi	r25, 0x01	; 1
@@ -2013,17 +1668,17 @@ ISR(TIMER2_OVF_vect)
  bac:	91 e0       	ldi	r25, 0x01	; 1
  bae:	9b dc       	rcall	.-1738   	; 0x4e6 <_ZN3LCD8printLCDEPKc>
  bb0:	80 91 7a 01 	lds	r24, 0x017A	; 0x80017a <k>
-					lcd.setData(EncodeLCD(k));
+					lcd.setData(encodeLCD(k));
  bb4:	90 91 7b 01 	lds	r25, 0x017B	; 0x80017b <k+0x1>
- bb8:	96 da       	rcall	.-2772   	; 0xe6 <_Z9EncodeLCDi>
+ bb8:	96 da       	rcall	.-2772   	; 0xe6 <_Z9encodeLCDi>
  bba:	bc 01       	movw	r22, r24
  bbc:	86 e8       	ldi	r24, 0x86	; 134
  bbe:	91 e0       	ldi	r25, 0x01	; 1
  bc0:	31 dc       	rcall	.-1950   	; 0x424 <_ZN3LCD7setDataEi>
  bc2:	80 91 78 01 	lds	r24, 0x0178	; 0x800178 <__data_end>
  bc6:	90 91 79 01 	lds	r25, 0x0179	; 0x800179 <__data_end+0x1>
-					lcd.setData(EncodeLCD(l));
- bca:	8d da       	rcall	.-2790   	; 0xe6 <_Z9EncodeLCDi>
+					lcd.setData(encodeLCD(l));
+ bca:	8d da       	rcall	.-2790   	; 0xe6 <_Z9encodeLCDi>
  bcc:	bc 01       	movw	r22, r24
  bce:	86 e8       	ldi	r24, 0x86	; 134
  bd0:	91 e0       	ldi	r25, 0x01	; 1
@@ -2104,18 +1759,18 @@ ISR(TIMER1_COMPA_vect)
  c4a:	91 e0       	ldi	r25, 0x01	; 1
  c4c:	5f dc       	rcall	.-1858   	; 0x50c <_ZN3LCD10changeLineEii>
 			
-			lcd.setData(EncodeLCD(i));
+			lcd.setData(encodeLCD(i));
  c4e:	80 91 7e 01 	lds	r24, 0x017E	; 0x80017e <i>
  c52:	90 91 7f 01 	lds	r25, 0x017F	; 0x80017f <i+0x1>
- c56:	47 da       	rcall	.-2930   	; 0xe6 <_Z9EncodeLCDi>
+ c56:	47 da       	rcall	.-2930   	; 0xe6 <_Z9encodeLCDi>
  c58:	bc 01       	movw	r22, r24
  c5a:	86 e8       	ldi	r24, 0x86	; 134
  c5c:	91 e0       	ldi	r25, 0x01	; 1
  c5e:	e2 db       	rcall	.-2108   	; 0x424 <_ZN3LCD7setDataEi>
-			lcd.setData(EncodeLCD(j));
+			lcd.setData(encodeLCD(j));
  c60:	80 91 7c 01 	lds	r24, 0x017C	; 0x80017c <j>
  c64:	90 91 7d 01 	lds	r25, 0x017D	; 0x80017d <j+0x1>
- c68:	3e da       	rcall	.-2948   	; 0xe6 <_Z9EncodeLCDi>
+ c68:	3e da       	rcall	.-2948   	; 0xe6 <_Z9encodeLCDi>
  c6a:	bc 01       	movw	r22, r24
  c6c:	86 e8       	ldi	r24, 0x86	; 134
  c6e:	91 e0       	ldi	r25, 0x01	; 1
@@ -2126,18 +1781,18 @@ ISR(TIMER1_COMPA_vect)
  c76:	86 e8       	ldi	r24, 0x86	; 134
  c78:	91 e0       	ldi	r25, 0x01	; 1
  c7a:	35 dc       	rcall	.-1942   	; 0x4e6 <_ZN3LCD8printLCDEPKc>
-			lcd.setData(EncodeLCD(k));
+			lcd.setData(encodeLCD(k));
  c7c:	80 91 7a 01 	lds	r24, 0x017A	; 0x80017a <k>
  c80:	90 91 7b 01 	lds	r25, 0x017B	; 0x80017b <k+0x1>
- c84:	30 da       	rcall	.-2976   	; 0xe6 <_Z9EncodeLCDi>
+ c84:	30 da       	rcall	.-2976   	; 0xe6 <_Z9encodeLCDi>
  c86:	bc 01       	movw	r22, r24
  c88:	86 e8       	ldi	r24, 0x86	; 134
  c8a:	91 e0       	ldi	r25, 0x01	; 1
  c8c:	cb db       	rcall	.-2154   	; 0x424 <_ZN3LCD7setDataEi>
-			lcd.setData(EncodeLCD(l));
+			lcd.setData(encodeLCD(l));
  c8e:	80 91 78 01 	lds	r24, 0x0178	; 0x800178 <__data_end>
  c92:	90 91 79 01 	lds	r25, 0x0179	; 0x800179 <__data_end+0x1>
- c96:	27 da       	rcall	.-2994   	; 0xe6 <_Z9EncodeLCDi>
+ c96:	27 da       	rcall	.-2994   	; 0xe6 <_Z9encodeLCDi>
  c98:	bc 01       	movw	r22, r24
  c9a:	86 e8       	ldi	r24, 0x86	; 134
  c9c:	91 e0       	ldi	r25, 0x01	; 1
