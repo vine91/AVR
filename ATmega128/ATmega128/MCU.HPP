@@ -513,11 +513,13 @@ class LCD
 
 private:
 	unsigned int m_LCDPort;
-	bool m_isDataLong;
+	unsigned int m_ExtendPort;
+	bool isDataLong = false;
 
 public:
 	// PORT
-	void beginLCD (int LCDPort, bool isDataLong) { m_LCDPort = LCDPort; m_isDataLong = isDataLong; }
+	void beginLCD (int LCDPort) { m_LCDPort = LCDPort; }
+	void dataLong (int extendPort) { m_ExtendPort = extendPort; isDataLong = true }
 	void attachPort (int portValue);
 	
 	// INFO
@@ -706,7 +708,7 @@ void LCD::clearLine (int clearMode)
 void LCD::initLCD (void)
 {
 	setInstruction(0x06);			// SET ENTRY		[ I/D = Right						S = Shift L	]
-	setInstruction(0x0c);			// CONTROL DISPLAY	[ D = Display H		C = Cursor L	B = Blink L ]
+	setInstruction(0x0C);			// CONTROL DISPLAY	[ D = Display H		C = Cursor L	B = Blink L ]
 	setInstruction(0x28);			// SET FUNCTION		[ DL = 4 Bit		N = 2 LINE		F = 5 x 7	]
 	setInstruction(0x01);			// CLEAR DISPLAY ALL
 }
