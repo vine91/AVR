@@ -14,8 +14,8 @@
 
 
 
-SW sw;
-LCD lcd;
+SW sw(C, ON);
+LCD lcd(E);
 
 ISR(TIMER2_OVF_vect);
 ISR(TIMER1_COMPA_vect);
@@ -43,8 +43,6 @@ int main (void)
 	Setting::beginTimer(2, OVF);
 	Setting::beginTimer(1, COMP);
 	
-	sw.beginSW(C, ON);
-	lcd.beginLCD(E, HIGH);
 	lcd.initLCD();
 	
 	sei();

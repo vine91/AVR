@@ -60,7 +60,7 @@ int insertBit (int bitValue, bool isHigh)
 	
 	else
 	{
-		return lowValue;
+		return lowValue &= ~(1 << bitValue);
 	}
 	
 }
@@ -376,7 +376,7 @@ private:
 	volatile unsigned int m_oldValue;
 
 public:
-	void beginSW (int switchPort, bool isReversal) { m_SwitchPort = switchPort; m_isReversal = isReversal; }
+	SW (int switchPort, bool isReversal) { m_SwitchPort = switchPort; m_isReversal = isReversal; }
 	void initSW (void);
 	
 	volatile unsigned int result;
@@ -511,24 +511,40 @@ void SW::initSW (void)
 class LCD
 {
 
-private:
+protected:
 	unsigned int m_LCDPort;
 	unsigned int m_ExtendPort;
-	bool isDataLong = false;
+	bool m_isDataLong;
 
 public:
+	LCD (int LCDPort) { m_LCDPort = LCDPort; m_isDataLong = false; }
+
 	// PORT
-	void beginLCD (int LCDPort) { m_LCDPort = LCDPort; }
-	void dataLong (int extendPort) { m_ExtendPort = extendPort; isDataLong = true }
 	void attachPort (int portValue);
-	
-	// INFO
+	void attachExtendPort (int extendPortValue);
 	void setInstruction (int instructionValue);
 	void setData (int dataValue);
+
+	// INFO
 	void printLCD (const char *stringValue);
 	void changeLine (int lineIndex, int fileIndex);
 	void clearLine (int clearMode);
 	void initLCD (void);
+
+};
+
+
+/*
+//==========================================
+			CLASS - Data Long LCD
+==========================================//
+*/
+
+class DataLongLCD : public LCD
+{
+
+public:
+	DataLongLCD (int LCDPort, int extendPort) : LCD (LCDPort) { m_ExtendPort = extendPort; m_isDataLong = true; }
 
 };
 
@@ -580,26 +596,92 @@ void LCD::attachPort (int portValue)
 
 
 /*----------------------------------------//
+		Attach Data Long LCD Port
+//----------------------------------------*/
+
+void LCD::attachExtendPort (int extendPortValue)
+{
+
+	switch (m_ExtendPort)
+	{
+		// PORTA
+		case A:
+			PORTA = extendPortValue;
+			break;
+		
+		// PORTB
+		case B:
+			PORTB = extendPortValue;
+			break;
+		
+		// PORTC
+		case C:
+			PORTC = extendPortValue;
+			break;
+		
+		// PORTD
+		case D:
+			PORTD = extendPortValue;
+			break;
+		
+		// PORTE
+		case E:
+			PORTE = extendPortValue;
+			break;
+		
+		// PORTF
+		case F:
+			PORTF = extendPortValue;
+			break;
+		
+		default:
+			break;
+	}
+
+}
+
+
+/*----------------------------------------//
 			 Set Instruction
 //----------------------------------------*/
 
 void LCD::setInstruction (int instructionValue)
 {
-	int enableBit = insertBit(7, HIGH);
-	int disableBit = insertBit(7, LOW);
+
+	if (m_isDataLong == false)
+	{
+		int enableBit = insertBit(7, HIGH);
+		int disableBit = insertBit(7, LOW);
+		
+		_delay_ms(2);
+		
+		attachPort( ((instructionValue >> 4) & 0x0F) | enableBit );
+		_delay_us(1);
+		attachPort( ((instructionValue >> 4) & 0x0F) | disableBit );
+		_delay_us(1);
+		
+		
+		attachPort( (instructionValue & 0x0F) | enableBit );
+		_delay_us(1);
+		attachPort( (instructionValue & 0x0F) | disableBit );
+		_delay_us(1);
+	}
 	
-	_delay_ms(2);
-	
-	attachPort( ((instructionValue >> 4) & 0x0F) | enableBit );
-	_delay_us(1);
-	attachPort( ((instructionValue >> 4) & 0x0F) | disableBit );
-	_delay_us(1);
-	
-	
-	attachPort( (instructionValue & 0x0F) | enableBit );
-	_delay_us(1);
-	attachPort( (instructionValue & 0x0F) | disableBit );
-	_delay_us(1);
+	else
+	{
+		int enableBit = insertBit(2, HIGH);
+		int disableBit = insertBit(2, LOW);
+
+		_delay_ms(2);
+
+		attachExtendPort(instructionValue);
+		
+		attachPort(enableBit);
+		_delay_us(1);
+		attachPort(disableBit);
+		_delay_us(1);
+	}
+
 }
 
 
@@ -609,21 +691,41 @@ void LCD::setInstruction (int instructionValue)
 
 void LCD::setData (int dataValue)
 {
-	int enableBit = insertBit(7, HIGH) | insertBit(5, HIGH);
-	int disableBit = insertBit(7, LOW) | insertBit(5, HIGH);
+
+	if (m_isDataLong == false)
+	{
+		int enableBit = insertBit(7, HIGH) | insertBit(5, HIGH);
+		int disableBit = insertBit(7, LOW) | insertBit(5, HIGH);
+		
+		_delay_ms(2);
+		
+		attachPort( ((dataValue >> 4) & 0x0F) | enableBit );
+		_delay_us(1);
+		attachPort( ((dataValue >> 4) & 0x0F) | disableBit );
+		_delay_us(1);
+		
+		
+		attachPort( (dataValue & 0x0F) | enableBit );
+		_delay_us(1);
+		attachPort( (dataValue & 0x0F) | disableBit );
+		_delay_us(1);
+	}
+
+	else
+	{
+		int enableBit = insertBit(2, HIGH) | insertBit(0, HIGH);
+		int disableBit = insertBit(2, LOW) | insertBit(0, HIGH);
+
+		_delay_ms(2);
+
+		attachExtendPort(dataValue);
+		
+		attachPort(enableBit);
+		_delay_us(1);
+		attachPort(disableBit);
+		_delay_us(1);
+	}
 	
-	_delay_ms(2);
-	
-	attachPort( ((dataValue >> 4) & 0x0F) | enableBit );
-	_delay_us(1);
-	attachPort( ((dataValue >> 4) & 0x0F) | disableBit );
-	_delay_us(1);
-	
-	
-	attachPort( (dataValue & 0x0F) | enableBit );
-	_delay_us(1);
-	attachPort( (dataValue & 0x0F) | disableBit );
-	_delay_us(1);
 }
 
 
@@ -707,10 +809,21 @@ void LCD::clearLine (int clearMode)
 
 void LCD::initLCD (void)
 {
-	setInstruction(0x06);			// SET ENTRY		[ I/D = Right						S = Shift L	]
-	setInstruction(0x0C);			// CONTROL DISPLAY	[ D = Display H		C = Cursor L	B = Blink L ]
-	setInstruction(0x28);			// SET FUNCTION		[ DL = 4 Bit		N = 2 LINE		F = 5 x 7	]
-	setInstruction(0x01);			// CLEAR DISPLAY ALL
+
+	if (m_isDataLong == false)
+	{
+		setInstruction(0x28);			// Set Function		[ DL = 4 Bit		N = 2 LINE		F = 5 x 7	]
+	}
+
+	else
+	{
+		setInstruction(0x38);			// Set Function		[ DL = 8 Bit		N = 2 LINE		F = 5 x 7	]
+	}
+
+	setInstruction(0x0C);				// Control Display	[ D = Display H		C = Cursor L	B = Blink L ]
+	setInstruction(0x06);				// Set Entry Mode	[ I/D = Right						S = Shift L	]
+	setInstruction(0x01);				// Clear Display
+
 }
 
 
@@ -761,7 +874,7 @@ private:
 	int m_MotorPort;
 
 public:
-	void beginMotor (int motorPort) { m_MotorPort = motorPort; }
+	Motor (int motorPort) { m_MotorPort = motorPort; }
 	void attachPort (int portValue);
 	void setStop (void) { attachPort( insertBit(0, HIGH) | insertBit(1, HIGH) ); }
 	void setBreak (void) { attachPort( insertBit(0, LOW) | insertBit(1, LOW) ); }
