@@ -7,14 +7,13 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-
 #include "MCU.HPP"
 
 
 
 
-SW sw(C, ON);
-LCD lcd(E);
+DataLongLCD lcd(A, B);
+SW sw(C, OFF);
 
 ISR(TIMER2_OVF_vect);
 ISR(TIMER1_COMPA_vect);
@@ -35,9 +34,10 @@ int k, l;
 
 int main (void)
 {
-	
-    Setting::beginPort(C, IN);
-	Setting::beginPort(E, OUT);
+    
+	Setting::beginPort(A, OUT);
+	Setting::beginPort(B, OUT);
+	Setting::beginPort(C, IN);
 	
 	Setting::beginTimer(2, OVF);
 	Setting::beginTimer(1, COMP);
