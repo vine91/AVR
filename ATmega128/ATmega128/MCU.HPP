@@ -41,6 +41,9 @@
 #define SW_6	0x40
 #define SW_7	0x80
 
+using String = const char *;
+using NonOptimal = volatile unsigned int;
+
 
 
 
@@ -80,47 +83,47 @@ int encodeFND(int decimal)
 		hexadecimal = decimal;
 	}
 	
-	if (decimal >= 10 && decimal <= 19)
+	else if (decimal >= 10 && decimal <= 19)
 	{
 		hexadecimal = decimal + 6;
 	}
 	
-	if (decimal >= 20 && decimal <= 29)
+	else if (decimal >= 20 && decimal <= 29)
 	{
 		hexadecimal = decimal + 12;
 	}
 	
-	if (decimal >= 30 && decimal <= 39)
+	else if (decimal >= 30 && decimal <= 39)
 	{
 		hexadecimal = decimal + 18;
 	}
 	
-	if (decimal >= 40 && decimal <= 49)
+	else if (decimal >= 40 && decimal <= 49)
 	{
 		hexadecimal = decimal + 24;
 	}
 	
-	if (decimal >= 50 && decimal <= 59)
+	else if (decimal >= 50 && decimal <= 59)
 	{
 		hexadecimal = decimal + 30;
 	}
 	
-	if (decimal >= 60 && decimal <= 69)
+	else if (decimal >= 60 && decimal <= 69)
 	{
 		hexadecimal = decimal + 36;
 	}
 	
-	if (decimal >= 70 && decimal <= 79)
+	else if (decimal >= 70 && decimal <= 79)
 	{
 		hexadecimal = decimal + 42;
 	}
 	
-	if (decimal >= 80 && decimal <= 89)
+	else if (decimal >= 80 && decimal <= 89)
 	{
 		hexadecimal = decimal + 48;
 	}
 	
-	if (decimal >= 90 && decimal <= 99)
+	else if (decimal >= 90 && decimal <= 99)
 	{
 		hexadecimal = decimal + 54;
 	}
@@ -373,14 +376,14 @@ class SW
 private:
 	unsigned int m_SwitchPort;
 	bool m_isReversal;
-	volatile unsigned int m_newValue;
-	volatile unsigned int m_oldValue;
+	NonOptimal m_newValue;
+	NonOptimal m_oldValue;
 
 public:
 	SW (int switchPort, bool isReversal) { m_SwitchPort = switchPort; m_isReversal = isReversal; }
 	void initSW (void);
 	
-	volatile unsigned int result;
+	NonOptimal result;
 
 };
 
@@ -527,7 +530,7 @@ public:
 	void setData (int dataValue);
 
 	// INFO
-	void printLCD (const char *stringValue);
+	void printLCD (String stringValue);
 	void changeLine (int lineIndex, int fileIndex);
 	void clearLine (int clearMode);
 	void initLCD (void);
@@ -734,7 +737,7 @@ void LCD::setData (int dataValue)
 				Print String
 //----------------------------------------*/
 
-void LCD::printLCD (const char *stringValue)
+void LCD::printLCD (String stringValue)
 {
 	
 	while (*stringValue != '\0')
