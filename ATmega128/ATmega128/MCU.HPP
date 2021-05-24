@@ -11,8 +11,6 @@
 #ifndef MCU_HPP_
 #define MCU_HPP_
 
-#include <util/delay.h>
-
 #define OFF		0
 #define ON		1
 #define LOW		0
@@ -42,6 +40,8 @@
 #define SW_5	0x20
 #define SW_6	0x40
 #define SW_7	0x80
+
+#include <util/delay.h>
 
 typedef const char* String;
 typedef volatile unsigned int NonOptimal;
