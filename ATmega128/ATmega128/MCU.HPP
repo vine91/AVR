@@ -49,6 +49,8 @@ typedef volatile unsigned int NonOptimal;
 //using String = const char*;
 //using NonOptimal = volatile unsigned int;
 
+#endif /* MCU_HPP_ */
+
 
 
 
@@ -72,6 +74,28 @@ int insertBit (int bitValue, bool isHigh)
 		return lowValue &= ~(1 << bitValue);
 	}
 	
+}
+
+
+/*----------------------------------------//
+			Delay Micro Second
+//----------------------------------------*/
+
+void delayCycle (unsigned char CycleValue)
+{
+	
+    register unsigned char i;
+	
+    for(i=0; i<CycleValue; i++)				// 4 cycle +
+    {
+        asm volatile("PUSH R0");			// 2 cycle +
+        asm volatile("POP  R0");			// 2 cycle +
+        asm volatile("PUSH R0");			// 2 cycle +
+        asm volatile("POP  R0");			// 2 cycle +
+        asm volatile("PUSH R0");			// 2 cycle +
+        asm volatile("POP  R0");			// 2 cycle =
+    }
+											// 16 cycle = 1us in 16MHz System
 }
 
 
@@ -387,7 +411,7 @@ private:
 public:
 	SW (int switchPort, bool isReversal) { m_SwitchPort = switchPort; m_isReversal = isReversal; }
 	void initSW (void);
-	
+
 	NonOptimal result;
 
 };
@@ -527,13 +551,13 @@ protected:
 
 public:
 	LCD (int LCDPort) { m_LCDPort = LCDPort; }
-
+	
 	// PORT
 	void attachPort (int portValue);
 	void attachExtendPort (int extendPortValue);
 	void setInstruction (int instructionValue);
 	void setData (int dataValue);
-
+	
 	// INFO
 	void printLCD (String stringValue);
 	void changeLine (int lineIndex, int fileIndex);
@@ -610,7 +634,7 @@ void LCD::attachPort (int portValue)
 
 void LCD::attachExtendPort (int extendPortValue)
 {
-
+	
 	switch (m_ExtendPort)
 	{
 		// PORTA
@@ -646,7 +670,7 @@ void LCD::attachExtendPort (int extendPortValue)
 		default:
 			break;
 	}
-
+	
 }
 
 
@@ -656,7 +680,7 @@ void LCD::attachExtendPort (int extendPortValue)
 
 void LCD::setInstruction (int instructionValue)
 {
-
+	
 	if (m_isDataLong == false)
 	{
 		int enableBit = insertBit(7, HIGH);
@@ -680,9 +704,9 @@ void LCD::setInstruction (int instructionValue)
 	{
 		int enableBit = insertBit(2, HIGH);
 		int disableBit = insertBit(2, LOW);
-
+		
 		_delay_ms(2);
-
+		
 		attachExtendPort(instructionValue);
 		
 		attachPort(enableBit);
@@ -690,7 +714,7 @@ void LCD::setInstruction (int instructionValue)
 		attachPort(disableBit);
 		_delay_us(1);
 	}
-
+	
 }
 
 
@@ -700,7 +724,7 @@ void LCD::setInstruction (int instructionValue)
 
 void LCD::setData (int dataValue)
 {
-
+	
 	if (m_isDataLong == false)
 	{
 		int enableBit = insertBit(7, HIGH) | insertBit(5, HIGH);
@@ -719,14 +743,14 @@ void LCD::setData (int dataValue)
 		attachPort( (dataValue & 0x0F) | disableBit );
 		_delay_us(1);
 	}
-
+	
 	else
 	{
 		int enableBit = insertBit(2, HIGH) | insertBit(0, HIGH);
 		int disableBit = insertBit(2, LOW) | insertBit(0, HIGH);
-
+		
 		_delay_ms(2);
-
+		
 		attachExtendPort(dataValue);
 		
 		attachPort(enableBit);
@@ -818,21 +842,21 @@ void LCD::clearLine (int clearMode)
 
 void LCD::initLCD (void)
 {
-
+	
 	if (m_isDataLong == false)
 	{
 		setInstruction(0x28);			// Set Function		[ DL = 4 Bit		N = 2 LINE		F = 5 x 7	]
 	}
-
+	
 	else
 	{
 		setInstruction(0x38);			// Set Function		[ DL = 8 Bit		N = 2 LINE		F = 5 x 7	]
 	}
-
+	
 	setInstruction(0x0C);				// Control Display	[ D = Display H		C = Cursor L	B = Blink L ]
 	setInstruction(0x06);				// Set Entry Mode	[ I/D = Right						S = Shift L	]
 	setInstruction(0x01);				// Clear Display
-
+	
 }
 
 
@@ -881,20 +905,31 @@ class Motor
 
 private:
 	int m_MotorPort;
+	int m_LeftSpeed = 160;
+	int m_RightSpeed = 160;
 
 public:
 	Motor (int motorPort) { m_MotorPort = motorPort; }
 	void attachPort (int portValue);
-
+	bool isOn;
+	
+	// SET SPEED
+	void setLeftSpeed (int leftSpeedValue) { m_LeftSpeed *= leftSpeedValue; }
+	void getLeftSpeed (void) { delayCycle(m_LeftSpeed); }
+	void setRightSpeed (int RightSpeedValue) { m_RightSpeed *= RightSpeedValue; }
+	void getRightSpeed (void) { delayCycle(m_RightSpeed); }
+	
 	// LEFT MOTOR
-	void leftStop (void) { attachPort( insertBit(0, HIGH) | insertBit(2, HIGH) ); }
-	void leftBreak (void) { attachPort( insertBit(0, LOW) | insertBit(2, LOW) ); }
-	void leftStart (bool isClockWise);
-
+	void stopLeft (void) { attachPort( insertBit(0, LOW) | insertBit(2, LOW) ); }
+	void breakLeft (void) { attachPort( insertBit(0, HIGH) | insertBit(2, HIGH) ); }
+	void startLeft (bool isClockWise);
+	
 	// RIGHT MOTOR
-	void rightStop (void) { attachPort( insertBit(1, HIGH) | insertBit(3, HIGH) ); }
-	void rightBreak (void) { attachPort( insertBit(1, LOW) | insertBit(3, LOW) ); }
-	void rightStart (bool isClockWise);
+	void stopRight (void) { attachPort( insertBit(1, LOW) | insertBit(3, LOW) ); }
+	void breakRight (void) { attachPort( insertBit(1, HIGH) | insertBit(3, HIGH) ); }
+	void startRight (bool isClockWise);
+	
+	void stopMotor (void) { stopLeft(); stopRight(); isOn = OFF; }
 
 };
 
@@ -946,45 +981,52 @@ void Motor::attachPort (int portValue)
 
 
 /*----------------------------------------//
-			Start Left Motor
+			 Start Left Motor
 //----------------------------------------*/
 
-void Motor::leftStart (bool isClockWise)
+void Motor::startLeft (bool isClockWise)
 {
 	
 	if (isClockWise == true)
 	{
 		attachPort( insertBit(0, HIGH) | insertBit(2, LOW) );
+		getLeftSpeed();
+		stopLeft();
 	}
 	
 	else
 	{
 		attachPort( insertBit(0, LOW) | insertBit(2, HIGH) );
+		getLeftSpeed();
+		stopLeft();
 	}
+	
+	isOn = ON;
 	
 }
 
 
 /*----------------------------------------//
-			Start Right Motor
+			 Start Right Motor
 //----------------------------------------*/
 
-void Motor::rightStart (bool isClockWise)
+void Motor::startRight (bool isClockWise)
 {
 	
 	if (isClockWise == true)
 	{
 		attachPort( insertBit(1, HIGH) | insertBit(3, LOW) );
+		getRightSpeed();
+		stopRight();
 	}
 	
 	else
 	{
 		attachPort( insertBit(1, LOW) | insertBit(3, HIGH) );
+		getRightSpeed();
+		stopRight();
 	}
 	
+	isOn = ON;
+	
 }
-
-
-
-
-#endif /* MCU_HPP_ */
