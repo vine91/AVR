@@ -1,8 +1,10 @@
 ﻿/*
- *	  NOTE - MCU.HPP
+ *		NOTE	- MCU.HPP
+ *	 Copyright	- NULL
  *
- * Created - 2021.05.10
- *  Author - 2033112012 CLJ
+ * 	 Created	- 2021.05.10
+ *   Author		- 2033112012 CLJ
+ * 	 Contact	- vine9151@gmail.com
  */
 
 
@@ -41,8 +43,11 @@
 #define SW_6	0x40
 #define SW_7	0x80
 
-using String = const char *;
-using NonOptimal = volatile unsigned int;
+typedef const char* String;
+typedef volatile unsigned int NonOptimal;
+
+//using String = const char*;
+//using NonOptimal = volatile unsigned int;
 
 
 
@@ -880,9 +885,16 @@ private:
 public:
 	Motor (int motorPort) { m_MotorPort = motorPort; }
 	void attachPort (int portValue);
-	void setStop (void) { attachPort( insertBit(0, HIGH) | insertBit(1, HIGH) ); }
-	void setBreak (void) { attachPort( insertBit(0, LOW) | insertBit(1, LOW) ); }
-	void setStart (bool isClockWise);
+
+	// LEFT MOTOR
+	void leftStop (void) { attachPort( insertBit(0, HIGH) | insertBit(2, HIGH) ); }
+	void leftBreak (void) { attachPort( insertBit(0, LOW) | insertBit(2, LOW) ); }
+	void leftStart (bool isClockWise);
+
+	// RIGHT MOTOR
+	void rightStop (void) { attachPort( insertBit(1, HIGH) | insertBit(3, HIGH) ); }
+	void rightBreak (void) { attachPort( insertBit(1, LOW) | insertBit(3, LOW) ); }
+	void rightStart (bool isClockWise);
 
 };
 
@@ -934,20 +946,40 @@ void Motor::attachPort (int portValue)
 
 
 /*----------------------------------------//
-			Set Start DC Motor
+			Start Left Motor
 //----------------------------------------*/
 
-void Motor::setStart (bool isClockWise)
+void Motor::leftStart (bool isClockWise)
 {
 	
 	if (isClockWise == true)
 	{
-		attachPort( insertBit(0, HIGH) | insertBit(1, LOW) );
+		attachPort( insertBit(0, HIGH) | insertBit(2, LOW) );
 	}
 	
 	else
 	{
-		attachPort( insertBit(0, LOW) | insertBit(1, HIGH) );
+		attachPort( insertBit(0, LOW) | insertBit(2, HIGH) );
+	}
+	
+}
+
+
+/*----------------------------------------//
+			Start Right Motor
+//----------------------------------------*/
+
+void Motor::rightStart (bool isClockWise)
+{
+	
+	if (isClockWise == true)
+	{
+		attachPort( insertBit(1, HIGH) | insertBit(3, LOW) );
+	}
+	
+	else
+	{
+		attachPort( insertBit(1, LOW) | insertBit(3, HIGH) );
 	}
 	
 }

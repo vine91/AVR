@@ -1,16 +1,17 @@
 /*
- *	  NOTE - Counter_System.cpp
+ *		NOTE	- Counter_System.cpp
+ *	 Copyright	- NULL
  *
- * Created - 2021.05.10
- *  Author - 2033112012 CLJ
+ * 	 Created	- 2021.05.10
+ *   Author		- 2033112012 CLJ
+ * 	 Contact	- vine9151@gmail.com
  */
+
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
 #include "MCU.HPP"
-
-
 
 
 SW sw(C, ON);
@@ -27,6 +28,8 @@ int Setted = OFF;
 
 int i, j;
 int k, l;
+
+
 
 
 /*========================================//

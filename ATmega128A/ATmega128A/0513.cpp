@@ -5,13 +5,15 @@
  *  Author - 2033112012 CLJ
  */
 
+
 #include <avr/io.h>
 #include "MCU.HPP"
 
 
-
 DataLongLCD lcd(A, B);
 SW sw(C, OFF);
+
+
 
 
 int main (void)
