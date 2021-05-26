@@ -1,5 +1,5 @@
 ﻿/*
- *		NOTE	- MCU.HPP
+ *		NOTE	- mcu.Hpp
  *	 Copyright	- NULL
  *
  * 	 Created	- 2021.05.10
@@ -75,11 +75,39 @@ int insertBit (int bitValue, bool isHigh)
 }
 
 
+
+
+/*
+//==========================================
+			  NAMESPACE - MCU
+==========================================//
+*/
+
+namespace MCU
+{
+	
+	namespace Features
+	{
+		void delayCycle (unsigned char CycleValue);
+		int hex (int decimal);
+		int ASKII (int decimal);
+	}
+	
+	namespace Setting
+	{
+		void beginPort (int port, bool isOutput);
+		void beginExtend (int extendIndex);
+		void beginTimer (int timerIndex, int timerMode);
+	}
+	
+}
+
+
 /*----------------------------------------//
 			Delay Micro Second
 //----------------------------------------*/
 
-void delayCycle (unsigned char CycleValue)
+void MCU::Features::delayCycle (unsigned char CycleValue)
 {
 	
     register unsigned char i;
@@ -98,10 +126,10 @@ void delayCycle (unsigned char CycleValue)
 
 
 /*----------------------------------------//
-			  Encode 10 to 16
+			 Convert 10 to 16
 //----------------------------------------*/
 
-int encodeFND(int decimal)
+int MCU::Features::hex (int decimal)
 {
 	int hexadecimal = 0x00;
 	
@@ -160,43 +188,27 @@ int encodeFND(int decimal)
 
 
 /*----------------------------------------//
-			Encode 10 to ASKII
+			Convert 10 to ASKII
 //----------------------------------------*/
 
-int encodeLCD(int decimal)
+int MCU::Features::ASKII (int decimal)
 {
-	int ASKII = 0x00;
+	int ASKIIValue = 0x00;
 	
 	if (decimal >= 0 && decimal <= 9)
 	{
-		ASKII = decimal + 0x30;
+		ASKIIValue = decimal + 0x30;
 	}
 	
-	return ASKII;
-}
-
-
-
-
-/*
-//==========================================
-			NAMESPACE - Setting
-==========================================//
-*/
-
-namespace Setting
-{
-	void beginPort (int port, bool isOutput);
-	void beginExtended (int extendedIndex);
-	void beginTimer (int timerIndex, int timerMode);
+	return ASKIIValue;
 }
 
 
 /*----------------------------------------//
-			  Initialize Port
+				 Begin Port
 //----------------------------------------*/
 
-void Setting::beginPort (int port, bool isOutput)
+void MCU::Setting::beginPort (int port, bool isOutput)
 {
 	
 	int ddrValue;
@@ -263,17 +275,17 @@ void Setting::beginPort (int port, bool isOutput)
 		 Begin Extended Interrupt
 //----------------------------------------*/
 
-void Setting::beginExtended (int extendedIndex)
+void MCU::Setting::beginExtend(int extendIndex)
 {
 	
-	EIMSK += insertBit(extendedIndex, HIGH);
+	EIMSK += insertBit(extendIndex, HIGH);
 	
-	if (extendedIndex <= 3)
+	if (extendIndex <= 3)
 	{
 		EICRA = 0x00;
 	}
 	
-	else if (extendedIndex >= 4)
+	else if (extendIndex >= 4)
 	{
 		EICRB = 0x00;
 	}
@@ -285,7 +297,7 @@ void Setting::beginExtended (int extendedIndex)
 		  Begin Timer Interrupt
 //----------------------------------------*/
 
-void Setting::beginTimer (int timerIndex, int timerMode)
+void MCU::Setting::beginTimer (int timerIndex, int timerMode)
 {
 	
 	switch (timerIndex)
@@ -403,12 +415,12 @@ class SW
 private:
 	unsigned int m_SwitchPort;
 	bool m_isReversal;
-	NonOptimal m_newValue;
-	NonOptimal m_oldValue;
+	NonOptimal m_NewValue;
+	NonOptimal m_OldValue;
 
 public:
 	SW (int switchPort, bool isReversal) { m_SwitchPort = switchPort; m_isReversal = isReversal; }
-	void initSW (void);
+	void init (void);
 
 	NonOptimal result;
 
@@ -419,39 +431,39 @@ public:
 			 Initialize Switch
 //----------------------------------------*/
 
-void SW::initSW (void)
+void SW::init (void)
 {
 	
 	switch (m_SwitchPort)
 	{
 		// PORTA
 		case A:
-			m_newValue = PINA;
+			m_NewValue = PINA;
 			break;
 		
 		// PORTB
 		case B:
-			m_newValue = PINB;
+			m_NewValue = PINB;
 			break;
 		
 		// PORTC
 		case C:
-			m_newValue = PINC;
+			m_NewValue = PINC;
 			break;
 		
 		// PORTD
 		case D:
-			m_newValue = PIND;
+			m_NewValue = PIND;
 			break;
 		
 		// PORTE
 		case E:
-			m_newValue = PINE;
+			m_NewValue = PINE;
 			break;
 		
 		// PORTF
 		case F:
-			m_newValue = PINF;
+			m_NewValue = PINF;
 			break;
 		
 		default:
@@ -460,14 +472,14 @@ void SW::initSW (void)
 	
 	if (m_isReversal == true)
 	{
-		result = m_oldValue & ~m_newValue;
-		m_oldValue = m_newValue;
+		result = m_OldValue & ~m_NewValue;
+		m_OldValue = m_NewValue;
 	}
 	
 	else
 	{
-		result = m_oldValue & m_newValue;
-		m_oldValue = ~m_newValue;
+		result = m_OldValue & m_NewValue;
+		m_OldValue = ~m_NewValue;
 	}
 	
 }
@@ -550,17 +562,17 @@ protected:
 public:
 	LCD (int LCDPort) { m_LCDPort = LCDPort; }
 	
-	// PORT
+	// PORT SETTINGS
 	void attachPort (int portValue);
 	void attachExtendPort (int extendPortValue);
-	void setInstruction (int instructionValue);
-	void setData (int dataValue);
+	void exportInstruction (int instructionValue);
+	void exportData (int dataValue);
 	
-	// INFO
-	void printLCD (String stringValue);
-	void changeLine (int lineIndex, int fileIndex);
-	void clearLine (int clearMode);
-	void initLCD (void);
+	// FEATURES
+	void print (String stringValue);
+	void setLine (int lineIndex, int fileIndex);
+	void clear (int clearMode);
+	void init (void);
 
 };
 
@@ -673,10 +685,10 @@ void LCD::attachExtendPort (int extendPortValue)
 
 
 /*----------------------------------------//
-			 Set Instruction
+			 Export Instruction
 //----------------------------------------*/
 
-void LCD::setInstruction (int instructionValue)
+void LCD::exportInstruction (int instructionValue)
 {
 	
 	if (m_isDataLong == false)
@@ -717,10 +729,10 @@ void LCD::setInstruction (int instructionValue)
 
 
 /*----------------------------------------//
-				 Set Data
+				Export Data
 //----------------------------------------*/
 
-void LCD::setData (int dataValue)
+void LCD::exportData (int dataValue)
 {
 	
 	if (m_isDataLong == false)
@@ -764,12 +776,12 @@ void LCD::setData (int dataValue)
 				Print String
 //----------------------------------------*/
 
-void LCD::printLCD (String stringValue)
+void LCD::print (String stringValue)
 {
 	
 	while (*stringValue != '\0')
 	{
-		setData(*stringValue);
+		exportData(*stringValue);
 		stringValue ++;
 	}
 	
@@ -777,10 +789,10 @@ void LCD::printLCD (String stringValue)
 
 
 /*----------------------------------------//
-				Change Line
+				  Set Line
 //----------------------------------------*/
 
-void LCD::changeLine (int lineIndex, int fileIndex)
+void LCD::setLine (int lineIndex, int fileIndex)
 {
 	
 	for (int i=0; i<16; i++)
@@ -789,14 +801,14 @@ void LCD::changeLine (int lineIndex, int fileIndex)
 		{
 			int sendValue = 0x80 + i;
 			
-			setInstruction(sendValue);
+			exportInstruction(sendValue);
 		}
 		
 		else if (lineIndex == 2 && fileIndex == (i + 1))
 		{
 			int sendValue = 0xC0 + i;
 			
-			setInstruction(sendValue);
+			exportInstruction(sendValue);
 		}
 	}
 	
@@ -804,31 +816,31 @@ void LCD::changeLine (int lineIndex, int fileIndex)
 
 
 /*----------------------------------------//
-				Clear Line
+				 Clear Line
 //----------------------------------------*/
 
-void LCD::clearLine (int clearMode)
+void LCD::clear (int clearMode)
 {
 	
 	if (clearMode == ALL)
 	{
-		changeLine(1, 1);
-		printLCD("                ");
+		setLine(1, 1);
+		print("                ");
 		
-		changeLine(2, 1);
-		printLCD("                ");
+		setLine(2, 1);
+		print("                ");
 	}
 	
 	else if (clearMode == 1)
 	{
-		changeLine(1, 1);
-		printLCD("                ");
+		setLine(1, 1);
+		print("                ");
 	}
 	
 	else if (clearMode == 2)
 	{
-		changeLine(2, 1);
-		printLCD("                ");
+		setLine(2, 1);
+		print("                ");
 	}
 	
 }
@@ -838,22 +850,22 @@ void LCD::clearLine (int clearMode)
 			  Initialize LCD
 //----------------------------------------*/
 
-void LCD::initLCD (void)
+void LCD::init (void)
 {
 	
 	if (m_isDataLong == false)
 	{
-		setInstruction(0x28);			// Set Function		[ DL = 4 Bit		N = 2 LINE		F = 5 x 7	]
+		exportInstruction(0x28);			// Set Function		[ DL = 4 Bit		N = 2 LINE		F = 5 x 7	]
 	}
 	
 	else
 	{
-		setInstruction(0x38);			// Set Function		[ DL = 8 Bit		N = 2 LINE		F = 5 x 7	]
+		exportInstruction(0x38);			// Set Function		[ DL = 8 Bit		N = 2 LINE		F = 5 x 7	]
 	}
 	
-	setInstruction(0x0C);				// Control Display	[ D = Display H		C = Cursor L	B = Blink L ]
-	setInstruction(0x06);				// Set Entry Mode	[ I/D = Right						S = Shift L	]
-	setInstruction(0x01);				// Clear Display
+	exportInstruction(0x0C);				// Control Display	[ D = Display H		C = Cursor L	B = Blink L ]
+	exportInstruction(0x06);				// Set Entry Mode	[ I/D = Right						S = Shift L	]
+	exportInstruction(0x01);				// Clear Display
 	
 }
 
@@ -914,9 +926,9 @@ public:
 	
 	// SET SPEED
 	void setLeftSpeed (int leftSpeedValue) { m_LeftSpeed = 160; m_LeftSpeed *= leftSpeedValue; }
-	void getLeftSpeed (void) { delayCycle(m_LeftSpeed); }
+	void getLeftSpeed (void) { MCU::Features::delayCycle(m_LeftSpeed); }
 	void setRightSpeed (int rightSpeedValue) { m_RightSpeed = 160; m_RightSpeed *= rightSpeedValue; }
-	void getRightSpeed (void) { delayCycle(m_RightSpeed); }
+	void getRightSpeed (void) { MCU::Features::delayCycle(m_RightSpeed); }
 	
 	// LEFT MOTOR
 	void stopLeft (void) { m_PortValue &= insertBit(0, LOW) | insertBit(2, LOW); }
@@ -928,8 +940,7 @@ public:
 	void breakRight (void) { m_PortValue |= insertBit(1, HIGH) | insertBit(3, HIGH); }
 	void startRight (bool isClockWise);
 	
-	void startMotor (void) { attachPort(m_PortValue); }
-	void stopMotor (void) { stopLeft(); stopRight(); attachPort(m_PortValue); isOn = OFF; }
+	void stop (void) { stopLeft(); stopRight(); attachPort(m_PortValue); isOn = false; }
 
 };
 
@@ -989,29 +1000,27 @@ void Motor::startLeft (bool isClockWise)
 	
 	if (isClockWise == true)
 	{
-		int enableBit = insertBit(0, HIGH) | insertBit(2, LOW);
-		//int disableBit = insertBit(0, LOW) | insertBit(2, LOW);
+		m_PortValue += insertBit(0, HIGH) | insertBit(2, LOW);
+		attachPort(m_PortValue);
 		
-		attachPort(enableBit);
-		//attachPort(disableBit);
+		getLeftSpeed();
 		
-		//getLeftSpeed();
-		//stopLeft();
+		stopLeft();
+		attachPort(m_PortValue);
 	}
 	
 	else
 	{
-		int enableBit = insertBit(0, LOW) | insertBit(2, HIGH);
-		//int disableBit = insertBit(0, LOW) | insertBit(2, LOW);
+		m_PortValue += insertBit(0, LOW) | insertBit(2, HIGH);
+		attachPort(m_PortValue);
 		
-		attachPort(enableBit);
-		//attachPort(disableBit);
+		getLeftSpeed();
 		
-		//getLeftSpeed();
-		//stopLeft();
+		stopLeft();
+		attachPort(m_PortValue);
 	}
 	
-	isOn = ON;
+	isOn = true;
 	
 }
 
@@ -1025,29 +1034,27 @@ void Motor::startRight (bool isClockWise)
 	
 	if (isClockWise == true)
 	{
-		int enableBit = insertBit(1, HIGH) | insertBit(3, LOW);
-		//int disableBit = insertBit(1, LOW) | insertBit(3, LOW);
+		m_PortValue += insertBit(1, HIGH) | insertBit(3, LOW);
+		attachPort(m_PortValue);
 		
-		attachPort(enableBit);
-		//attachPort(disableBit);
+		getLeftSpeed();
 		
-		//getRightSpeed();
-		//stopRight();
+		stopRight();
+		attachPort(m_PortValue);
 	}
 	
 	else
 	{
-		int enableBit = insertBit(1, LOW) | insertBit(3, HIGH);
-		//int disableBit = insertBit(1, LOW) | insertBit(3, LOW);
+		m_PortValue += insertBit(1, LOW) | insertBit(3, HIGH);
+		attachPort(m_PortValue);
 		
-		attachPort(enableBit);
-		//attachPort(disableBit);
+		getLeftSpeed();
 		
-		//getRightSpeed();
-		//stopRight();
+		stopRight();
+		attachPort(m_PortValue);
 	}
 	
-	isOn = ON;
+	isOn = true;
 	
 }
 

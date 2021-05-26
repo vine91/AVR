@@ -159,7 +159,7 @@
     <Compile Include="Line_Tracer.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="MCU.HPP">
+    <Compile Include="mcu.Hpp">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

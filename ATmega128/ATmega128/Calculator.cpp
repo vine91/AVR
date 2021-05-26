@@ -11,7 +11,10 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#include "MCU.HPP"
+#include "mcu.Hpp"
+
+using namespace MCU::Features;
+using namespace MCU::Setting;
 
 
 SW sw;

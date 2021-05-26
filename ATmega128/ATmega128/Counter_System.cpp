@@ -11,9 +11,10 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#include "MCU.HPP"
+#include "mcu.Hpp"
 
-using namespace Setting;
+using namespace MCU::Features;
+using namespace MCU::Setting;
 
 
 SW sw(C, ON);
@@ -46,7 +47,7 @@ int main (void)
 	beginTimer(2, OVF);
 	beginTimer(1, COMP);
 	
-	lcd.initLCD();
+	lcd.init();
 	
 	sei();
 	
@@ -56,10 +57,10 @@ int main (void)
 		
 		if (Title == ON)
 		{
-			lcd.changeLine(1, 2);
-			lcd.printLCD("Counter System");
-			lcd.changeLine(2, 11);
-			lcd.printLCD("by CLJ");
+			lcd.setLine(1, 2);
+			lcd.print("Counter System");
+			lcd.setLine(2, 11);
+			lcd.print("by CLJ");
 			
 			_delay_ms(300);
 		}
@@ -77,7 +78,7 @@ int main (void)
 
 ISR(TIMER2_OVF_vect)
 {
-	sw.initSW();
+	sw.init();
 	
 	if (sw.result != SW_OFF)
 	{
@@ -88,10 +89,10 @@ ISR(TIMER2_OVF_vect)
 				
 				if (Set == ON && Setted == OFF)
 				{
-					lcd.clearLine(ALL);
+					lcd.clear(ALL);
 					
-					lcd.changeLine(1, 1);
-					lcd.printLCD("Counting");
+					lcd.setLine(1, 1);
+					lcd.print("Counting");
 					
 					Start = ON;
 					Pause = OFF;
@@ -99,16 +100,16 @@ ISR(TIMER2_OVF_vect)
 				
 				else if (Set == OFF && Setted == OFF)
 				{
-					lcd.clearLine(ALL);
+					lcd.clear(ALL);
 					
-					lcd.changeLine(1, 1);
-					lcd.printLCD("Please Push SW 3");
-					lcd.changeLine(2, 2);
-					lcd.printLCD("to Set the Time");
+					lcd.setLine(1, 1);
+					lcd.print("Please Push SW 3");
+					lcd.setLine(2, 2);
+					lcd.print("to Set the Time");
 					
 					_delay_ms(4000);
 					
-					lcd.clearLine(ALL);
+					lcd.clear(ALL);
 					
 					Title = ON;
 				}
@@ -126,17 +127,17 @@ ISR(TIMER2_OVF_vect)
 				{
 					Setted = ON;
 					
-					lcd.clearLine(ALL);
+					lcd.clear(ALL);
 					
-					lcd.changeLine(1, 1);
-					lcd.printLCD("Set Time");
+					lcd.setLine(1, 1);
+					lcd.print("Set Time");
 					
-					lcd.changeLine(2, 12);
-					lcd.setData(encodeLCD(i));
-					lcd.setData(encodeLCD(j));
-					lcd.printLCD(":");
-					lcd.setData(encodeLCD(k));
-					lcd.setData(encodeLCD(l));
+					lcd.setLine(2, 12);
+					lcd.exportData(ASKII(i));
+					lcd.exportData(ASKII(j));
+					lcd.print(":");
+					lcd.exportData(ASKII(k));
+					lcd.exportData(ASKII(l));
 				}
 				
 				break;
@@ -147,14 +148,14 @@ ISR(TIMER2_OVF_vect)
 					Set = ON;
 					Setted = OFF;
 					
-					lcd.clearLine(1);
+					lcd.clear(1);
 					
-					lcd.changeLine(1, 1);
-					lcd.printLCD("Set Complete");
+					lcd.setLine(1, 1);
+					lcd.print("Set Complete");
 					
 					_delay_ms(2000);
 					
-					lcd.clearLine(ALL);
+					lcd.clear(ALL);
 					
 					Title = ON;
 				}
@@ -174,12 +175,12 @@ ISR(TIMER2_OVF_vect)
 						i = 0;
 					}
 					
-					lcd.changeLine(2, 12);
-					lcd.setData(encodeLCD(i));
-					lcd.setData(encodeLCD(j));
-					lcd.printLCD(":");
-					lcd.setData(encodeLCD(k));
-					lcd.setData(encodeLCD(l));
+					lcd.setLine(2, 12);
+					lcd.exportData(ASKII(i));
+					lcd.exportData(ASKII(j));
+					lcd.print(":");
+					lcd.exportData(ASKII(k));
+					lcd.exportData(ASKII(l));
 				}
 				
 				break;
@@ -197,12 +198,12 @@ ISR(TIMER2_OVF_vect)
 						j = 0;
 					}
 					
-					lcd.changeLine(2, 12);
-					lcd.setData(encodeLCD(i));
-					lcd.setData(encodeLCD(j));
-					lcd.printLCD(":");
-					lcd.setData(encodeLCD(k));
-					lcd.setData(encodeLCD(l));
+					lcd.setLine(2, 12);
+					lcd.exportData(ASKII(i));
+					lcd.exportData(ASKII(j));
+					lcd.print(":");
+					lcd.exportData(ASKII(k));
+					lcd.exportData(ASKII(l));
 				}
 				
 				break;
@@ -220,12 +221,12 @@ ISR(TIMER2_OVF_vect)
 						k = 0;
 					}
 					
-					lcd.changeLine(2, 12);
-					lcd.setData(encodeLCD(i));
-					lcd.setData(encodeLCD(j));
-					lcd.printLCD(":");
-					lcd.setData(encodeLCD(k));
-					lcd.setData(encodeLCD(l));
+					lcd.setLine(2, 12);
+					lcd.exportData(ASKII(i));
+					lcd.exportData(ASKII(j));
+					lcd.print(":");
+					lcd.exportData(ASKII(k));
+					lcd.exportData(ASKII(l));
 				}
 				
 				break;
@@ -243,12 +244,12 @@ ISR(TIMER2_OVF_vect)
 						l = 0;
 					}
 					
-					lcd.changeLine(2, 12);
-					lcd.setData(encodeLCD(i));
-					lcd.setData(encodeLCD(j));
-					lcd.printLCD(":");
-					lcd.setData(encodeLCD(k));
-					lcd.setData(encodeLCD(l));
+					lcd.setLine(2, 12);
+					lcd.exportData(ASKII(i));
+					lcd.exportData(ASKII(j));
+					lcd.print(":");
+					lcd.exportData(ASKII(k));
+					lcd.exportData(ASKII(l));
 				}
 				
 				break;
@@ -267,13 +268,13 @@ ISR(TIMER1_COMPA_vect)
 		if (Pause == OFF)
 		{
 			
-			lcd.changeLine(2, 12);
+			lcd.setLine(2, 12);
 			
-			lcd.setData(encodeLCD(i));
-			lcd.setData(encodeLCD(j));
-			lcd.printLCD(":");
-			lcd.setData(encodeLCD(k));
-			lcd.setData(encodeLCD(l));
+			lcd.exportData(ASKII(i));
+			lcd.exportData(ASKII(j));
+			lcd.print(":");
+			lcd.exportData(ASKII(k));
+			lcd.exportData(ASKII(l));
 			
 			l--;
 			
@@ -299,10 +300,10 @@ ISR(TIMER1_COMPA_vect)
 							k = 0;
 							l = 0;
 							
-							lcd.clearLine(1);
+							lcd.clear(1);
 							
-							lcd.changeLine(1, 1);
-							lcd.printLCD("Done");
+							lcd.setLine(1, 1);
+							lcd.print("Done");
 							
 							Start = OFF;
 							Set = OFF;
@@ -315,10 +316,10 @@ ISR(TIMER1_COMPA_vect)
 		
 		else
 		{
-			lcd.clearLine(1);
+			lcd.clear(1);
 			
-			lcd.changeLine(1, 1);
-			lcd.printLCD("Pause");
+			lcd.setLine(1, 1);
+			lcd.print("Pause");
 		}
 	}
 }

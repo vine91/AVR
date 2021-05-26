@@ -11,15 +11,16 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#include "MCU.HPP"
+#include "mcu.Hpp"
 
-using namespace Setting;
+using namespace MCU::Features;
+using namespace MCU::Setting;
 
 
 SW sw(B, ON);
 Motor motor(D);
 
-//ISR(TIMER0_OVF_vect);
+ISR(TIMER0_OVF_vect);
 //ISR(TIMER1_COMPA_vect);
 
 int startSwitch;
@@ -33,44 +34,21 @@ int startSwitch;
 
 int main(void)
 {
-    beginPort(A, IN);
     beginPort(B, IN);
+    beginPort(E, IN);
     beginPort(D, OUT);
 	
 	beginTimer(0, OVF);
 	beginTimer(1, COMP);
 	
-	//motor.setLeftSpeed(40);
-	//motor.setRightSpeed(40);
+	motor.setLeftSpeed(40);
+	motor.setRightSpeed(40);
 	
 	sei();
 	
     while (true) 
     {
-		PORTD = 0b00000001;			//0001
-		_delay_ms(2000);
-		PORTD = 0b00000010;			//0010
-		_delay_ms(2000);
-		PORTD = 0b00000011;			//0010
-		_delay_ms(2000);
 		
-		/*
-		PORTD = 0x01;			//0001	Left 1 0 CW
-		_delay_ms(2000);
-		PORTD = 0x00;
-		
-		PORTD = 0x02;			//0010	Right 1 0 CW
-		_delay_ms(2000);
-		PORTD = 0x00;
-		
-		PORTD = 0x04;			//0100	Left 0 1 CCW
-		_delay_ms(2000);
-		PORTD = 0x00;
-		
-		PORTD = 0x08;			//1000	Right 0 1 CCW
-		_delay_ms(2000);
-		PORTD = 0x00;
-		*/
     }
 	
 	return 0;
@@ -80,11 +58,11 @@ int main(void)
 --------------   MAIN END   ----------------
 //========================================*/
 
-/*
+
 ISR(TIMER0_OVF_vect)
 {
 	
-	sw.initSW();
+	sw.init();
 	
 	if (sw.result != SW_OFF)
 	{
@@ -105,17 +83,18 @@ ISR(TIMER0_OVF_vect)
 	
 	if (startSwitch == ON)
 	{
-		PORTD = 0x01;
+		motor.startLeft(CW);
+		motor.startRight(CCW);
 	}
 	
 	else
 	{
-		PORTD = 0x00;
+		motor.stop();
 	}
 	
 }
 
-
+/*
 ISR(TIMER1_COMPA_vect)
 {
 	
@@ -129,4 +108,5 @@ ISR(TIMER1_COMPA_vect)
 		
 	}
 	
-}*/
+}
+*/
