@@ -49,8 +49,6 @@ typedef volatile unsigned int NonOptimal;
 //using String = const char*;
 //using NonOptimal = volatile unsigned int;
 
-#endif /* MCU_HPP_ */
-
 
 
 
@@ -905,8 +903,9 @@ class Motor
 
 private:
 	int m_MotorPort;
-	int m_LeftSpeed = 160;
-	int m_RightSpeed = 160;
+	int m_PortValue;
+	int m_LeftSpeed;
+	int m_RightSpeed;
 
 public:
 	Motor (int motorPort) { m_MotorPort = motorPort; }
@@ -914,22 +913,23 @@ public:
 	bool isOn;
 	
 	// SET SPEED
-	void setLeftSpeed (int leftSpeedValue) { m_LeftSpeed *= leftSpeedValue; }
+	void setLeftSpeed (int leftSpeedValue) { m_LeftSpeed = 160; m_LeftSpeed *= leftSpeedValue; }
 	void getLeftSpeed (void) { delayCycle(m_LeftSpeed); }
-	void setRightSpeed (int RightSpeedValue) { m_RightSpeed *= RightSpeedValue; }
+	void setRightSpeed (int rightSpeedValue) { m_RightSpeed = 160; m_RightSpeed *= rightSpeedValue; }
 	void getRightSpeed (void) { delayCycle(m_RightSpeed); }
 	
 	// LEFT MOTOR
-	void stopLeft (void) { attachPort( insertBit(0, LOW) | insertBit(2, LOW) ); }
-	void breakLeft (void) { attachPort( insertBit(0, HIGH) | insertBit(2, HIGH) ); }
+	void stopLeft (void) { m_PortValue &= insertBit(0, LOW) | insertBit(2, LOW); }
+	void breakLeft (void) { m_PortValue |= insertBit(0, HIGH) | insertBit(2, HIGH); }
 	void startLeft (bool isClockWise);
 	
 	// RIGHT MOTOR
-	void stopRight (void) { attachPort( insertBit(1, LOW) | insertBit(3, LOW) ); }
-	void breakRight (void) { attachPort( insertBit(1, HIGH) | insertBit(3, HIGH) ); }
+	void stopRight (void) { m_PortValue &= insertBit(1, LOW) | insertBit(3, LOW); }
+	void breakRight (void) { m_PortValue |= insertBit(1, HIGH) | insertBit(3, HIGH); }
 	void startRight (bool isClockWise);
 	
-	void stopMotor (void) { stopLeft(); stopRight(); isOn = OFF; }
+	void startMotor (void) { attachPort(m_PortValue); }
+	void stopMotor (void) { stopLeft(); stopRight(); attachPort(m_PortValue); isOn = OFF; }
 
 };
 
@@ -989,16 +989,26 @@ void Motor::startLeft (bool isClockWise)
 	
 	if (isClockWise == true)
 	{
-		attachPort( insertBit(0, HIGH) | insertBit(2, LOW) );
-		getLeftSpeed();
-		stopLeft();
+		int enableBit = insertBit(0, HIGH) | insertBit(2, LOW);
+		//int disableBit = insertBit(0, LOW) | insertBit(2, LOW);
+		
+		attachPort(enableBit);
+		//attachPort(disableBit);
+		
+		//getLeftSpeed();
+		//stopLeft();
 	}
 	
 	else
 	{
-		attachPort( insertBit(0, LOW) | insertBit(2, HIGH) );
-		getLeftSpeed();
-		stopLeft();
+		int enableBit = insertBit(0, LOW) | insertBit(2, HIGH);
+		//int disableBit = insertBit(0, LOW) | insertBit(2, LOW);
+		
+		attachPort(enableBit);
+		//attachPort(disableBit);
+		
+		//getLeftSpeed();
+		//stopLeft();
 	}
 	
 	isOn = ON;
@@ -1015,18 +1025,33 @@ void Motor::startRight (bool isClockWise)
 	
 	if (isClockWise == true)
 	{
-		attachPort( insertBit(1, HIGH) | insertBit(3, LOW) );
-		getRightSpeed();
-		stopRight();
+		int enableBit = insertBit(1, HIGH) | insertBit(3, LOW);
+		//int disableBit = insertBit(1, LOW) | insertBit(3, LOW);
+		
+		attachPort(enableBit);
+		//attachPort(disableBit);
+		
+		//getRightSpeed();
+		//stopRight();
 	}
 	
 	else
 	{
-		attachPort( insertBit(1, LOW) | insertBit(3, HIGH) );
-		getRightSpeed();
-		stopRight();
+		int enableBit = insertBit(1, LOW) | insertBit(3, HIGH);
+		//int disableBit = insertBit(1, LOW) | insertBit(3, LOW);
+		
+		attachPort(enableBit);
+		//attachPort(disableBit);
+		
+		//getRightSpeed();
+		//stopRight();
 	}
 	
 	isOn = ON;
 	
 }
+
+
+
+
+#endif /* MCU_HPP_ */

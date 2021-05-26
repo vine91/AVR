@@ -13,6 +13,8 @@
 
 #include "MCU.HPP"
 
+using namespace Setting;
+
 
 SW sw(C, ON);
 LCD lcd(E);
@@ -38,12 +40,11 @@ int k, l;
 
 int main (void)
 {
+    beginPort(C, IN);
+	beginPort(E, OUT);
 	
-    Setting::beginPort(C, IN);
-	Setting::beginPort(E, OUT);
-	
-	Setting::beginTimer(2, OVF);
-	Setting::beginTimer(1, COMP);
+	beginTimer(2, OVF);
+	beginTimer(1, COMP);
 	
 	lcd.initLCD();
 	
@@ -66,6 +67,7 @@ int main (void)
 		_delay_ms(2);
     }
 	
+	return 0;
 }
 
 /*========================================//
