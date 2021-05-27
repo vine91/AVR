@@ -914,10 +914,10 @@ class Motor
 {
 
 private:
-	int m_MotorPort;
-	int m_PortValue;
-	int m_LeftSpeed;
-	int m_RightSpeed;
+	unsigned int m_MotorPort;
+	NonOptimal m_PortValue;
+	NonOptimal m_LeftSpeed;
+	NonOptimal m_RightSpeed;
 
 public:
 	Motor (int motorPort) { m_MotorPort = motorPort; }
@@ -933,14 +933,15 @@ public:
 	// LEFT MOTOR
 	void stopLeft (void) { m_PortValue &= insertBit(0, LOW) | insertBit(2, LOW); }
 	void breakLeft (void) { m_PortValue |= insertBit(0, HIGH) | insertBit(2, HIGH); }
-	void startLeft (bool isClockWise);
+	void setLeft (bool isClockWise);
 	
 	// RIGHT MOTOR
 	void stopRight (void) { m_PortValue &= insertBit(1, LOW) | insertBit(3, LOW); }
 	void breakRight (void) { m_PortValue |= insertBit(1, HIGH) | insertBit(3, HIGH); }
-	void startRight (bool isClockWise);
+	void setRight (bool isClockWise);
 	
-	void stop (void) { stopLeft(); stopRight(); attachPort(m_PortValue); isOn = false; }
+	void setBit (void) { attachPort(m_PortValue); }
+	void stop (void) { stopLeft(); stopRight(); isOn = false; }
 
 };
 
@@ -995,29 +996,33 @@ void Motor::attachPort (int portValue)
 			 Start Left Motor
 //----------------------------------------*/
 
-void Motor::startLeft (bool isClockWise)
+void Motor::setLeft (bool isClockWise)
 {
 	
 	if (isClockWise == true)
 	{
-		m_PortValue += insertBit(0, HIGH) | insertBit(2, LOW);
-		attachPort(m_PortValue);
+		int enableBit = insertBit(0, HIGH) | insertBit(2, LOW);
+		//int disableBit = insertBit(0, LOW) | insertBit(2, LOW);
 		
-		getLeftSpeed();
+		m_PortValue |= enableBit;
 		
-		stopLeft();
-		attachPort(m_PortValue);
+		//getLeftSpeed();
+		
+		//stopLeft();
+		//attachPort(m_PortValue);
 	}
 	
 	else
 	{
-		m_PortValue += insertBit(0, LOW) | insertBit(2, HIGH);
-		attachPort(m_PortValue);
+		int enableBit = insertBit(0, LOW) | insertBit(2, HIGH);
+		//int disableBit = insertBit(0, LOW) | insertBit(2, LOW);
 		
-		getLeftSpeed();
+		m_PortValue |= enableBit;
 		
-		stopLeft();
-		attachPort(m_PortValue);
+		//getLeftSpeed();
+		
+		//stopLeft();
+		//attachPort(m_PortValue);
 	}
 	
 	isOn = true;
@@ -1029,29 +1034,33 @@ void Motor::startLeft (bool isClockWise)
 			 Start Right Motor
 //----------------------------------------*/
 
-void Motor::startRight (bool isClockWise)
+void Motor::setRight (bool isClockWise)
 {
 	
 	if (isClockWise == true)
 	{
-		m_PortValue += insertBit(1, HIGH) | insertBit(3, LOW);
-		attachPort(m_PortValue);
+		int enableBit = insertBit(1, HIGH) | insertBit(3, LOW);
+		//int disableBit = insertBit(1, LOW) | insertBit(3, LOW);
 		
-		getLeftSpeed();
+		m_PortValue |= enableBit;
 		
-		stopRight();
-		attachPort(m_PortValue);
+		//getLeftSpeed();
+		
+		//stopRight();
+		//attachPort(m_PortValue);
 	}
 	
 	else
 	{
-		m_PortValue += insertBit(1, LOW) | insertBit(3, HIGH);
-		attachPort(m_PortValue);
+		int enableBit = insertBit(1, LOW) | insertBit(3, HIGH);
+		//int disableBit = insertBit(1, LOW) | insertBit(3, LOW);
 		
-		getLeftSpeed();
+		m_PortValue |= enableBit;
 		
-		stopRight();
-		attachPort(m_PortValue);
+		//getLeftSpeed();
+		
+		//stopRight();
+		//attachPort(m_PortValue);
 	}
 	
 	isOn = true;

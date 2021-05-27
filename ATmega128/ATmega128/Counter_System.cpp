@@ -17,8 +17,8 @@ using namespace MCU::Features;
 using namespace MCU::Setting;
 
 
-SW sw(C, ON);
-LCD lcd(E);
+SW sw(C, OFF);
+DataLongLCD lcd(A, B);
 
 ISR(TIMER2_OVF_vect);
 ISR(TIMER1_COMPA_vect);
@@ -42,7 +42,8 @@ int k, l;
 int main (void)
 {
     beginPort(C, IN);
-	beginPort(E, OUT);
+	beginPort(B, OUT);
+	beginPort(A, OUT);
 	
 	beginTimer(2, OVF);
 	beginTimer(1, COMP);
@@ -78,6 +79,7 @@ int main (void)
 
 ISR(TIMER2_OVF_vect)
 {
+	
 	sw.init();
 	
 	if (sw.result != SW_OFF)
@@ -258,11 +260,13 @@ ISR(TIMER2_OVF_vect)
 				break;
 		}
 	}
+	
 }
 
 
 ISR(TIMER1_COMPA_vect)
 {
+	
 	if (Start == ON)
 	{
 		if (Pause == OFF)
@@ -282,34 +286,34 @@ ISR(TIMER1_COMPA_vect)
 			{
 				l = 9;
 				k--;
+			}
+			
+			if (k < 0)
+			{
+				k = 5;
+				j--;
+			}
+			
+			if (j < 0)
+			{
+				j = 9;
+				i--;
+			}
+			
+			if (i < 0)
+			{
+				i = 0;
+				j = 0;
+				k = 0;
+				l = 0;
 				
-				if (k < 0)
-				{
-					k = 5;
-					j--;
-					
-					if (j < 0)
-					{
-						j = 9;
-						i--;
-						
-						if (i < 0)
-						{
-							i = 0;
-							j = 0;
-							k = 0;
-							l = 0;
-							
-							lcd.clear(1);
-							
-							lcd.setLine(1, 1);
-							lcd.print("Done");
-							
-							Start = OFF;
-							Set = OFF;
-						}
-					}
-				}
+				lcd.clear(1);
+				
+				lcd.setLine(1, 1);
+				lcd.print("Done");
+				
+				Start = OFF;
+				Set = OFF;
 			}
 			
 		}
@@ -322,4 +326,5 @@ ISR(TIMER1_COMPA_vect)
 			lcd.print("Pause");
 		}
 	}
+	
 }
