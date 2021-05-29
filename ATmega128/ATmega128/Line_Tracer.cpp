@@ -1,5 +1,5 @@
 /*
- *		NOTE	- Line_Tracer.cpp
+ *		NOTE	- line_tracer.cpp
  *	 Copyright	- NULL
  *
  * 	 Created	- 2021.05.24
@@ -20,6 +20,11 @@ using namespace MCU::Setting;
 //ISR(TIMER0_OVF_vect);
 //ISR(TIMER2_COMP_vect);
 
+Motor rightMotor(C);
+Motor leftMotor(D);
+SW sw(B, ON);
+SW sensor(E, ON);
+
 void sensorOff (void);
 
 bool left = OFF;
@@ -28,10 +33,12 @@ bool middle = OFF;
 bool rightMiddle = OFF;
 bool right = OFF;
 bool all = OFF;
+bool isOn = false;
 
-volatile unsigned int olddata;
-volatile unsigned int newdata;
-volatile unsigned int detection;
+NonOptimal olddata;
+NonOptimal newdata;
+NonOptimal detection;
+NonOptimal data;
 
 
 
@@ -42,7 +49,9 @@ volatile unsigned int detection;
 
 int main(void)
 {
+	beginPort(C, OUT);
     beginPort(D, OUT);
+	beginPort(B, IN);
 	beginPort(E, IN);
 	
 	//beginTimer(0, OVF);
@@ -55,7 +64,6 @@ int main(void)
 	
     while (true) 
     {
-		
 		newdata = PINE;
 		detection = olddata & (~ newdata);
 		
@@ -96,56 +104,64 @@ int main(void)
 					break;
 			}
 		}
-		
+
 		olddata = newdata;
 		
 		if (left == ON)
 		{
-			PORTD = 0x08;
+			PORTD = 0x01;
 			_delay_us(7);
 			PORTD = 0x00;
+			
+			isOn = false;
 		}
 		
 		else if (leftMiddle == ON)
 		{
 			PORTD = 0x08;
-			_delay_us(7);
+			_delay_us(8);
 			PORTD = 0x00;
+			
+			isOn = false;
 		}
 		
 		else if (middle == ON)
 		{
-			PORTD = 0x09;
-			_delay_us(8);
+			PORTD = 0x01;
+			PORTC = 0x01;
+			_delay_us(7);
+
 			PORTD = 0x00;
+			PORTC = 0x00;
+			
+			isOn = false;
 		}
 		
 		else if (rightMiddle == ON)
 		{
-			PORTD = 0x01;
-			_delay_us(7);
-			PORTD = 0x00;
+			PORTC = 0x01;
+			_delay_us(8);
+			PORTC = 0x00;
+			
+			isOn = false;
 		}
 		
 		else if (right == ON)
 		{
-			PORTD = 0x01;
+			PORTC = 0x01;
 			_delay_us(7);
-			PORTD = 0x00;
+			PORTC = 0x00;
+			
+			isOn = false;
 		}
 		
 		else if (all == ON)
 		{
-			PORTD = 0x08;
+			PORTC = 0x08;
 			_delay_us(7);
-			PORTD = 0x00;
-		}
-		
-		else
-		{
-			PORTD = 0x01;
-			_delay_us(7);
-			PORTD = 0x00;
+			PORTC = 0x00;
+			
+			isOn = false;
 		}
 		
     }
