@@ -156,7 +156,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="counter_system.cpp">
+    <Compile Include="line_tracer.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Modules\LCD.cpp">
@@ -165,10 +165,10 @@
     <Compile Include="Modules\LCD.hpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Modules\mcu.cpp">
+    <Compile Include="Modules\MCU.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Modules\mcu.hpp">
+    <Compile Include="Modules\MCU.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Modules\motor.cpp">
