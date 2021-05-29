@@ -8,10 +8,9 @@
  */
 
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
-
-#include "mcu.Hpp"
+#include "Modules/mcu.hpp"
+#include "Modules/SW.hpp"
+#include "Modules/LCD.hpp"
 
 using namespace MCU::Features;
 using namespace MCU::Setting;

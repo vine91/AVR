@@ -8,20 +8,19 @@
  */
 
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
-
-#include "mcu.Hpp"
+#include "Modules/mcu.hpp"
+#include "Modules/SW.hpp"
+#include "Modules/LCD.hpp"
 
 using namespace MCU::Features;
 using namespace MCU::Setting;
 
 
-SW sw(C, OFF);
-DataLongLCD lcd(A, B);
-
 ISR(TIMER2_OVF_vect);
 ISR(TIMER1_COMPA_vect);
+
+SW sw(C, OFF);
+DataLongLCD lcd(A, B);
 
 int Title = ON;
 int Start = OFF;

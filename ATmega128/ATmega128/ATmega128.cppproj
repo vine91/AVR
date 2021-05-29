@@ -159,9 +159,33 @@
     <Compile Include="line_tracer.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="mcu.Hpp">
+    <Compile Include="Modules\LCD.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Modules\LCD.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Modules\mcu.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Modules\mcu.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Modules\motor.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Modules\motor.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Modules\SW.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Modules\SW.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modules" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

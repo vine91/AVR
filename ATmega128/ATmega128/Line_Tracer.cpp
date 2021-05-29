@@ -8,17 +8,16 @@
  */
 
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
-
-#include "mcu.Hpp"
+#include "Modules/mcu.hpp"
+#include "Modules/SW.hpp"
+#include "Modules/motor.hpp"
 
 using namespace MCU::Features;
 using namespace MCU::Setting;
 
 
-//ISR(TIMER0_OVF_vect);
-//ISR(TIMER2_COMP_vect);
+ISR(TIMER0_OVF_vect);
+ISR(TIMER2_COMP_vect);
 
 Motor rightMotor(C);
 Motor leftMotor(D);
@@ -54,16 +53,17 @@ int main(void)
 	beginPort(B, IN);
 	beginPort(E, IN);
 	
-	//beginTimer(0, OVF);
-	//beginTimer(2, COMP);
+	beginTimer(0, OVF);
+	beginTimer(2, COMP);
 	
-	//motor.setLeftSpeed(40);
-	//motor.setRightSpeed(40);
+	leftMotor.setSpeed(10);
+	rightMotor.setSpeed(10);
 	
-	//sei();
+	sei();
 	
     while (true) 
     {
+		
 		newdata = PINE;
 		detection = olddata & (~ newdata);
 		
