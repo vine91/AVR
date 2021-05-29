@@ -1,5 +1,5 @@
 /*
- *		NOTE	- mcu.cpp
+ *		NOTE	- MCU.cpp
  *	 Copyright	- NULL
  *
  * 	 Created	- 2021.05.30
@@ -8,7 +8,7 @@
  */
 
 
-#include "mcu.hpp"
+#include "MCU.hpp"
 
 
 

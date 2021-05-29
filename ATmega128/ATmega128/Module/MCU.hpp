@@ -1,5 +1,5 @@
 ﻿/*
- *		NOTE	- mcu.hpp
+ *		NOTE	- MCU.hpp
  *	 Copyright	- NULL
  *
  * 	 Created	- 2021.05.30

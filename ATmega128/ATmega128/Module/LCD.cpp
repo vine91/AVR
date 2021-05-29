@@ -9,7 +9,7 @@
 
 
 #include "LCD.hpp"
-#include "mcu.hpp"
+#include "MCU.hpp"
 
 using namespace MCU;
 
