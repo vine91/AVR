@@ -24,14 +24,6 @@ Motor leftMotor(D);
 SW sw(B, ON);
 SW sensor(E, ON);
 
-void sensorOff (void);
-
-bool left = OFF;
-bool leftMiddle = OFF;
-bool middle = OFF;
-bool rightMiddle = OFF;
-bool right = OFF;
-bool all = OFF;
 bool isOn = false;
 
 NonOptimal olddata;
@@ -72,17 +64,6 @@ int main(void)
 /*========================================//
 --------------   MAIN END   ----------------
 //========================================*/
-
-
-void sensorOff (void)
-{
-	left = OFF;
-	leftMiddle = OFF;
-	middle = OFF;
-	rightMiddle = OFF;
-	right = OFF;
-	all = OFF;
-}
 
 
 ISR(TIMER0_OVF_vect)
@@ -128,7 +109,6 @@ ISR(TIMER0_OVF_vect)
 
 ISR(TIMER2_COMP_vect)
 {
-	
 	newdata = PINE;
 	detection = olddata & (~ newdata);
 	
@@ -137,33 +117,33 @@ ISR(TIMER2_COMP_vect)
 		switch (detection)
 		{
 			case 0x01:
-				sensorOff();
-				left = ON;
+				leftMotor.setSpeed(6);
+				rightMotor.setSpeed(7);
 				break;
 				
 			case 0x05:
-				sensorOff();
-				leftMiddle = ON;
+				leftMotor.setSpeed(7);
+				rightMotor.setSpeed(10);
 				break;
 				
 			case 0x04:
-				sensorOff();
-				middle = ON;
+				leftMotor.setSpeed(10);
+				rightMotor.setSpeed(10);
 				break;
 				
 			case 0x14:
-				sensorOff();
-				rightMiddle = ON;
+				leftMotor.setSpeed(10);
+				rightMotor.setSpeed(7);
 				break;
 				
 			case 0x10:
-				sensorOff();
-				right = ON;
+				leftMotor.setSpeed(7);
+				rightMotor.setSpeed(6);
 				break;
 				
 			case 0x15:
-				sensorOff();
-				all = ON;
+				leftMotor.setSpeed(0);
+				rightMotor.setSpeed(5);
 			
 			default:
 				break;
@@ -171,47 +151,4 @@ ISR(TIMER2_COMP_vect)
 	}
 
 	olddata = newdata;
-	
-	if (left == ON)
-	{
-		leftMotor.setSpeed(6);
-		rightMotor.setSpeed(7);
-	}
-	
-	else if (leftMiddle == ON)
-	{
-		leftMotor.setSpeed(7);
-		rightMotor.setSpeed(10);
-	}
-	
-	else if (middle == ON)
-	{
-		leftMotor.setSpeed(10);
-		rightMotor.setSpeed(10);
-	}
-	
-	else if (rightMiddle == ON)
-	{
-		leftMotor.setSpeed(10);
-		rightMotor.setSpeed(7);
-	}
-	
-	else if (right == ON)
-	{
-		leftMotor.setSpeed(7);
-		rightMotor.setSpeed(6);
-	}
-	
-	else if (all == ON)
-	{
-		leftMotor.setSpeed(0);
-		rightMotor.setSpeed(5);
-	}
-
-	else
-	{
-		leftMotor.setSpeed(5);
-		rightMotor.setSpeed(0);
-	}
-
 }
