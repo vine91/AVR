@@ -26,11 +26,6 @@ SW sensor(E, ON);
 
 bool isOn = false;
 
-NonOptimal olddata;
-NonOptimal newdata;
-NonOptimal detection;
-NonOptimal data;
-
 
 
 
@@ -69,12 +64,11 @@ int main(void)
 ISR(TIMER0_OVF_vect)
 {
 	
-	newdata = PINB;
-	detection = olddata & (~ newdata);
+	sw.init();
 	
-	if (detection != 0x00)
+	if (sw.result != 0x00)
 	{
-		switch (detection)
+		switch (sw.result)
 		{
 			case 0x01:
 				startSwitch = OFF;
@@ -109,12 +103,12 @@ ISR(TIMER0_OVF_vect)
 
 ISR(TIMER2_COMP_vect)
 {
-	newdata = PINE;
-	detection = olddata & (~ newdata);
 	
-	if (detection != 0x00)
+	sensor.init();
+	
+	if (sensor.result != 0x00)
 	{
-		switch (detection)
+		switch (sensor.result)
 		{
 			case 0x01:
 				leftMotor.setSpeed(6);
@@ -149,6 +143,5 @@ ISR(TIMER2_COMP_vect)
 				break;
 		}
 	}
-
-	olddata = newdata;
+	
 }
