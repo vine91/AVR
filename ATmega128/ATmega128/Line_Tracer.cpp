@@ -24,6 +24,7 @@ Motor leftMotor(D);
 SW sw(B, ON);
 SW sensor(E, ON);
 
+int startSwitch = OFF;
 bool isOn = false;
 
 
