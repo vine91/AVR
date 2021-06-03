@@ -25,7 +25,7 @@ SW sw(B, ON);
 SW sensor(E, ON);
 
 int startSwitch = OFF;
-bool isOn = false;
+NonOptimal oldData;
 
 
 
@@ -107,7 +107,7 @@ ISR(TIMER2_COMP_vect)
 	
 	sensor.init();
 	
-	if (sensor.result != 0x00)
+	if (startSwitch == ON)
 	{
 		switch (sensor.result)
 		{
@@ -115,34 +115,53 @@ ISR(TIMER2_COMP_vect)
 				leftMotor.setSpeed(6);
 				rightMotor.setSpeed(7);
 				break;
-				
+			
 			case 0x05:
 				leftMotor.setSpeed(7);
 				rightMotor.setSpeed(10);
 				break;
-				
+			
 			case 0x04:
 				leftMotor.setSpeed(10);
 				rightMotor.setSpeed(10);
 				break;
-				
+			
 			case 0x14:
 				leftMotor.setSpeed(10);
 				rightMotor.setSpeed(7);
 				break;
-				
+			
 			case 0x10:
 				leftMotor.setSpeed(7);
 				rightMotor.setSpeed(6);
 				break;
-				
-			case 0x15:
-				leftMotor.setSpeed(0);
-				rightMotor.setSpeed(5);
+			
+			case 0x00:
+				if (oldData == 0x01)
+				{
+					leftMotor.setSpeed(0);
+					rightMotor.setSpeed(5);
+				}
+
+				else if (oldData == 0x10)
+				{
+					leftMotor.setSpeed(5);
+					rightMotor.setSpeed(0);
+				}
 			
 			default:
 				break;
 		}
+	}
+	
+	if (sensor.result != 0x00)
+	{
+		oldData = sensor.result;
+	}
+
+	else
+	{
+		oldData = oldData;
 	}
 	
 }
