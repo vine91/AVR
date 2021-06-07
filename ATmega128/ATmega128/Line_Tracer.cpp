@@ -45,8 +45,8 @@ int main(void)
 	beginTimer(0, OVF);
 	beginTimer(2, COMP);
 	
-	left.setSpeed(3);
-	right.setSpeed(3);
+	left.setSpeed(4);
+	right.setSpeed(4);
 	
 	sei();
 	
@@ -111,41 +111,47 @@ ISR(TIMER2_COMP_vect)
 		switch (sensor.result)
 		{
 			case 0x01:
-				left.setSpeed(1);
-				right.setSpeed(2);
+				left.setSpeed(3);
+				right.setSpeed(3.5);
 				break;
 			
 			case 0x05:
-				left.setSpeed(2);
-				right.setSpeed(3);
+				left.setSpeed(3.5);
+				right.setSpeed(4);
 				break;
 			
 			case 0x04:
-				left.setSpeed(3);
-				right.setSpeed(3);
+				left.setSpeed(4);
+				right.setSpeed(4);
 				break;
 			
 			case 0x14:
-				left.setSpeed(3);
-				right.setSpeed(2);
+				left.setSpeed(4);
+				right.setSpeed(3.5);
 				break;
 			
 			case 0x10:
-				left.setSpeed(2);
-				right.setSpeed(1);
+				left.setSpeed(3.5);
+				right.setSpeed(3);
 				break;
 			
 			case 0x00:
 				if (oldData == 0x01)
 				{
-					left.setSpeed(0);
-					right.setSpeed(1);
+					left.setSpeed(2.5);
+					right.setSpeed(3);
 				}
 
 				else if (oldData == 0x10)
 				{
-					left.setSpeed(1);
-					right.setSpeed(0);
+					left.setSpeed(3);
+					right.setSpeed(2.5);
+				}
+				
+				else if (oldData == 0x04)
+				{
+					left.setSpeed(3.5);
+					right.setSpeed(3.5);
 				}
 			
 			default:

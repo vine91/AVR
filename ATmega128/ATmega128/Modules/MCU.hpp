@@ -24,9 +24,19 @@
 #define D		3
 #define E		4
 #define F		5
-#define COMP	6
-#define OVF		7
-#define CAPT	8
+#define G		6
+#define COMP	7
+#define OVF		8
+#define CAPT	9
+
+#define OC0		0
+#define OC1A	1
+#define OC1B	2
+#define OC1C	3
+#define OC2		4
+#define OC3A	5
+#define OC3B	6
+#define OC3C	7
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -59,6 +69,7 @@ namespace MCU
 		void beginPort (int port, bool isOutput);
 		void beginExtend (int extendIndex);
 		void beginTimer (int timerIndex, int timerMode);
+		void beginPWM (int timerPin);
 	}
 	
 }

@@ -352,3 +352,75 @@ void MCU::Setting::beginTimer (int timerIndex, int timerMode)
 	}
 	
 }
+
+
+/*----------------------------------------//
+		  Begin Timer Interrupt
+//----------------------------------------*/
+
+void MCU::Setting::beginPWM (int timerPin)
+{
+	
+	switch (timerPin)
+	{
+		// TIMER PWM 0, 2 (8 BIT)
+		case OC0:
+			TCCR0 = 0x6E;		// 256, Fast PWM Mode
+			TCNT0 = 0x00;		// Start Counting 0x00
+			break;
+		
+		case OC2:
+			TCCR2 = 0x6C;		// 256, Fast PWM Mode
+			TCNT2 = 0x00;		// Start Counting 0x00
+			break;
+		
+		// TIMER PWM 1, 3 (8, 9, 10 BIT)
+		case OC1A:
+			TCCR1A |= insertBit(0, HIGH);
+			TCCR1A |= insertBit(7, HIGH);
+			break;
+			
+		case OC1B:
+			TCCR1A |= insertBit(0, HIGH);
+			TCCR1A |= insertBit(5, HIGH);
+			break;
+			
+		case OC1C:
+			TCCR1A |= insertBit(0, HIGH);
+			TCCR1A |= insertBit(3, HIGH);
+			break;
+		
+		case OC3A:
+			TCCR3A |= insertBit(0, HIGH);
+			TCCR3A |= insertBit(7, HIGH);
+			break;
+			
+		case OC3B:
+			TCCR3A |= insertBit(0, HIGH);
+			TCCR3A |= insertBit(5, HIGH);
+			break;
+			
+		case OC3C:
+			TCCR3A |= insertBit(0, HIGH);
+			TCCR3A |= insertBit(3, HIGH);
+			break;
+		
+		default:
+			break;
+	}
+	
+	if (TCCR1B != 0x0C)
+	{
+		TCCR1B = 0x0C;		// 256, Fast PWM Mode 8Bit
+		TCNT1H = 0x00;
+		TCNT1L = 0x00;		// Start Counting 0x0000
+	}
+	
+	else if (TCCR3B != 0x0C)
+	{
+		TCCR3B = 0x0C;		// 256, Fast PWM Mode 8Bit
+		TCNT3H = 0x00;
+		TCNT3L = 0x00;		// Start Counting 0x0000
+	}
+	
+}

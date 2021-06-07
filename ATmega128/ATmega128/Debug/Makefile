@@ -38,11 +38,11 @@ SUBDIRS :=  \
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
-../line_tracer.cpp \
 ../Modules/LCD.cpp \
 ../Modules/MCU.cpp \
 ../Modules/motor.cpp \
-../Modules/SW.cpp
+../Modules/SW.cpp \
+../pwm_test.cpp
 
 
 PREPROCESSING_SRCS += 
@@ -52,32 +52,32 @@ ASM_SRCS +=
 
 
 OBJS +=  \
-line_tracer.o \
 Modules/LCD.o \
 Modules/MCU.o \
 Modules/motor.o \
-Modules/SW.o
+Modules/SW.o \
+pwm_test.o
 
 OBJS_AS_ARGS +=  \
-line_tracer.o \
 Modules/LCD.o \
 Modules/MCU.o \
 Modules/motor.o \
-Modules/SW.o
+Modules/SW.o \
+pwm_test.o
 
 C_DEPS +=  \
-line_tracer.d \
 Modules/LCD.d \
 Modules/MCU.d \
 Modules/motor.d \
-Modules/SW.d
+Modules/SW.d \
+pwm_test.d
 
 C_DEPS_AS_ARGS +=  \
-line_tracer.d \
 Modules/LCD.d \
 Modules/MCU.d \
 Modules/motor.d \
-Modules/SW.d
+Modules/SW.d \
+pwm_test.d
 
 OUTPUT_FILE_PATH +=ATmega128.elf
 
@@ -93,13 +93,6 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-./line_tracer.o: .././line_tracer.cpp
-	@echo Building file: $<
-	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=16000000  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega128" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
 Modules/LCD.o: ../Modules/LCD.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
@@ -122,6 +115,13 @@ Modules/motor.o: ../Modules/motor.cpp
 	
 
 Modules/SW.o: ../Modules/SW.cpp
+	@echo Building file: $<
+	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=16000000  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega128" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./pwm_test.o: .././pwm_test.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=16000000  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega128" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

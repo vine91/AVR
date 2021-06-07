@@ -11,7 +11,7 @@
 #ifndef LCD_HPP_
 #define LCD_HPP_
 
-#define ALL		9
+#define ALL		0
 
 typedef const char* String;
 //using String = const char*;
