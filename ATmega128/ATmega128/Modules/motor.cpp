@@ -17,7 +17,7 @@ using namespace MCU;
 
 
 /*----------------------------------------//
-			Attach DC Motor Port
+			 Attach Motor Port
 //----------------------------------------*/
 
 void Motor::attachPort (int portValue)
@@ -73,16 +73,6 @@ void Motor::setSpeed (int speedValue)
 
 
 /*----------------------------------------//
-			  Get Motor Speed
-//----------------------------------------*/
-
-void Motor::getSpeed (void)
-{
-    Features::delayCycle(m_Speed);
-}
-
-
-/*----------------------------------------//
 			 	Start Motor
 //----------------------------------------*/
 
@@ -92,18 +82,18 @@ void Motor::start (bool isClockWise)
 	if (isClockWise == true)
 	{
 		attachPort( insertBit(0, HIGH) | insertBit(1, LOW) );
-		getSpeed();
-		stop();
+		delay_msec(m_Speed);
+		attachPort( insertBit(0, LOW) | insertBit(1, LOW) );
 	}
 	
 	else
 	{
 		attachPort( insertBit(0, LOW) | insertBit(1, HIGH) );
-		getSpeed();
-		stop();
+		delay_msec(m_Speed);
+		attachPort( insertBit(0, LOW) | insertBit(1, LOW) );
 	}
 	
-	isOn = true;
+	m_isOn = true;
 	
 }
 
@@ -115,5 +105,5 @@ void Motor::start (bool isClockWise)
 void Motor::stop (void)
 {
     attachPort( insertBit(0, LOW) | insertBit(1, LOW) );
-    isOn = false;
+    m_isOn = false;
 }

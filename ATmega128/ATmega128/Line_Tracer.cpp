@@ -19,8 +19,9 @@ using namespace MCU::Setting;
 ISR(TIMER0_OVF_vect);
 ISR(TIMER2_COMP_vect);
 
-Motor rightMotor(C);
-Motor leftMotor(D);
+Motor left(C);
+Motor right(D);
+
 SW sw(B, ON);
 SW sensor(E, ON);
 
@@ -44,8 +45,8 @@ int main(void)
 	beginTimer(0, OVF);
 	beginTimer(2, COMP);
 	
-	leftMotor.setSpeed(10);
-	rightMotor.setSpeed(10);
+	left.setSpeed(3);
+	right.setSpeed(3);
 	
 	sei();
 	
@@ -71,11 +72,11 @@ ISR(TIMER0_OVF_vect)
 	{
 		switch (sw.result)
 		{
-			case 0x01:
+			case SW_0:
 				startSwitch = OFF;
 				break;
 			
-			case 0x02:
+			case SW_1:
 				startSwitch = ON;
 				break;
 			
@@ -86,17 +87,14 @@ ISR(TIMER0_OVF_vect)
 	
 	if (startSwitch == ON)
 	{
-		leftmotor.start(CW);
-		rightMotor.start(CCW);
-
-		leftMotor.stop();
-		rightMotor.stop();
+		left.start(CW);
+		right.start(CCW);
 	}
 	
 	else
 	{
-		leftMotor.stop();
-		rightMotor.stop();
+		left.stop();
+		right.stop();
 	}
 	
 }
@@ -105,53 +103,55 @@ ISR(TIMER0_OVF_vect)
 ISR(TIMER2_COMP_vect)
 {
 	
-	sensor.init();
-	
 	if (startSwitch == ON)
 	{
+		
+		sensor.init();
+		
 		switch (sensor.result)
 		{
 			case 0x01:
-				leftMotor.setSpeed(6);
-				rightMotor.setSpeed(7);
+				left.setSpeed(1);
+				right.setSpeed(2);
 				break;
 			
 			case 0x05:
-				leftMotor.setSpeed(7);
-				rightMotor.setSpeed(10);
+				left.setSpeed(2);
+				right.setSpeed(3);
 				break;
 			
 			case 0x04:
-				leftMotor.setSpeed(10);
-				rightMotor.setSpeed(10);
+				left.setSpeed(3);
+				right.setSpeed(3);
 				break;
 			
 			case 0x14:
-				leftMotor.setSpeed(10);
-				rightMotor.setSpeed(7);
+				left.setSpeed(3);
+				right.setSpeed(2);
 				break;
 			
 			case 0x10:
-				leftMotor.setSpeed(7);
-				rightMotor.setSpeed(6);
+				left.setSpeed(2);
+				right.setSpeed(1);
 				break;
 			
 			case 0x00:
 				if (oldData == 0x01)
 				{
-					leftMotor.setSpeed(0);
-					rightMotor.setSpeed(5);
+					left.setSpeed(0);
+					right.setSpeed(1);
 				}
 
 				else if (oldData == 0x10)
 				{
-					leftMotor.setSpeed(5);
-					rightMotor.setSpeed(0);
+					left.setSpeed(1);
+					right.setSpeed(0);
 				}
 			
 			default:
 				break;
 		}
+		
 	}
 	
 	if (sensor.result != 0x00)

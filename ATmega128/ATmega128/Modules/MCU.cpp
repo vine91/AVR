@@ -40,12 +40,12 @@ int MCU::insertBit (int bitValue, bool isHigh)
 			Delay Micro Second
 //----------------------------------------*/
 
-void MCU::Features::delayCycle (unsigned char CycleValue)
+void MCU::delay_usec (unsigned char cycleValue)
 {
 	
     register unsigned char i;
 	
-    for(i=0; i<CycleValue; i++)				// 4 cycle +
+    for(i=0; i<cycleValue; i++)				// 4 cycle +
     {
         asm volatile("PUSH R0");			// 2 cycle +
         asm volatile("POP  R0");			// 2 cycle +
@@ -55,6 +55,26 @@ void MCU::Features::delayCycle (unsigned char CycleValue)
         asm volatile("POP  R0");			// 2 cycle =
     }
 											// 16 cycle = 1us in 16MHz System
+}
+
+
+/*----------------------------------------//
+			Delay Milli Second
+//----------------------------------------*/
+
+void MCU::delay_msec (unsigned int timeValue)
+{
+	
+	register unsigned int i;
+
+	for(i=0;i<timeValue;i++)
+	{
+		delay_usec(250);
+		delay_usec(250);
+		delay_usec(250);
+		delay_usec(250);
+	}
+	
 }
 
 

@@ -45,10 +45,11 @@ namespace MCU
 {
 	
 	int insertBit (int bitValue, bool isHigh);
+	void delay_usec (unsigned char cycleValue);
+	void delay_msec (unsigned int timeValue);
 	
 	namespace Features
 	{
-		void delayCycle (unsigned char CycleValue);
 		int hex (int decimal);
 		int ASKII (int decimal);
 	}
