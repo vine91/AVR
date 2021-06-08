@@ -225,7 +225,7 @@ void MCU::Setting::beginPort (int port, bool isOutput)
 
 
 /*----------------------------------------//
-		 Begin Extended Interrupt
+		  Begin Extended Interrupt
 //----------------------------------------*/
 
 void MCU::Setting::beginExtend(int extendIndex)
@@ -247,7 +247,7 @@ void MCU::Setting::beginExtend(int extendIndex)
 
 
 /*----------------------------------------//
-		  Begin Timer Interrupt
+		   Begin Timer Interrupt
 //----------------------------------------*/
 
 void MCU::Setting::beginTimer (int timerIndex, int timerMode)
@@ -355,13 +355,13 @@ void MCU::Setting::beginTimer (int timerIndex, int timerMode)
 
 
 /*----------------------------------------//
-		  Begin Timer Interrupt
+			  Begin Timer PWM
 //----------------------------------------*/
 
-void MCU::Setting::beginPWM (int timerPin)
+void MCU::Setting::beginPWM (int PWMPin)
 {
 	
-	switch (timerPin)
+	switch (PWMPin)
 	{
 		// TIMER PWM 0, 2 (8 BIT)
 		case OC0:
@@ -409,16 +409,16 @@ void MCU::Setting::beginPWM (int timerPin)
 			break;
 	}
 	
-	if (TCCR1B != 0x0C)
+	if (TCCR1A != 0x04)
 	{
-		TCCR1B = 0x0C;		// 256, Fast PWM Mode 8Bit
+		TCCR1B = 0x04;		// 256, Phase Correct PWM (8Bit)
 		TCNT1H = 0x00;
 		TCNT1L = 0x00;		// Start Counting 0x0000
 	}
 	
-	else if (TCCR3B != 0x0C)
+	else if (TCCR3A != 0x04)
 	{
-		TCCR3B = 0x0C;		// 256, Fast PWM Mode 8Bit
+		TCCR3B = 0x04;		// 256, Phase Correct PWM (8Bit)
 		TCNT3H = 0x00;
 		TCNT3L = 0x00;		// Start Counting 0x0000
 	}

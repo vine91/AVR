@@ -20,39 +20,49 @@ using namespace MCU;
 			 Attach Motor Port
 //----------------------------------------*/
 
-void Motor::attachPort (int portValue)
+void Motor::attachPin(int pinValue)
 {
 	
-	switch (m_MotorPort)
+	switch (m_MotorPin)
 	{
-		// PORTA
-		case A:
-			PORTA = portValue;
+		// OC0
+		case OC0:
+			OCR0 = pinValue;
 			break;
 		
-		// PORTB
-		case B:
-			PORTB = portValue;
+		// OC1A
+		case OC1A:
+			OCR1A = pinValue;
 			break;
 		
-		// PORTC
-		case C:
-			PORTC = portValue;
+		// OC1B
+		case OC1B:
+			OCR1B = pinValue;
 			break;
 		
-		// PORTD
-		case D:
-			PORTD = portValue;
+		// OC1C
+		case OC1C:
+			OCR1C = pinValue;
 			break;
 		
-		// PORTE
-		case E:
-			PORTE = portValue;
+		// OC2
+		case OC2:
+			OCR2 = pinValue;
 			break;
 		
-		// PORTF
-		case F:
-			PORTF = portValue;
+		// OC3A
+		case OC3A:
+			OCR3A = pinValue;
+			break;
+		
+		// OC3B
+		case OC3B:
+			OCR3B = pinValue;
+			break;
+		
+		// OC3C
+		case OC3C:
+			OCR3C = pinValue;
 			break;
 		
 		default:
@@ -68,7 +78,15 @@ void Motor::attachPort (int portValue)
 
 void Motor::setSpeed (int speedValue)
 {
-    m_Speed = speedValue;
+	
+	for (int i=0; i<=10; i++)
+	{
+		if (speedValue == i)
+		{
+			m_Speed = i * 25;
+		}
+	}
+	
 }
 
 
@@ -76,25 +94,10 @@ void Motor::setSpeed (int speedValue)
 			 	Start Motor
 //----------------------------------------*/
 
-void Motor::start (bool isClockWise)
+void Motor::start (void)
 {
-	
-	if (isClockWise == true)
-	{
-		attachPort( insertBit(0, HIGH) | insertBit(1, LOW) );
-		delay_msec(m_Speed);
-		attachPort( insertBit(0, LOW) | insertBit(1, LOW) );
-	}
-	
-	else
-	{
-		attachPort( insertBit(0, LOW) | insertBit(1, HIGH) );
-		delay_msec(m_Speed);
-		attachPort( insertBit(0, LOW) | insertBit(1, LOW) );
-	}
-	
+	attachPin(m_Speed);
 	m_isOn = true;
-	
 }
 
 
@@ -104,6 +107,6 @@ void Motor::start (bool isClockWise)
 
 void Motor::stop (void)
 {
-    attachPort( insertBit(0, LOW) | insertBit(1, LOW) );
+    attachPin(0);
     m_isOn = false;
 }

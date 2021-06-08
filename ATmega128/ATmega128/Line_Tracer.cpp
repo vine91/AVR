@@ -19,10 +19,10 @@ using namespace MCU::Setting;
 ISR(TIMER0_OVF_vect);
 ISR(TIMER2_COMP_vect);
 
-Motor left(C);
-Motor right(D);
+Motor rightCCW(OC1A);
+Motor leftCW(OC1B);
 
-SW sw(B, ON);
+SW sw(D, ON);
 SW sensor(E, ON);
 
 int startSwitch = OFF;
@@ -37,16 +37,21 @@ NonOptimal oldData;
 
 int main(void)
 {
-	beginPort(C, OUT);
-    beginPort(D, OUT);
-	beginPort(B, IN);
+	beginPort(B, OUT);
+	beginPort(D, IN);
 	beginPort(E, IN);
 	
 	beginTimer(0, OVF);
 	beginTimer(2, COMP);
 	
-	left.setSpeed(4);
-	right.setSpeed(4);
+	beginPWM(OC1A);
+	beginPWM(OC1B);
+	
+	leftCW.stop();
+	rightCCW.stop();
+	
+	leftCW.setSpeed(4);
+	rightCCW.setSpeed(4);
 	
 	sei();
 	
@@ -87,14 +92,14 @@ ISR(TIMER0_OVF_vect)
 	
 	if (startSwitch == ON)
 	{
-		left.start(CW);
-		right.start(CCW);
+		leftCW.start();
+		rightCCW.start();
 	}
 	
 	else
 	{
-		left.stop();
-		right.stop();
+		leftCW.stop();
+		rightCCW.stop();
 	}
 	
 }
@@ -111,47 +116,37 @@ ISR(TIMER2_COMP_vect)
 		switch (sensor.result)
 		{
 			case 0x01:
-				left.setSpeed(3);
-				right.setSpeed(3.5);
-				break;
-			
-			case 0x05:
-				left.setSpeed(3.5);
-				right.setSpeed(4);
+				leftCW.setSpeed(2);
+				rightCCW.setSpeed(4);
 				break;
 			
 			case 0x04:
-				left.setSpeed(4);
-				right.setSpeed(4);
-				break;
-			
-			case 0x14:
-				left.setSpeed(4);
-				right.setSpeed(3.5);
+				leftCW.setSpeed(4);
+				rightCCW.setSpeed(4);
 				break;
 			
 			case 0x10:
-				left.setSpeed(3.5);
-				right.setSpeed(3);
+				leftCW.setSpeed(4);
+				rightCCW.setSpeed(2);
 				break;
 			
 			case 0x00:
 				if (oldData == 0x01)
 				{
-					left.setSpeed(2.5);
-					right.setSpeed(3);
+					leftCW.setSpeed(0);
+					rightCCW.setSpeed(2);
 				}
 
 				else if (oldData == 0x10)
 				{
-					left.setSpeed(3);
-					right.setSpeed(2.5);
+					leftCW.setSpeed(2);
+					rightCCW.setSpeed(0);
 				}
 				
 				else if (oldData == 0x04)
 				{
-					left.setSpeed(3.5);
-					right.setSpeed(3.5);
+					leftCW.setSpeed(3);
+					rightCCW.setSpeed(3);
 				}
 			
 			default:

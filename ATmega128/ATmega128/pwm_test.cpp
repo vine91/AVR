@@ -9,10 +9,16 @@
 
 
 #include "Modules/MCU.hpp"
+#include "Modules/motor.hpp"
 
 using namespace MCU::Features;
 using namespace MCU::Setting;
 
+
+Motor test0(OC0);
+Motor test1(OC1A);
+Motor test2(OC1B);
+Motor test3(OC2);
 
 
 
@@ -22,57 +28,47 @@ using namespace MCU::Setting;
 
 int main(void)
 {
-	beginPort(E, OUT);
-	beginPWM(OC3A);
-	beginPWM(OC3B);
-	beginPWM(OC3C);
+	beginPort(B, OUT);
+	beginPWM(OC0);
+	beginPWM(OC1A);
+	beginPWM(OC1B);
+	beginPWM(OC2);
 
 	while (true)
 	{
-		OCR3A = 0;
-		_delay_ms(500);
 		
-		OCR3A = 64;
-		_delay_ms(500);
+		for (int i=0; i<=255; i++)
+		{
+			test0.attachPin(i);
+			_delay_ms(5);
+		}
 		
-		OCR3A = 128;
-		_delay_ms(500);
+		test0.attachPin(0);
 		
-		OCR3A = 192;
-		_delay_ms(500);
+		for (int i=0; i<=255; i++)
+		{
+			test1.attachPin(i);
+			_delay_ms(5);
+		}
 		
-		OCR3A = 255;
-		_delay_ms(500);
+		test1.attachPin(0);
 		
-		OCR3B = 0;
-		_delay_ms(500);
+		for (int i=0; i<=255; i++)
+		{
+			test2.attachPin(i);
+			_delay_ms(5);
+		}
 		
-		OCR3B = 64;
-		_delay_ms(500);
+		test2.attachPin(0);
 		
-		OCR3B = 128;
-		_delay_ms(500);
+		for (int i=0; i<=255; i++)
+		{
+			test3.attachPin(i);
+			_delay_ms(5);
+		}
 		
-		OCR3B = 192;
-		_delay_ms(500);
+		test3.attachPin(0);
 		
-		OCR3B = 255;
-		_delay_ms(500);
-		
-		OCR3C = 0;
-		_delay_ms(500);
-		
-		OCR3C = 64;
-		_delay_ms(500);
-		
-		OCR3C = 128;
-		_delay_ms(500);
-		
-		OCR3C = 192;
-		_delay_ms(500);
-		
-		OCR3C = 255;
-		_delay_ms(500);
 	}
 
 	return 0;

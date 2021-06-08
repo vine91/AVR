@@ -69,7 +69,7 @@ namespace MCU
 		void beginPort (int port, bool isOutput);
 		void beginExtend (int extendIndex);
 		void beginTimer (int timerIndex, int timerMode);
-		void beginPWM (int timerPin);
+		void beginPWM (int PWMPin);
 	}
 	
 }

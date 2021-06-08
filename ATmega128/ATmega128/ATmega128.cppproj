@@ -156,6 +156,9 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="line_tracer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Modules\LCD.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -178,9 +181,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Modules\SW.hpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="pwm_test.cpp">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

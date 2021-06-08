@@ -59,19 +59,19 @@ class Motor
 {
 
 private:
-	unsigned int m_MotorPort;
+	unsigned int m_MotorPin;
 	unsigned int m_Speed;
 	bool m_isOn;
 
 public:
-	Motor (int motorPort) { m_MotorPort = motorPort; }
-	void attachPort (int portValue);
+	Motor (int motorPin) { m_MotorPin = motorPin; }
+	void attachPin (int pinValue);
 	
 	// SET SPEED
 	void setSpeed (int speedValue);
 	
 	// SET MOTOR
-	void start (bool isClockWise);
+	void start (void);
 	void stop (void);
 
 };
