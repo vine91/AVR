@@ -79,11 +79,11 @@ void Motor::attachPin(int pinValue)
 void Motor::setSpeed (int speedValue)
 {
 	
-	for (int i=0; i<=10; i++)
+	for (int i=0; i<=100; i++)
 	{
 		if (speedValue == i)
 		{
-			m_Speed = i * 25;
+			m_Speed = i * 2.55;
 		}
 	}
 	
