@@ -40,7 +40,7 @@ int MCU::insertBit (int bitValue, bool isHigh)
 			Delay Micro Second
 //----------------------------------------*/
 
-void MCU::delay_usec (unsigned char cycleValue)
+void MCU::delay_us (unsigned char cycleValue)
 {
 	
     register unsigned char i;
@@ -62,17 +62,17 @@ void MCU::delay_usec (unsigned char cycleValue)
 			Delay Milli Second
 //----------------------------------------*/
 
-void MCU::delay_msec (unsigned int timeValue)
+void MCU::delay_ms (unsigned int timeValue)
 {
 	
 	register unsigned int i;
-
+	
 	for(i=0;i<timeValue;i++)
 	{
-		delay_usec(250);
-		delay_usec(250);
-		delay_usec(250);
-		delay_usec(250);
+		delay_us(250);
+		delay_us(250);
+		delay_us(250);
+		delay_us(250);
 	}
 	
 }
@@ -228,19 +228,30 @@ void MCU::Setting::beginPort (int port, bool isOutput)
 		  Begin Extended Interrupt
 //----------------------------------------*/
 
-void MCU::Setting::beginExtend(int extendIndex)
+void MCU::Setting::beginExtend(int extendIndex, int extendMode)
 {
 	
 	EIMSK += insertBit(extendIndex, HIGH);
 	
-	if (extendIndex <= 3)
+	switch (extendMode)
 	{
-		EICRA = 0x00;
-	}
-	
-	else if (extendIndex >= 4)
-	{
-		EICRB = 0x00;
+		case MAINTAIN:
+			EICRA = 0x00;
+			EICRB = 0x00;
+			break;
+		
+		case DOWN:
+			EICRA = 0xAA;
+			EICRB = 0xAA;
+			break;
+		
+		case UP:
+			EICRA = 0xFF;
+			EICRB = 0xFF;
+			break;
+		
+		default:
+			break;
 	}
 	
 }
@@ -316,8 +327,8 @@ void MCU::Setting::beginTimer (int timerIndex, int timerMode)
 				TCCR1B = 0x0D;		// 1024, CTC Mode
 				TCNT1H = 0x00;
 				TCNT1L = 0x00;		// Start Counting 0x0000
-				OCR1AH = 0xFF;
-				OCR1AL = 0xFF;		// Compare with 0xFFFF
+				OCR1AH = 0x3D;
+				OCR1AL = 0x09;		// Compare with 0x3D09
 			}
 			
 			break;
@@ -358,69 +369,106 @@ void MCU::Setting::beginTimer (int timerIndex, int timerMode)
 			  Begin Timer PWM
 //----------------------------------------*/
 
-void MCU::Setting::beginPWM (int PWMPin)
+void MCU::Setting::beginPWM(int PWMIndex, int PWMMode)
 {
 	
-	switch (PWMPin)
+	int correctValue = 0x04;		// 256, Phase Correct PWM (8Bit)
+	int fastValue = 0x0C;			// 256, Fast PWM Mode (8Bit)
+	
+	switch (PWMIndex)
 	{
 		// TIMER PWM 0, 2 (8 BIT)
 		case OC0:
-			TCCR0 = 0x6E;		// 256, Fast PWM Mode
-			TCNT0 = 0x00;		// Start Counting 0x00
+			if (PWMMode == CORRECT)
+			{
+				TCCR0 = 0x66;		// 256, Phase Correct PWM
+				TCNT0 = 0x00;		// Start Counting 0x00
+			}
+			
+			else if (PWMMode == FAST)
+			{
+				TCCR0 = 0x6E;		// 256, Fast PWM Mode
+				TCNT0 = 0x00;		// Start Counting 0x00
+			}
+			
 			break;
 		
 		case OC2:
-			TCCR2 = 0x6C;		// 256, Fast PWM Mode
-			TCNT2 = 0x00;		// Start Counting 0x00
+			if (PWMMode == CORRECT)
+			{
+				TCCR2 = 0x64;		// 256, Phase Correct PWM
+				TCNT2 = 0x00;		// Start Counting 0x00
+			}
+			
+			else if (PWMMode == FAST)
+			{
+				TCCR2 = 0x6C;		// 256, Fast PWM Mode
+				TCNT2 = 0x00;		// Start Counting 0x00
+			}
+			
 			break;
 		
 		// TIMER PWM 1, 3 (8, 9, 10 BIT)
 		case OC1A:
-			TCCR1A |= insertBit(0, HIGH);
-			TCCR1A |= insertBit(7, HIGH);
+			TCCR1A |= insertBit(0, HIGH) | insertBit(7, HIGH);
 			break;
-			
+		
 		case OC1B:
-			TCCR1A |= insertBit(0, HIGH);
-			TCCR1A |= insertBit(5, HIGH);
+			TCCR1A |= insertBit(0, HIGH) | insertBit(5, HIGH);
 			break;
-			
+		
 		case OC1C:
-			TCCR1A |= insertBit(0, HIGH);
-			TCCR1A |= insertBit(3, HIGH);
+			TCCR1A |= insertBit(0, HIGH) | insertBit(3, HIGH);
 			break;
 		
 		case OC3A:
-			TCCR3A |= insertBit(0, HIGH);
-			TCCR3A |= insertBit(7, HIGH);
+			TCCR3A |= insertBit(0, HIGH) | insertBit(7, HIGH);
 			break;
-			
+		
 		case OC3B:
-			TCCR3A |= insertBit(0, HIGH);
-			TCCR3A |= insertBit(5, HIGH);
+			TCCR3A |= insertBit(0, HIGH) | insertBit(5, HIGH);
 			break;
-			
+		
 		case OC3C:
-			TCCR3A |= insertBit(0, HIGH);
-			TCCR3A |= insertBit(3, HIGH);
+			TCCR3A |= insertBit(0, HIGH) | insertBit(3, HIGH);
 			break;
 		
 		default:
 			break;
 	}
 	
-	if (TCCR1A != 0x04)
+	if (TCCR1B == 0x00)
 	{
-		TCCR1B = 0x04;		// 256, Phase Correct PWM (8Bit)
-		TCNT1H = 0x00;
-		TCNT1L = 0x00;		// Start Counting 0x0000
+		if (PWMMode == CORRECT)
+		{
+			TCCR1B = correctValue;
+			TCNT1H = 0x00;
+			TCNT1L = 0x00;
+		}
+		
+		else if (PWMMode == FAST)
+		{
+			TCCR1B = fastValue;
+			TCNT1H = 0x00;
+			TCNT1L = 0x00;
+		}
 	}
 	
-	else if (TCCR3A != 0x04)
+	else if (TCCR3B == 0x00)
 	{
-		TCCR3B = 0x04;		// 256, Phase Correct PWM (8Bit)
-		TCNT3H = 0x00;
-		TCNT3L = 0x00;		// Start Counting 0x0000
+		if (PWMMode == CORRECT)
+		{
+			TCCR3B = correctValue;
+			TCNT3H = 0x00;
+			TCNT3L = 0x00;
+		}
+		
+		else if (PWMMode == FAST)
+		{
+			TCCR3B = fastValue;
+			TCNT3H = 0x00;
+			TCNT3L = 0x00;
+		}
 	}
 	
 }

@@ -25,18 +25,24 @@
 #define E		4
 #define F		5
 #define G		6
-#define COMP	7
-#define OVF		8
-#define CAPT	9
 
-#define OC0		0
-#define OC1A	1
-#define OC1B	2
-#define OC1C	3
-#define OC2		4
-#define OC3A	5
-#define OC3B	6
-#define OC3C	7
+#define MAINTAIN	0
+#define DOWN		1
+#define UP			2
+#define COMP		3
+#define OVF			4
+#define CAPT		5
+
+#define OC0			0
+#define OC1A		1
+#define OC1B		2
+#define OC1C		3
+#define OC2			4
+#define OC3A		5
+#define OC3B		6
+#define OC3C		7
+#define CORRECT		8
+#define FAST		9
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -55,8 +61,8 @@ namespace MCU
 {
 	
 	int insertBit (int bitValue, bool isHigh);
-	void delay_usec (unsigned char cycleValue);
-	void delay_msec (unsigned int timeValue);
+	void delay_us (unsigned char cycleValue);
+	void delay_ms (unsigned int timeValue);
 	
 	namespace Features
 	{
@@ -67,9 +73,9 @@ namespace MCU
 	namespace Setting
 	{
 		void beginPort (int port, bool isOutput);
-		void beginExtend (int extendIndex);
+		void beginExtend (int extendIndex, int extendMode);
 		void beginTimer (int timerIndex, int timerMode);
-		void beginPWM (int PWMPin);
+		void beginPWM (int PWMIndex, int PWMMode);
 	}
 	
 }
