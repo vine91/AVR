@@ -1,8 +1,8 @@
 /*
- *		NOTE	- line_tracer.cpp
+ *		NOTE	- example.cpp
  *	 Copyright	- NULL
  *
- * 	 Created	- 2021.05.24
+ * 	 Created	- 2021.06.10
  *   Author		- 2033112012 CLJ
  * 	 Contact	- vine9151@gmail.com
  */
@@ -20,9 +20,9 @@ ISR(INT0_vect);
 ISR(INT1_vect);
 ISR(TIMER2_COMP_vect);
 
-SW sensor(E, SENSOR);
-Motor right(OC0);
-Motor left(OC1C);
+SW sensor(C, SENSOR);
+Motor right(OC1A);
+Motor left(OC1B);
 
 bool startSwitch = OFF;
 
@@ -37,14 +37,14 @@ int main(void)
 {
 	beginPort(B, OUT);
 	beginPort(D, IN);
-	beginPort(E, IN);
+	beginPort(C, IN);
 	
 	beginExtend(0, DOWN);
 	beginExtend(1, DOWN);
 	beginTimer(2, COMP);
 	
-	beginPWM(OC0, CORRECT);
-	beginPWM(OC1C, CORRECT);
+	beginPWM(OC1A, CORRECT);
+	beginPWM(OC1B, CORRECT);
 	
 	left.stop();
 	right.stop();

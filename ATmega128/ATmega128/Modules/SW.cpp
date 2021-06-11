@@ -15,6 +15,16 @@
 
 
 /*----------------------------------------//
+			 Set Sensor Value
+//----------------------------------------*/
+
+void SW::setMax(int maxValue)
+{
+	maxData = maxValue;
+}
+
+
+/*----------------------------------------//
 			 Initialize Switch
 //----------------------------------------*/
 
@@ -25,48 +35,59 @@ void SW::init (void)
 	{
 		// PORTA
 		case A:
-			m_NewValue = PINA;
+			newData = PINA;
 			break;
 		
 		// PORTB
 		case B:
-			m_NewValue = PINB;
+			newData = PINB;
 			break;
 		
 		// PORTC
 		case C:
-			m_NewValue = PINC;
+			newData = PINC;
 			break;
 		
 		// PORTD
 		case D:
-			m_NewValue = PIND;
+			newData = PIND;
 			break;
 		
 		// PORTE
 		case E:
-			m_NewValue = PINE;
+			newData = PINE;
 			break;
 		
 		// PORTF
 		case F:
-			m_NewValue = PINF;
+			newData = PINF;
 			break;
 		
 		default:
 			break;
 	}
 	
-	if (m_isReversal == true)
+	switch (m_SwitchMode)
 	{
-		result = m_OldValue & ~m_NewValue;
-		m_OldValue = m_NewValue;
-	}
-	
-	else
-	{
-		result = m_OldValue & m_NewValue;
-		m_OldValue = ~m_NewValue;
+		// REVERSAL
+		case REVERSAL:
+			result = oldData & ~newData;
+			oldData = newData;
+			break;
+		
+		// NONREVERSAL
+		case NONREVERSAL:
+			result = oldData & newData;
+			oldData = ~newData;
+			break;
+		
+		// SENSER
+		case SENSOR:
+			result = newData & maxData;
+			break;
+		
+		default:
+			break;
 	}
 	
 }

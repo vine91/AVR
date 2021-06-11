@@ -282,7 +282,7 @@ void MCU::Setting::beginTimer (int timerIndex, int timerMode)
 				
 				TCCR0 = 0x0F;		// 1024, CTC Mode
 				TCNT0 = 0x00;		// Start Counting 0x00
-				OCR0 = 0xFF;		// Compare with 0xFF
+				OCR0 = _OCR0;
 			}
 			
 			break;
@@ -302,7 +302,7 @@ void MCU::Setting::beginTimer (int timerIndex, int timerMode)
 				
 				TCCR2 = 0x0D;		// 1024, CTC Mode
 				TCNT2 = 0x00;		// Start Counting 0x00
-				OCR2 = 0xA0;		// Compare with 0xA0
+				OCR2 = _OCR2;
 			}
 			
 			break;
@@ -327,8 +327,8 @@ void MCU::Setting::beginTimer (int timerIndex, int timerMode)
 				TCCR1B = 0x0D;		// 1024, CTC Mode
 				TCNT1H = 0x00;
 				TCNT1L = 0x00;		// Start Counting 0x0000
-				OCR1AH = 0x3D;
-				OCR1AL = 0x09;		// Compare with 0x3D09
+				OCR1AH = _OCR1AH;
+				OCR1AL = _OCR1AL;
 			}
 			
 			break;
@@ -352,8 +352,8 @@ void MCU::Setting::beginTimer (int timerIndex, int timerMode)
 				TCCR3B = 0x0D;		// 1024, CTC Mode
 				TCNT3H = 0x00;
 				TCNT3L = 0x00;		// Start Counting 0x0000
-				OCR3AH = 0x3D;
-				OCR3AL = 0x09;		// Compare with 0x3D09
+				OCR3AH = _OCR3AH;
+				OCR3AL = _OCR3AL;
 			}
 			
 			break;

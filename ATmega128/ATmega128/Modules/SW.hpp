@@ -11,6 +11,10 @@
 #ifndef SW_HPP_
 #define SW_HPP_
 
+#define REVERSAL	0
+#define NONREVERSAL	1
+#define SENSOR		2
+
 #define SW_OFF	0x00
 #define SW_0	0x01
 #define SW_1	0x02
@@ -38,15 +42,17 @@ class SW
 
 private:
 	unsigned int m_SwitchPort;
-	bool m_isReversal;
-	NonOptimal m_NewValue;
-	NonOptimal m_OldValue;
+	unsigned int m_SwitchMode;
 
 public:
-	SW (int switchPort, bool isReversal) { m_SwitchPort = switchPort; m_isReversal = isReversal; }
+	SW (int switchPort, int switchMode) { m_SwitchPort = switchPort; m_SwitchMode = switchMode; }
+	void setMax (int maxValue);
 	void init (void);
-
+	
+	NonOptimal newData;
+	NonOptimal oldData;
 	NonOptimal result;
+	unsigned int maxData;
 
 };
 

@@ -15,11 +15,6 @@ using namespace MCU::Features;
 using namespace MCU::Setting;
 
 
-Motor test0(OC0);
-Motor test1(OC1A);
-Motor test2(OC1B);
-Motor test3(OC2);
-
 
 
 /*========================================//
@@ -39,35 +34,35 @@ int main(void)
 		
 		for (int i=0; i<=255; i++)
 		{
-			test0.attachPin(i);
+			OCR0 = i;
 			_delay_ms(5);
 		}
 		
-		test0.attachPin(0);
+		OCR0 = 0;
 		
 		for (int i=0; i<=255; i++)
 		{
-			test1.attachPin(i);
+			OCR1A = i;
 			_delay_ms(5);
 		}
 		
-		test1.attachPin(0);
+		OCR1A = 0;
 		
 		for (int i=0; i<=255; i++)
 		{
-			test2.attachPin(i);
+			OCR1B = i;
 			_delay_ms(5);
 		}
 		
-		test2.attachPin(0);
+		OCR1B = 0;
 		
 		for (int i=0; i<=255; i++)
 		{
-			test3.attachPin(i);
+			OCR2 = i;
 			_delay_ms(5);
 		}
 		
-		test3.attachPin(0);
+		OCR2 = 0;
 		
 	}
 

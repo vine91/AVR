@@ -22,11 +22,11 @@ ISR(TIMER1_COMPA_vect);
 SW sw(C, OFF);
 DataLongLCD lcd(A, B);
 
-int Title = ON;
-int Start = OFF;
-int Pause = ON;
-int Set = OFF;
-int Setted = OFF;
+bool Title = ON;
+bool Start = OFF;
+bool Pause = ON;
+bool Set = OFF;
+bool Setted = OFF;
 
 int i, j;
 int k, l;
