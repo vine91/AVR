@@ -55,6 +55,11 @@ void LCD::attachPort (int portValue)
 			PORTF = portValue;
 			break;
 		
+		// PORTG
+		case G:
+			PORTG = portValue;
+			break;
+		
 		default:
 			break;
 	}
@@ -99,6 +104,11 @@ void LCD::attachExtendPort (int extendPortValue)
 		// PORTF
 		case F:
 			PORTF = extendPortValue;
+			break;
+		
+		// PORTG
+		case G:
+			PORTG = extendPortValue;
 			break;
 		
 		default:

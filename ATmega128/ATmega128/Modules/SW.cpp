@@ -63,6 +63,11 @@ void SW::init (void)
 			newData = PINF;
 			break;
 		
+		// PORTG
+		case G:
+			newData = PING;
+			break;
+		
 		default:
 			break;
 	}
@@ -81,7 +86,7 @@ void SW::init (void)
 			oldData = ~newData;
 			break;
 		
-		// SENSER
+		// SENSOR
 		case SENSOR:
 			result = newData & maxData;
 			break;

@@ -45,7 +45,7 @@ void MCU::delay_us (unsigned char cycleValue)
 	
     register unsigned char i;
 	
-    for(i=0; i<cycleValue; i++)				// 4 cycle +
+    for (i=0; i<cycleValue; i++)			// 4 cycle +
     {
         asm volatile("PUSH R0");			// 2 cycle +
         asm volatile("POP  R0");			// 2 cycle +
@@ -67,7 +67,7 @@ void MCU::delay_ms (unsigned int timeValue)
 	
 	register unsigned int i;
 	
-	for(i=0;i<timeValue;i++)
+	for (i=0; i<timeValue; i++)
 	{
 		delay_us(250);
 		delay_us(250);
@@ -215,6 +215,12 @@ void MCU::Setting::beginPort (int port, bool isOutput)
 		case F:
 			DDRF = ddrValue;
 			PORTF = portValue;
+			break;
+		
+		// PORTG
+		case G:
+			DDRG = ddrValue;
+			PORTG = portValue;
 			break;
 		
 		default:

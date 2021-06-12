@@ -143,7 +143,7 @@ ISR(TIMER2_COMP_vect)
 					left.setSpeed(18);
 					right.setSpeed(0);
 				}
-				
+			
 			default:
 				break;
 		}
