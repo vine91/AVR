@@ -24,7 +24,7 @@ SW sensor(E, SENSOR);
 Motor right(OC0);
 Motor left(OC1C);
 
-bool startSwitch = OFF;
+bool g_isStart = OFF;
 
 
 
@@ -57,7 +57,7 @@ int main(void)
     while (true) 
     {
 		
-		if (startSwitch == ON)
+		if (g_isStart == ON)
 		{
 			left.start();
 			right.start();
@@ -82,7 +82,7 @@ int main(void)
 ISR(INT0_vect)
 {
 	cli();
-	startSwitch = ON;
+	g_isStart = ON;
 	sei();
 }
 
@@ -90,7 +90,7 @@ ISR(INT0_vect)
 ISR(INT1_vect)
 {
 	cli();
-	startSwitch = OFF;
+	g_isStart = OFF;
 	sei();
 }
 
@@ -98,7 +98,7 @@ ISR(INT1_vect)
 ISR(TIMER2_COMP_vect)
 {
 	
-	if (startSwitch == ON)
+	if (g_isStart == ON)
 	{
 		
 		sensor.setMax(0x15);
