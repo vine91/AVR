@@ -48,21 +48,21 @@ typedef const char* String;
 										Instruction Setting
 ====================================================================================================
 				Instruction				|	Signal	|	Code
-										| Rs	R/W	|	DB7	 DB6  DB5  DB4		DB3  DB2  DB1  DB0
+										| RS	R/W	|	DB7	 DB6  DB5  DB4		DB3  DB2  DB1  DB0
 ----------------------------------------------------------------------------------------------------
-	Clear Display						|  0	 0	|	 0	  0	   0	0		 0	  0    0	1
-	Return Home							|  0	 0	|	 0	  0	   0	0		 0	  0    1	-
-	Set Entry							|  0	 0	|	 0	  0	   0	0		 0	  1   I/D	S
-	Control Display ON/OFF				|  0	 0	|	 0	  0	   0	0		 1	  D    C	B
-	Shift Cursor or Display				|  0	 0	|	 0	  0	   0	1		S/C	 R/L   -	-
-	Set Function						|  0	 0	|	 0	  0	   1	DL		 N	  F    -	-
-	Set CG RAM Address					|  0	 0	|	 0	  1		   CG RAM Address
-	Set DD RAM Address					|  0	 0	|	 1			   DD RAM Address
+	Clear Display						|  0	 W	|	 0	  0	   0	0		 0	  0    0	1
+	Return Home							|  0	 W	|	 0	  0	   0	0		 0	  0    1	-
+	Set Entry							|  0	 W	|	 0	  0	   0	0		 0	  1   I/D	S
+	Control Display ON/OFF				|  0	 W	|	 0	  0	   0	0		 1	  D    C	B
+	Shift Cursor or Display				|  0	 W	|	 0	  0	   0	1		S/C	 R/L   -	-
+	Set Function						|  0	 W	|	 0	  0	   1	DL		 N	  F    -	-
+	Set CG RAM Address					|  0	 W	|	 0	  1		   CG RAM Address
+	Set DD RAM Address					|  0	 W	|	 1			   DD RAM Address
 ----------------------------------------------------------------------------------------------------
-	Read Busy Flag and Address Counter	|  0	 1	|	 BF			  Address Counter
+	Read Busy Flag and Address Counter	|  0	 R	|	 BF			  Address Counter
 ----------------------------------------------------------------------------------------------------
-	Write Data to CG RAM or DD RAM		|  1	 0	|					Write Data
-	Read Data to CG RAM or DD RAM		|  1	 1	|					 Read Data
+	Write Data to CG RAM or DD RAM		|  1	 W	|					Write Data
+	Read Data to CG RAM or DD RAM		|  1	 R	|					 Read Data
 --------------------------------------------------------------------------------------------------//
 
 
