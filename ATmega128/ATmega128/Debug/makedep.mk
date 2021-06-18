@@ -2,7 +2,7 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
-line_tracer_ex.cpp
+line_tracer.cpp
 
 Modules\LCD.cpp
 

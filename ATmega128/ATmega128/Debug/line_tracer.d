@@ -1,5 +1,4 @@
-line_tracer_ex.d line_tracer_ex.o: .././line_tracer_ex.cpp \
- .././Modules/MCU.hpp \
+line_tracer.d line_tracer.o: .././line_tracer.cpp .././Modules/MCU.hpp \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \

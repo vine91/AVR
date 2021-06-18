@@ -107,28 +107,28 @@ ISR(TIMER2_COMP_vect)
 		switch (sensor.result)
 		{
 			case 0x01:
-				left.setSpeed(18);
-				right.setSpeed(22);
+				left.setSpeed(18);				// 0x01, Left Sensor
+				right.setSpeed(22);				// 오른쪽으로 완전히 치우쳐 졌을때, 오른쪽 바퀴를 더 돌림.
 				break;
 			
 			case 0x05:
-				left.setSpeed(22);
-				right.setSpeed(25);
+				left.setSpeed(22);				// 0x01, Left Sensor ; 0x04, Middle Sensor
+				right.setSpeed(25);				// 오른쪽으로 치우쳐 졌을때, 오른쪽 바퀴를 돌림.
 				break;
 			
 			case 0x04:
-				left.setSpeed(25);
-				right.setSpeed(25);
+				left.setSpeed(25);				// 0x04, Middle Sensor
+				right.setSpeed(25);				// 가운데에 있을때, 전진.
 				break;
 			
 			case 0x14:
-				left.setSpeed(25);
-				right.setSpeed(22);
+				left.setSpeed(25);				// 0x04, Middle Sensor ; 0x10, Right Sensor
+				right.setSpeed(22);				// 왼쪽으로 치우쳐 졌을때, 왼쪽 바퀴를 돌림.
 				break;
 			
 			case 0x10:
-				left.setSpeed(22);
-				right.setSpeed(18);
+				left.setSpeed(22);				// 0x10, Right Sensor
+				right.setSpeed(18);				// 왼쪽으로 완전히 치우쳐 졌을때, 왼쪽 바퀴를 더 돌림.
 				break;
 			
 			case 0x00:

@@ -44,12 +44,12 @@
 #define CORRECT		8
 #define FAST		9
 
-#define _OCR0		0xFF		// Compare with 0xFF	Timer0
-#define _OCR2		0xA0		// Compare with 0xA0	Timer2
+#define _OCR0		0xFF			// Compare with 0xFF	Timer0
+#define _OCR2		0xA0			// Compare with 0xA0	Timer2
 #define _OCR1AH		0x3D
-#define _OCR1AL		0x09		// Compare with 0x3D09	Timer1
+#define _OCR1AL		0x09			// Compare with 0x3D09	Timer1
 #define _OCR3AH		0x3D
-#define _OCR3AL		0x09		// Compare with 0x3D09	Timer3
+#define _OCR3AL		0x09			// Compare with 0x3D09	Timer3
 
 #include <avr/io.h>
 #include <util/delay.h>
