@@ -16,10 +16,10 @@ using namespace MCU::Features;
 using namespace MCU::Setting;
 
 
-//ISR(TIMER2_COMP_vect);
+ISR(TIMER2_COMP_vect);
 
 SW sensor(F, SENSOR);
-Motor right(OC0);
+Motor right(OC1A);
 Motor left(OC1C);
 
 bool g_isStart = ON;
@@ -36,19 +36,20 @@ int main(void)
 	beginPort(B, OUT);
 	beginPort(F, IN);
 	
-	//beginTimer(2, COMP);
+	beginTimer(2, COMP);
 	
-	beginPWM(OC0, CORRECT);
+	beginPWM(OC1A, CORRECT);
 	beginPWM(OC1C, CORRECT);
 	
-	//left.setSpeed(0);
-	//right.setSpeed(0);
+	left.setSpeed(25);
+	right.setSpeed(25);
 	
-	//sei();
+	sei();
 	
     while (true) 
     {
-		
+		left.start();
+		right.start();
     }
 	
 	return 0;
@@ -58,7 +59,7 @@ int main(void)
 --------------   MAIN END   ----------------
 //========================================*/
 
-/*
+
 ISR(TIMER2_COMP_vect)
 {
 	
@@ -93,6 +94,7 @@ ISR(TIMER2_COMP_vect)
 			case 0x01:
 				left.setSpeed(22);				// 0b 0000 0001, Right Sensor
 				right.setSpeed(18);				// 왼쪽으로 완전히 치우쳐 졌을때, 왼쪽 바퀴를 더 돌림.
+				
 				break;
 			
 			case 0x00:
@@ -124,4 +126,4 @@ ISR(TIMER2_COMP_vect)
 		sensor.oldData = sensor.result;
 	}
 	
-}*/
+}
