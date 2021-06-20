@@ -108,27 +108,27 @@ ISR(TIMER2_COMP_vect)
 		{
 			case 0x01:
 				left.setSpeed(18);				// 0x01, Left Sensor
-				right.setSpeed(22);				// ���������� ������ ġ���� ������, ������ ������ �� ����.
+				right.setSpeed(22);				// If it turned completly right, way go right.
 				break;
 			
 			case 0x05:
 				left.setSpeed(22);				// 0x01, Left Sensor ; 0x04, Middle Sensor
-				right.setSpeed(25);				// ���������� ġ���� ������, ������ ������ ����.
+				right.setSpeed(25);				// If it turned right, go right.
 				break;
 			
 			case 0x04:
 				left.setSpeed(25);				// 0x04, Middle Sensor
-				right.setSpeed(25);				// ����� ������, ����.
+				right.setSpeed(25);				// If it's in middle, go straght.
 				break;
 			
 			case 0x14:
 				left.setSpeed(25);				// 0x04, Middle Sensor ; 0x10, Right Sensor
-				right.setSpeed(22);				// �������� ġ���� ������, ���� ������ ����.
+				right.setSpeed(22);				// If it turned left, go left.
 				break;
 			
 			case 0x10:
 				left.setSpeed(22);				// 0x10, Right Sensor
-				right.setSpeed(18);				// �������� ������ ġ���� ������, ���� ������ �� ����.
+				right.setSpeed(18);				// If it turned completly left, way go left.
 				break;
 			
 			case 0x00:
