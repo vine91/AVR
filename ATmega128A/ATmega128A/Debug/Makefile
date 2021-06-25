@@ -38,7 +38,7 @@ SUBDIRS :=  \
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
-../0617.cpp \
+../main.cpp \
 ../Modules/LCD.cpp \
 ../Modules/MCU.cpp \
 ../Modules/motor.cpp \
@@ -52,28 +52,28 @@ ASM_SRCS +=
 
 
 OBJS +=  \
-0617.o \
+main.o \
 Modules/LCD.o \
 Modules/MCU.o \
 Modules/motor.o \
 Modules/SW.o
 
 OBJS_AS_ARGS +=  \
-0617.o \
+main.o \
 Modules/LCD.o \
 Modules/MCU.o \
 Modules/motor.o \
 Modules/SW.o
 
 C_DEPS +=  \
-0617.d \
+main.d \
 Modules/LCD.d \
 Modules/MCU.d \
 Modules/motor.d \
 Modules/SW.d
 
 C_DEPS_AS_ARGS +=  \
-0617.d \
+main.d \
 Modules/LCD.d \
 Modules/MCU.d \
 Modules/motor.d \
@@ -93,7 +93,7 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-./0617.o: .././0617.cpp
+./main.o: .././main.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=14745600  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega128a -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega128a" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

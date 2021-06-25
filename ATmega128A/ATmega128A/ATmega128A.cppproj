@@ -156,7 +156,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="0617.cpp">
+    <Compile Include="main.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Modules\LCD.cpp">
