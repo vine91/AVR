@@ -112,7 +112,7 @@ ISR(TIMER2_COMP_vect)
 				break;
 			
 			case 0x05:
-				left.setSpeed(22);				// 0x01, Left Sensor ; 0x04, Middle Sensor
+				left.setSpeed(22);				// 0x01, Left Sensor , 0x04, Middle Sensor
 				right.setSpeed(25);				// If it turned right, go right.
 				break;
 			
@@ -122,7 +122,7 @@ ISR(TIMER2_COMP_vect)
 				break;
 			
 			case 0x14:
-				left.setSpeed(25);				// 0x04, Middle Sensor ; 0x10, Right Sensor
+				left.setSpeed(25);				// 0x04, Middle Sensor , 0x10, Right Sensor
 				right.setSpeed(22);				// If it turned left, go left.
 				break;
 			
