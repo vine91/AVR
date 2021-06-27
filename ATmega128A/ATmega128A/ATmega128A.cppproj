@@ -171,18 +171,6 @@
     <Compile Include="Modules\MCU.hpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Modules\motor.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Modules\motor.hpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Modules\SW.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Modules\SW.hpp">
-      <SubType>compile</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modules" />

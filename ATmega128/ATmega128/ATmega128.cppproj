@@ -156,7 +156,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="line_tracer_ex.cpp">
+    <Compile Include="counter_system.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Modules\LCD.cpp">

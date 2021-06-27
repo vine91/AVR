@@ -9,13 +9,8 @@
 
 
 #include "Modules/MCU.hpp"
+#include "Modules/LCD.hpp"
 
-#define EAST	0
-#define NORTH	1
-#define WEST	2
-#define SOUTH	3
-
-using namespace MCU::Features;
 using namespace MCU::Setting;
 
 
@@ -31,18 +26,19 @@ public:
 
 };
 
+Traffic east(F);
+Traffic south(E);
+Traffic west(B);
+Traffic north(A);
+
+DataLongLCD lcd(C, D);
 
 ISR(TIMER1_COMPA_vect);
 
 void select(int directionValue, int signalValue);
 
-Traffic east(F);
-Traffic north(A);
-Traffic west(B);
-Traffic south(E);
-
-unsigned int count = 0;
-unsigned int direction = 0;
+unsigned int g_Count = 0;
+unsigned int g_Direction = 0;
 
 
 
@@ -53,44 +49,83 @@ unsigned int direction = 0;
 
 int main (void)
 {
+	beginPort(A, OUT);
 	beginPort(B, OUT);
+	beginPort(C, OUT);
+	beginPort(D, OUT);
 	beginPort(E, OUT);
 	beginPort(F, OUT);
-	beginPort(A, OUT);
-	
+
 	beginTimer(1, COMP);
+	
+	lcd.init();
 	
 	sei();
 	
 	while (true)
 	{
-		if (count == 0)
+		
+		switch (g_Direction)
 		{
-			select(direction, 0xAC);
-			select( (direction+1)%4, 0xA1);
-			select( (direction+2)%4, 0xA1);
-			select( (direction+3)%4, 0x51);
+			case 0:
+				lcd.setLine(1, 4);
+				lcd.print("East Driveway");
+				lcd.setLine(2, 2);
+				lcd.print("North Crosswalk");
+				break;
+			
+			case 1:
+				lcd.setLine(1, 3);
+				lcd.print("South Driveway");
+				lcd.setLine(2, 3);
+				lcd.print("East Crosswalk");
+				break;
+			
+			case 2:
+				lcd.setLine(1, 4);
+				lcd.print("West Driveway");
+				lcd.setLine(2, 2);
+				lcd.print("South Crosswalk");
+				break;
+			
+			case 3:
+				lcd.setLine(1, 3);
+				lcd.print("North Driveway");
+				lcd.setLine(2, 3);
+				lcd.print("West Crosswalk");
+				break;
+			
+			default:
+				break;
 		}
 		
-		else if (count == 5)
+		if (g_Count == 0)
 		{
-			select(direction, 0xA2);
-			select( (direction+3)%4, 0xA1);
+			select(g_Direction, 0xAC);
+			select((g_Direction+1) % 4, 0xA1);
+			select((g_Direction+2) % 4, 0xA1);
+			select((g_Direction+3) % 4, 0x51);
 		}
 		
-		else if (count == 6)
+		else if (g_Count == 5)
 		{
-			select(direction, 0xA1);
+			select(g_Direction, 0xA2);
+			select((g_Direction+3) % 4, 0xA1);
+		}
+		
+		else if (g_Count == 6)
+		{
+			select(g_Direction, 0xA1);
 			
-			direction++;
+			g_Count = 0;
+			g_Direction++;
 			
-			if (direction > 3)
+			if (g_Direction > 3)
 			{
-				direction = 0;
+				g_Direction = 0;
 			}
-			
-			count = 0;
 		}
+		
 	}
 	
 	return 0;
@@ -103,7 +138,36 @@ int main (void)
 
 ISR(TIMER1_COMPA_vect)
 {
-	count++;
+	g_Count++;
+	lcd.clear(ALL);
+}
+
+
+void select(int directionValue, int signalValue)
+{
+	
+	switch (directionValue)
+	{
+		case 0:
+			east.attachPort(signalValue);
+			break;
+		
+		case 1:
+			south.attachPort(signalValue);
+			break;
+		
+		case 2:
+			west.attachPort(signalValue);
+			break;
+		
+		case 3:
+			north.attachPort(signalValue);
+			break;
+		
+		default:
+			break;
+	}
+	
 }
 
 
@@ -149,34 +213,6 @@ void Traffic::attachPort(int portValue)
 		// PORTG
 		case G:
 			PORTG = portValue;
-			break;
-		
-		default:
-			break;
-	}
-	
-}
-
-
-void select(int directionValue, int signalValue)
-{
-	
-	switch (directionValue)
-	{
-		case EAST:
-			east.attachPort(signalValue);
-			break;
-		
-		case NORTH:
-			north.attachPort(signalValue);
-			break;
-		
-		case WEST:
-			west.attachPort(signalValue);
-			break;
-		
-		case SOUTH:
-			south.attachPort(signalValue);
 			break;
 		
 		default:

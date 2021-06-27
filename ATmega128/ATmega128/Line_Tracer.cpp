@@ -107,40 +107,40 @@ ISR(TIMER2_COMP_vect)
 		switch (sensor.result)
 		{
 			case 0x01:
-				left.setSpeed(18);				// 0x01, Left Sensor
-				right.setSpeed(22);				// If it turned completly right, way go right.
+				left.setSpeed(17);				// 0x01, Left Sensor
+				right.setSpeed(22);				// If it turned completely right, way go right.
 				break;
 			
 			case 0x05:
-				left.setSpeed(22);				// 0x01, Left Sensor , 0x04, Middle Sensor
+				left.setSpeed(22);				// 0x01, Left Sensor ; 0x04, Middle Sensor
 				right.setSpeed(25);				// If it turned right, go right.
 				break;
 			
 			case 0x04:
 				left.setSpeed(25);				// 0x04, Middle Sensor
-				right.setSpeed(25);				// If it's in middle, go straght.
+				right.setSpeed(25);				// If it's in middle, go straight.
 				break;
 			
 			case 0x14:
-				left.setSpeed(25);				// 0x04, Middle Sensor , 0x10, Right Sensor
+				left.setSpeed(25);				// 0x04, Middle Sensor ; 0x10, Right Sensor
 				right.setSpeed(22);				// If it turned left, go left.
 				break;
 			
 			case 0x10:
 				left.setSpeed(22);				// 0x10, Right Sensor
-				right.setSpeed(18);				// If it turned completly left, way go left.
+				right.setSpeed(17);				// If it turned completely left, way go left.
 				break;
 			
 			case 0x00:
 				if (sensor.oldData == 0x01)
 				{
 					left.setSpeed(0);
-					right.setSpeed(18);
+					right.setSpeed(17);
 				}
 				
 				else if (sensor.oldData == 0x10)
 				{
-					left.setSpeed(18);
+					left.setSpeed(17);
 					right.setSpeed(0);
 				}
 			

@@ -19,8 +19,8 @@ using namespace MCU::Setting;
 ISR(TIMER2_OVF_vect);
 ISR(TIMER1_COMPA_vect);
 
-SW sw(C, OFF);
-DataLongLCD lcd(A, B);
+SW sw(A, REVERSAL);
+LCD lcd(F);
 
 bool Title = ON;
 bool Start = OFF;
@@ -40,9 +40,8 @@ int k, l;
 
 int main (void)
 {
-    beginPort(C, IN);
-	beginPort(B, OUT);
-	beginPort(A, OUT);
+    beginPort(A, IN);
+	beginPort(F, OUT);
 	
 	beginTimer(2, OVF);
 	beginTimer(1, COMP);
